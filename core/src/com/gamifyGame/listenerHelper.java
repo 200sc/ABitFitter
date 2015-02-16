@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Json;
  * This guy should hold all the listeners. Anyone who wants a listener should go here to get it.
  */
 public class listenerHelper {
-    final gamifyGame game;
+    private final gamifyGame game;
     ClickListener challengeListener, buildingListener;
     ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, scanAction;
 
