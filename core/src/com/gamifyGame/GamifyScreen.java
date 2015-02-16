@@ -50,10 +50,6 @@ public abstract class GamifyScreen implements Screen {
 
         //renderer.moveCorner(retBox,Corner.LOWER_LEFT,30);
 
-
-        renderHelper.getRenderHelper().getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
-        renderHelper.getRenderHelper().getShapeRenderer().end();
-
         //batch.begin();
         //batch.end();
     }

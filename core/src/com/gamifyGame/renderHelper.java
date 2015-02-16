@@ -42,7 +42,14 @@ public class renderHelper {
     SpriteBatch batch;
     BitmapFont font, font2;
 
+    // TODO: Because colors are being used in RGB / 255 values, make a function that does this nicer.
     final Color boxColor = new Color(new Float(56)/255,new Float(7)/255,new Float(24)/255,1);
+    public final Color blueDark = new Color(new Float(0)/255,new Float(39)/255,new Float(71)/255,1);
+    public final Color blueLight = new Color(new Float(0)/255,new Float(67)/255,new Float(122)/255,1);
+    //public final Color greenDark = new Color();
+    //public final Color greenLight = new Color();
+    //public final Color tellowDark = new Color();
+    //public final Color yellowLight = new Color();
 
 
     private static renderHelper renderer;
@@ -284,6 +291,7 @@ public class renderHelper {
     // Getters
     public int getWidth(){return scrWidth;}
     public int getHeight(){return scrHeight;}
+    public float getRenderedWidth() { return RENDERED_SCREEN_WIDTH;}
     public ShapeRenderer getShapeRenderer(){return shapes;}
     public ScalingViewport getView(){return view;}
     public SpriteBatch getBatch(){return batch;}
@@ -294,6 +302,13 @@ public class renderHelper {
         else if (level == 1){return activeLayer;}
         else return topLayer;
     }
+
+    public ShapeRenderer newShapeRenderer(){
+        ShapeRenderer toReturn = new ShapeRenderer();
+        toReturn.scale(Float.valueOf(scrWidth)/180,Float.valueOf(scrHeight)/296,1);
+        return toReturn;
+    }
+
     public TextureRegionDrawable getTextureRegionDrawable(String file){
         if (drawableHash.containsKey(file)){
             return drawableHash.get(file);
