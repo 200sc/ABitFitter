@@ -18,8 +18,8 @@ public class ChangingImage extends Image {
 
         TextureRegionDrawable textured1, textured2;
         String name1,name2;
-        HashMap<String,String> Strings;
-        HashMap<String,Integer> Integers;
+        private HashMap<String,String> Strings;
+        private HashMap<String,Integer> Integers;
 
         public ChangingImage(String file, String file2, Stage stage, int hOrigin, int vOrigin){
             name1 = file;

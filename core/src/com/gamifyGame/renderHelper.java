@@ -174,9 +174,11 @@ public class renderHelper {
     public void textSet(String text, int x, int y){
         textSet(text,x,y,"normal");
     }
-    public void textSetCenter(String text, int offsetx, int offsety){
+
+    public void textSetCenter(String text, int offsetx, int offsety)
+    {
         BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
-        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_HEIGHT/2+offsetx, RENDERED_SCREEN_WIDTH/2+offsety));
+        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         font2.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
@@ -306,11 +308,6 @@ public class renderHelper {
             return toReturn;
         }
     }
-
-
-
-
-
 
     public Image imageActor(String key, float hOrigin, float vOrigin){
         Texture texture = textureHash.get(key);

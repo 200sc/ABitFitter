@@ -20,9 +20,11 @@ public class ScrollBar
     private gamifyGame game;
     private ArrayList<? extends GamifyImage> images;
     private ChangingImage[] underground;
+    private BuyScreen myScreen;
 
-    public ScrollBar(ArrayList<? extends GamifyImage> images, ChangingImage[] undergroundBuild, gamifyGame game)
+    public ScrollBar(ArrayList<? extends GamifyImage> images, ChangingImage[] undergroundBuild, gamifyGame game, BuyScreen myScreen)
     {
+        this.myScreen=myScreen;
         this.images=images;
         this.game=game;
         this.underground=undergroundBuild;
@@ -42,16 +44,18 @@ public class ScrollBar
     private DragListener getDefaultScrollBarListener(final ArrayList<? extends GamifyImage> imgHandles, final ChangingImage[] underground, final boolean isLongBar)
     {
         return new DragListener(){
-            private float startX, startY;
+            private float startX, startY, sY;
             private Color startColor;
             private boolean notScroll = false;
 
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                startX = x; startY = y;
+                startX = x; startY = y; sY=event.getListenerActor().getY();
                 startColor = new Color(event.getListenerActor().getColor()); //Deep copy
                 if(isLongBar == false){
                     //event.getListenerActor().setColor(Color.GREEN);
                     for(int i=0; i <underground.length; i++){underground[i].setColor(Color.GREEN);}
+                    Building currentEvent=(Building) event.getListenerActor();
+                    myScreen.setCurrentText(currentEvent.toString());
                 }
                 return true;
             }
@@ -77,7 +81,7 @@ public class ScrollBar
             public void touchDragged(InputEvent event, float x, float y, int pointer)
             {
                 Image eventImage = (Image) event.getListenerActor();
-                if(startY-eventImage.getY() > eventImage.getHeight()/3 || notScroll ){
+                if(sY-eventImage.getY() > eventImage.getHeight()/3 || notScroll ){
                     notScroll = true;
                     eventImage.setColor(Color.RED);
                     eventImage.moveBy(x-startX/2, y-startY);
@@ -91,7 +95,7 @@ public class ScrollBar
     }
 
 
-    public void snapBack(GamifyImage toSnap)
+    private void snapBack(GamifyImage toSnap)
     {
         int index=images.lastIndexOf(toSnap);
         float newX;
@@ -115,7 +119,7 @@ public class ScrollBar
         toSnap.setPosition(newX, neighbor.getY());
     }
 
-    public void makeScroll(Stage stage, int hOrigin, int vOrigin){
+    private void makeScroll(Stage stage, int hOrigin, int vOrigin){
         // Gotta have some size so I will for now use the Basic size of the HQ1 but scaled down a teensy bit
         int width  = (int)(.8 *renderHelper.getRenderHelper().textureHash.get("HQ1.png").getWidth());
         int height = (int) (.8* renderHelper.getRenderHelper().textureHash.get("HQ1.png").getHeight());
@@ -134,7 +138,7 @@ public class ScrollBar
             imgHandles[i].setSize(width, height);
         }*/
     }
-    public void moveScroll(float xMove, float yMove)
+    private void moveScroll(float xMove, float yMove)
     {
         // If no items make sure not to crash on scrolling
         if(images.isEmpty())

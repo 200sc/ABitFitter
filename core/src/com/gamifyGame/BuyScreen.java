@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public class BuyScreen extends GamifyScreen implements Screen
 {
     private ClickListener buildingListener;
+    private ScrollBar scrollBar;
+    private String currentText;
     // ArrayList<Building> buyableBuildings;
 
     public BuyScreen(gamifyGame game) {
@@ -27,7 +29,7 @@ public class BuyScreen extends GamifyScreen implements Screen
                 return true;
             }
         };
-
+        currentText="";
     }
 
     @Override
@@ -45,7 +47,7 @@ public class BuyScreen extends GamifyScreen implements Screen
         ChangingImage[] undergroundBuild = renderHelper.getRenderHelper().makeUnderground(renderHelper.getRenderHelper().getLayer(1), underground);
         renderHelper.getRenderHelper().makeBridges(renderHelper.getRenderHelper().getLayer(1), bridges);
         addBuildingListenerToEachHandle(undergroundBuild);
-        new ScrollBar(Building.getDefaultBuildings(), undergroundBuild, game);
+        scrollBar=new ScrollBar(Building.getDefaultBuildings(), undergroundBuild, game, this);
     }
 
 
@@ -57,10 +59,26 @@ public class BuyScreen extends GamifyScreen implements Screen
         super.hide();
     }
 
+    @Override
+    public void render(float delta)
+    {
+        super.render(delta);
+        renderHelper.getRenderHelper().getBatch().begin();
+        renderHelper.getRenderHelper().textSetCenter(currentText, 45, 65);
+        renderHelper.getRenderHelper().imageSetup("midBox.png", renderHelper.getRenderHelper().getLayer(1), 120, 175);
+        renderHelper.getRenderHelper().getBatch().end();
+    }
+
+
     private void addBuildingListenerToEachHandle(ChangingImage[] imageHandles){
         for(int i=0; i <= imageHandles.length-1; i++){
             imageHandles[i].addListener(buildingListener);
         }
+    }
+
+    public void setCurrentText(String newText)
+    {
+       currentText=newText;
     }
 
 }

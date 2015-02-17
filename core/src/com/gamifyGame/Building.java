@@ -53,4 +53,8 @@ public class Building extends GamifyImage
         textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));*/
         return defList;
     }
+    public String toString()
+    {
+        return desc;
+    }
 }
