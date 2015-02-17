@@ -329,13 +329,17 @@ public class renderHelper {
         }*/
     }
 
-    public void moveScroll(ArrayList<Building> imageHandles, float xMove, float yMove){
-        int len = imageHandles.size()-1;
+    public void moveScroll(ArrayList<Building> imageHandles, float xMove, float yMove)
+    {
         // If no items make sure not to crash on scrolling
-        if(len == 0){return;}
+        if(imageHandles.isEmpty())
+        {
+            return;
+        }
+
         // Does not scroll if already at the end of our things to be displayed
         if(xMove > 0 && imageHandles.get(0).getX() > 0){return;}
-        if(xMove < 0 && imageHandles.get(0).getX()+imageHandles.get(len).getWidth() < 180 ){return;}
+        if(xMove < 0 && imageHandles.get(imageHandles.size()-1).getX()+imageHandles.get(imageHandles.size()-1).getWidth() < 180 ){return;}
         //Moves the images
 
         for(Building building: imageHandles)
