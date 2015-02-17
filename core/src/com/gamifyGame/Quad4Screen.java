@@ -93,7 +93,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         renderHelper renderer = renderHelper.getRenderHelper().getRenderHelper();
 
         retBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 37, -25);
-        retBox.addListener(game.getListener().goScreen(0));
+        retBox.addListener(game.getListenerHelper().goScreen(0));
 
         // Set up scanning Image and its background
         Image scanBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), -30,60);
@@ -103,7 +103,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         Image scanImage = renderer.imageSetup("print_scan.png", renderer.getLayer(1), 38, 185);
         scanImage.setSize(scanImage.getWidth()/8, scanImage.getHeight()/8);
         //scanImage.setColor(com.badlogic.gdx.graphics.Color.MAGENTA);
-        scanImage.addListener(game.getListener().scanningAction());
+        scanImage.addListener(game.getListenerHelper().scanningAction());
 
         Image basicBox = renderer.imageSetup("tophalfbox.png", renderer.getLayer(1), 0, 30);
 
