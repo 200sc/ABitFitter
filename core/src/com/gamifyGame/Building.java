@@ -1,27 +1,28 @@
 package com.gamifyGame;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
 
 /**
  * Created by Andrew on 2/16/2015.
  */
-public class Building
+public class Building extends GamifyImage
 {
     private String desc;
     private String name;
     private int cost;
     private int power;
     private TriggerCondition triggerCondition;
-    private String key;
 
     public Building(String name, String desc, int cost, int power, TriggerCondition triggerCondition, String key) {
+        super(key);
         this.desc = desc;
         this.name = name;
         this.cost = cost;
         this.power=power;
         this.triggerCondition=triggerCondition;
-        this.key=key;
     }
 
 
@@ -51,10 +52,5 @@ public class Building
         textureHash.put("Lab1.png",imageLoad("Lab1.png"));
         textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));*/
         return defList;
-    }
-
-    public String getImageKey()
-    {
-        return key;
     }
 }

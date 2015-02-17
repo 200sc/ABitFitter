@@ -52,18 +52,11 @@ public class BuyScreen extends GamifyScreen implements Screen
         Image buyBar = renderHelper.getRenderHelper().imageSetup("buyBar.png", renderHelper.getRenderHelper().getLayer(1), 0, 254);
 
         // TODO: generate this better and make them interactable.
-        String[] keys=new String[buyableBuildings.size()];
-        int i=0;
-        for(Building current: buyableBuildings)
-        {
-            keys[i]=current.getImageKey();
-            i++;
-        }
-        Image[] imageHandles = renderHelper.getRenderHelper().makeScroll(renderHelper.getRenderHelper().getLayer(1), keys, 0, 254);
+       renderHelper.getRenderHelper().makeScroll(renderHelper.getRenderHelper().getLayer(1), buyableBuildings, 0, 254);
 
         //Make the getDefaultScrollBarListener bar actually getDefaultScrollBarListener
-        dragHandle = getDefaultScrollBarListener(imageHandles, undergroundBuild, true);
-        dragListeners(imageHandles, undergroundBuild);
+        dragHandle = getDefaultScrollBarListener(buyableBuildings, undergroundBuild, true);
+        dragListeners(buyableBuildings, undergroundBuild);
         buyBar.addListener(dragHandle);
     }
 
@@ -76,16 +69,14 @@ public class BuyScreen extends GamifyScreen implements Screen
         super.hide();
     }
 
-    private DragListener getDefaultScrollBarListener(final Image[] imgHandles, final ChangingImage[] underground, final boolean isLongBar)
+    private DragListener getDefaultScrollBarListener(final ArrayList<Building> imgHandles, final ChangingImage[] underground, final boolean isLongBar)
     {
         return new DragListener(){
             private float startX, startY, sY, sX;
             private Color startColor;
             private boolean notScroll = false;
-            private boolean isDown = false;
+
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                if(isDown){return true;}
-                isDown = true;
                 startX = x; startY = y; sY = event.getListenerActor().getY();
                 //sX = event.getListenerActor().getX();
                 startColor = new Color(event.getListenerActor().getColor()); //Deep copy
@@ -112,7 +103,6 @@ public class BuyScreen extends GamifyScreen implements Screen
                         pref.flush();
                     }
                 }
-                isDown = false;
             }
             public void touchDragged(InputEvent event, float x, float y, int pointer)
             {
@@ -130,10 +120,11 @@ public class BuyScreen extends GamifyScreen implements Screen
             }};
     }
 
-    private void dragListeners(Image[] imageHandles, ChangingImage[] underground){
-        for(int i=0; i <= imageHandles.length-1; i++){
-            imageHandles[i].addListener(getDefaultScrollBarListener(imageHandles, underground, false));
-        }
+    private void dragListeners(ArrayList<Building> imageHandles, ChangingImage[] underground){
+       for(Building currentBuilding: imageHandles)
+       {
+            currentBuilding.addListener(getDefaultScrollBarListener(imageHandles, underground, false));
+       }
     }
     private void addBuildingListenerToEachHandle(ChangingImage[] imageHandles){
         for(int i=0; i <= imageHandles.length-1; i++){

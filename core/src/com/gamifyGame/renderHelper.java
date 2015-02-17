@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.prefs.Preferences;
 
@@ -308,29 +309,38 @@ public class renderHelper {
 
 
 
-    public Image[] makeScroll(Stage stage, String[] images, float hOrigin, float vOrigin){
+    public void makeScroll(Stage stage, ArrayList<Building> images, int hOrigin, int vOrigin){
         // Gotta have some size so I will for now use the Basic size of the HQ1 but scaled down a teensy bit
         int width  = (int)(.8 *textureHash.get("HQ1.png").getWidth());
         int height = (int) (.8* textureHash.get("HQ1.png").getHeight());
+        int buyBarHeight=textureHash.get("buyBar.png").getHeight();
 
-        Image[] imgHandles = new Image[images.length];
-        for(int i=0; i <= images.length-1; i++){
+        //Image[] imgHandles = new Image[images.size()];
+        for(int i=0; i<=images.size()-1; i++)
+        {
+            GamifyImage currentImage=images.get(i);
+            currentImage.setSize(width, height);
+            currentImage.addAt(stage, (int) hOrigin+(i*width), (int) vOrigin + buyBarHeight-height);
+        }
+
+       /*for(int i=0; i <= images.length-1; i++){
             imgHandles[i] = imageSetup(images[i], stage, hOrigin+(i*width),vOrigin + textureHash.get("buyBar.png").getHeight()-height);
             imgHandles[i].setSize(width, height);
-        }
-        return imgHandles;
+        }*/
     }
 
-    public void moveScroll(Image[] imageHandles, float xMove, float yMove){
-        int len = imageHandles.length-1;
+    public void moveScroll(ArrayList<Building> imageHandles, float xMove, float yMove){
+        int len = imageHandles.size()-1;
         // If no items make sure not to crash on scrolling
         if(len == 0){return;}
         // Does not scroll if already at the end of our things to be displayed
-        if(xMove > 0 && imageHandles[0].getX() > 0){return;}
-        if(xMove < 0 && imageHandles[len].getX()+imageHandles[len].getWidth() < 180 ){return;}
+        if(xMove > 0 && imageHandles.get(0).getX() > 0){return;}
+        if(xMove < 0 && imageHandles.get(0).getX()+imageHandles.get(len).getWidth() < 180 ){return;}
         //Moves the images
-        for(int i=0; i <= imageHandles.length-1; i++){
-            imageHandles[i].moveBy(xMove, yMove);
+
+        for(Building building: imageHandles)
+        {
+            building.moveBy(xMove, yMove);
         }
     }
 
