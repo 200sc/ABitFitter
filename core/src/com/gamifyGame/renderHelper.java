@@ -191,7 +191,8 @@ public class renderHelper {
     }
 
 
-    public static Texture imageLoad(String file){ return new Texture(file);}
+    public static Texture imageLoad(String file)
+    { return new Texture(file);}
 
     public static Image applyTexture(Texture texture, Stage stage, float hOrigin, float vOrigin){
         Image image = new Image(texture);
