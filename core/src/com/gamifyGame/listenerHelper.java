@@ -58,7 +58,6 @@ public class listenerHelper {
                 return true;
             }
         };
-
     }
 
     public ClickListener getChallengeListener(){return challengeListener;}
@@ -84,6 +83,8 @@ public class listenerHelper {
                 return null;
         }
     }
+
+
 
     public ClickListener setInt(final String key,final int val){
         return new ClickListener(){

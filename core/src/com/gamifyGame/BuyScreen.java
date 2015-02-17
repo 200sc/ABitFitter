@@ -68,6 +68,7 @@ public class BuyScreen extends GamifyScreen implements Screen
         super.render(delta);
         renderHelper.getRenderHelper().getBatch().begin();
         renderHelper.getRenderHelper().textSetCenter(currentText, 45, 65);
+        renderHelper.getRenderHelper().textSetCenter("Vitality: "+game.getVitality(), 35, 75);
         renderHelper.getRenderHelper().imageSetup("midBox.png", renderHelper.getRenderHelper().getLayer(1), 120, 175);
         renderHelper.getRenderHelper().getBatch().end();
     }

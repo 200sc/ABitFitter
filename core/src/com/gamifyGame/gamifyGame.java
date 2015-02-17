@@ -68,7 +68,7 @@ public class gamifyGame extends Game {
 
         setScreen(mainS);
     }
-    private void updateVitality(float delta )
+    public void updateVitality(float delta )
     {
         secondsSinceLastCall+=delta;
         if(secondsSinceLastCall>3)
@@ -136,5 +136,10 @@ public class gamifyGame extends Game {
         pref = preferences;
     }
     public void setGraphPref(Preferences preferences) { graphPref = preferences;}
+
+    public Long getVitality()
+    {
+        return vitality;
+    }
 }
 

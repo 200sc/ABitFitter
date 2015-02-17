@@ -51,6 +51,7 @@ public abstract class GamifyScreen implements Screen {
         layer0.draw();
         layer1.draw();
         layer2.draw();
+        game.updateVitality(delta);
 
         //renderer.moveCorner(retBox,Corner.LOWER_LEFT,30);
 
@@ -94,5 +95,7 @@ public abstract class GamifyScreen implements Screen {
         }
         return false;
     }
+
+
 
 }
