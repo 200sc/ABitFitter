@@ -109,8 +109,7 @@ public class listenerHelper {
             boolean notScroll = false;
             boolean isDown = false;
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                if(isDown){return true;}
-                isDown = true;
+
                 startX = x; startY = y; sY = event.getListenerActor().getY();
                 //sX = event.getListenerActor().getX();
                 startColor = new Color(event.getListenerActor().getColor()); //Deep copy
@@ -137,7 +136,7 @@ public class listenerHelper {
                         pref.flush();
                     }
                 }
-                isDown = false;
+
             }
             public void touchDragged(InputEvent event, float x, float y, int pointer)
             {

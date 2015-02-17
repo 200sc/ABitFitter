@@ -32,7 +32,7 @@ public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
     {
-        Toast.makeText(this,"Comps",Toast.LENGTH_SHORT).show();
+
 		super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(this, true);
@@ -92,12 +92,11 @@ public class AndroidLauncher extends AndroidApplication {
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("bitPref", 0);
 
         if(sharedPref.getString("currentFood", null) != null){
-            Toast.makeText(this, "Hello Here We Are", Toast.LENGTH_SHORT).show();
+
             pref.putString("latestFood", sharedPref.getString("currentFood", null));
             pref.flush();
         }
 
-        Toast.makeText(this, "PRINNTTTT" + sharedPref.getString("currentFood", null), Toast.LENGTH_SHORT).show();
         super.onResume();
 
     }

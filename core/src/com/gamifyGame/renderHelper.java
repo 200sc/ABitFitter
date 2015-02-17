@@ -109,6 +109,8 @@ public class renderHelper {
         textureHash.put("trophyBox.png",imageLoad("Trophybox.png"));
         textureHash.put("midBox.png",imageLoad("Midbox.png"));
         textureHash.put("48Box.png",imageLoad("48box.png"));
+        textureHash.put("tophalfbox.png",imageLoad("tophalfbox.png"));
+
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
 

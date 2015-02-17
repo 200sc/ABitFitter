@@ -10,10 +10,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.gamifyGame.Corner;
 import com.gamifyGame.GamifyScreen;
 import com.gamifyGame.gamifyGame;
 import com.gamifyGame.renderHelper;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.Renderer;
 
 
 /**
@@ -29,35 +35,80 @@ public class Quad4Screen extends GamifyScreen implements Screen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        renderHelper.getRenderHelper().moveCorner(retBox, Corner.UPPER_LEFT, 30);
+        renderHelper renderer = renderHelper.getRenderHelper();
+        renderer.moveCorner(retBox, Corner.UPPER_LEFT, 30);
 
 
+//
+        renderer.getBatch().begin();
+        renderer.textSet("Scan new food", 40, 227);
+        renderer.textSet("Food Graphs", 100, 227);
+        renderer.getBatch().end();
+
+        //Set up the data from the last food seen
         String latestFood = "No Food recorded";
         if(game.getPrefs().getString("latestFood") != null){
-           latestFood = game.getPrefs().getString("latestFood");
+            latestFood = game.getPrefs().getString("latestFood");
+        }
+        // Parse the data from its Json form
+        Json json = new Json();
+        HashMap food = json.fromJson(HashMap.class, latestFood);
+        JsonValue nutritionJson = (JsonValue) food.get("nutrition");
+        HashMap nutritionMap  = json.readValue(HashMap.class, nutritionJson);
+
+        //HashMap nutrients = json.fromJson(HashMap.class, (String) food.get("nutrition"));
+
+
+        String brand = (String)food.get("brand_name");
+        String product = (String)food.get("product_name");
+
+
+        String[] foodInfo = new String[9];
+        foodInfo[0]= (String)food.get("brand_name");
+        foodInfo[1] = (String)food.get("product_name");
+        foodInfo[2] =  (String)nutritionMap.get("calcium");
+        foodInfo[3] = (String)nutritionMap.get("calories");
+        foodInfo[4] = (String)nutritionMap.get("carbohydrate");
+        foodInfo[5] = (String)nutritionMap.get("protein");
+        foodInfo[6] = (String)nutritionMap.get("sugar");
+        foodInfo[7] = (String)nutritionMap.get("fiber");
+        foodInfo[8] = (String)nutritionMap.get("serving_description");
+
+        if(foodInfo[0] == null){
+            foodInfo[0] = "No Food Recently Scanned";
+            foodInfo[1] = "Use the scan button to scan barcode of food.";
         }
 
-        Json json = new Json();
-        String food = json.fromJson(String.class, latestFood);
-
-        //food = new Json(latestFood);
-        //String brand = out.getString("brand_name");
-
-        renderHelper.getRenderHelper().getBatch().begin();
-        renderHelper.getRenderHelper().textSet(latestFood, 20, 20);
-        renderHelper.getRenderHelper().textSet("HI", 20, 80);
-        renderHelper.getRenderHelper().getBatch().end();
+        String[] foodDescriptor = {"","","Calcium : ","Calories : ","Carbs: ","Protein: ","Sugar: ","Fiber: ","Serving Size: "};
+        renderer.getBatch().begin();
+        renderer.textSet("Your last eaten food information:", 45, 150);
+        for(int i = 0; i < 9; i++ ){
+            if(foodInfo[i] != null){renderer.textSet(foodDescriptor[i] + foodInfo[i], 45, 130 - 10*i);} }
+        renderer.getBatch().end();
     }
 
 
     @Override
     public void show() {
-        retBox = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", renderHelper.getRenderHelper().getLayer(1), 37, -25);
+        renderHelper renderer = renderHelper.getRenderHelper().getRenderHelper();
+
+        retBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 37, -25);
         retBox.addListener(game.getListener().goScreen(0));
-        Image nuBox = renderHelper.getRenderHelper().imageSetup("print_scan.png", renderHelper.getRenderHelper().getLayer(1), 30,30);
-        nuBox.setSize(nuBox.getWidth()/4, nuBox.getHeight()/4);
-        nuBox.setColor(com.badlogic.gdx.graphics.Color.MAGENTA);
-        nuBox.addListener(game.getListener().scanningAction());
+
+        // Set up scanning Image and its background
+        Image scanBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), -30,60);
+
+        Image graphBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 30, 60);
+        // Silly scanning image with tongue
+        Image scanImage = renderer.imageSetup("print_scan.png", renderer.getLayer(1), 38, 185);
+        scanImage.setSize(scanImage.getWidth()/8, scanImage.getHeight()/8);
+        //scanImage.setColor(com.badlogic.gdx.graphics.Color.MAGENTA);
+        scanImage.addListener(game.getListener().scanningAction());
+
+        Image basicBox = renderer.imageSetup("tophalfbox.png", renderer.getLayer(1), 0, 30);
+
+
+
 
 
 
