@@ -1,5 +1,7 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -7,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Json;
+
+import java.util.EventListener;
 
 /**
  * Created by Stephen on 2/1/2015.
@@ -29,7 +33,7 @@ public class BuyScreen extends GamifyScreen implements Screen {
     @Override
     public void show() {
         //Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
-        Image placeHold = renderHelper.getRenderHelper().imageSetup("placeholder128x24.png", renderHelper.getRenderHelper().getLayer(1), 26, 8);
+        Image placeHold = renderHelper.getRenderHelper().imageSetup("longBox.png", renderHelper.getRenderHelper().getLayer(1), 26, 8);
         placeHold.addListener(game.getListenerHelper().goScreen(0));
 
 

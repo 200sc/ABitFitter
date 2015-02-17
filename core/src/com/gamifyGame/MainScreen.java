@@ -60,15 +60,15 @@ public class MainScreen extends GamifyScreen implements Screen
             }
             /*
             if (Ax < 5 && Ax > 3 && Ay > 1 && Ay < 4 && Az > 6 && Az < 9){
-                renderHelper.getRenderHelper().getFont().draw(renderHelper.getRenderHelper().getBatch(), "Sitting",50,260);
+                renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Sitting",50,260);
             }
             else if (Ax < 0 && Ax > -4 && Ay > 7 && Ay < 10 && Az > -1 && Az < 4){
-                renderHelper.getRenderHelper().getFont().draw(renderHelper.getRenderHelper().getBatch(), "Standing",50,260);
+                renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Standing",50,260);
             }
-            else renderHelper.getRenderHelper().getFont().draw(renderHelper.getRenderHelper().getBatch(), "Neithering",50,260);
+            else renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Neithering",50,260);
             */
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("updaterRunning",0)),20,20);
-            renderHelper.getRenderHelper().getFont().draw(renderHelper.getRenderHelper().getBatch(), String.valueOf(frameCount),50,200);
+            renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), String.valueOf(frameCount),50,200);
             renderHelper.getRenderHelper().getBatch().end();
             // If we want to do more things with frame counting in groups of 30
             frameCount = (frameCount + 1) % 30;
