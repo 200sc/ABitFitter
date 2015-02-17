@@ -40,7 +40,6 @@ public class Quad1Screen extends GamifyScreen implements Screen {
 
     public void show() {
         retBox = renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", renderHelper.getRenderHelper().getLayer(1), 37, 50);
-        retBox.addListener(game.getListener().goScreen(0));
         HashMap<Long,Integer> testData = new HashMap<Long,Integer>();
         testData.put(System.currentTimeMillis()-110000000,40);
         testData.put(System.currentTimeMillis()-19000000,45);
@@ -77,6 +76,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         testData.put(System.currentTimeMillis()-50000,34);
         testData.put(System.currentTimeMillis()-40000,78);
         testGraph = new HistogramGraph(testData,"Test Data",GamifyColor.BLUE,"small");
+        retBox.addListener(game.getListenerHelper().goScreen(0));
     }
 
 

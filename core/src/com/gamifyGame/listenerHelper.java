@@ -13,9 +13,9 @@ import com.badlogic.gdx.utils.Json;
  * This guy should hold all the listeners. Anyone who wants a listener should go here to get it.
  */
 public class listenerHelper {
-    final gamifyGame game;
-    ClickListener challengeListener, buildingListener;
-    ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, scanAction;
+    private final gamifyGame game;
+    private ClickListener challengeListener;
+    private ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, scanAction;
 
     public listenerHelper(gamifyGame gamify){
         this.game = gamify;
@@ -58,25 +58,7 @@ public class listenerHelper {
                 return true;
             }
         };
-        buildingListener = new ClickListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ChangingImage eventImage = (ChangingImage) event.getListenerActor();
 
-
-//                eventImage.swapTexture();
-//                String pic = eventImage.getName();
-//                int index = eventImage.getInt("undergroundIndex");
-//
-//                Json json = new Json();
-//                Preferences pref = game.getPrefs();
-//                String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
-//                underground[index] = pic;
-//                pref.putString("undergroundBuildings", json.toJson(underground));
-//                pref.flush();
-
-                return true;
-            }
-        };
     }
 
     public ClickListener getChallengeListener(){return challengeListener;}
@@ -155,12 +137,6 @@ public class listenerHelper {
             }};
     }
 
-
-    public void buildingListeners(ChangingImage[] imageHandles){
-        for(int i=0; i <= imageHandles.length-1; i++){
-            imageHandles[i].addListener(buildingListener);
-        }
-    }
 
 
     public ClickListener setInt(final String key,final int val){

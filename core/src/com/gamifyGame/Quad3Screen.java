@@ -1,20 +1,12 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.gamifyGame.ChangingImage;
-import com.gamifyGame.Corner;
-import com.gamifyGame.GamifyScreen;
-import com.gamifyGame.gamifyGame;
-import com.gamifyGame.renderHelper;
 
 /**
  * Created by Stephen on 2/1/2015.
@@ -143,15 +135,15 @@ public class Quad3Screen extends GamifyScreen implements Screen {
                 if (game.getPrefs().getBoolean(representation, true)) {
                     tempImage.swapTexture();
                 }
-                tempImage.addListener(game.getListener().getChallengeListener());
+                tempImage.addListener(game.getListenerHelper().getChallengeListener());
                 Week[i][j] = tempImage;
                 hour = (hour + 1) % 24;
             }
             day++;
         }
 
-        retBox.addListener(game.getListener().goScreen(0));
-        placeholder62.addListener(game.getListener().setBoolean("showChallengeHours", 'a'));
+        retBox.addListener(game.getListenerHelper().goScreen(0));
+        placeholder62.addListener(game.getListenerHelper().setBoolean("showChallengeHours", 'a'));
 
     }
 

@@ -127,12 +127,12 @@ public class MainScreen extends GamifyScreen implements Screen
             Image midbox = renderHelper.getRenderHelper().imageSetupCenter("midBox.png", layer1, 0, 12);
 
             // Assign items their listeners
-            quad1.addListener(game.getListener().goScreen(1));
+            quad1.addListener(game.getListenerHelper().goScreen(1));
             //quad1.addListener(listenerH.setInt("toScreen",1));
-            quad2.addListener(game.getListener().goScreen(2));
-            quad3.addListener(game.getListener().goScreen(3));
-            quad4.addListener(game.getListener().goScreen(4));
-            midbox.addListener(game.getListener().goScreen(5));
+            quad2.addListener(game.getListenerHelper().goScreen(2));
+            quad3.addListener(game.getListenerHelper().goScreen(3));
+            quad4.addListener(game.getListenerHelper().goScreen(4));
+            midbox.addListener(game.getListenerHelper().goScreen(5));
             frameCount = 0;
         }
 

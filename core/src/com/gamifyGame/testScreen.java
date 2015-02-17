@@ -118,8 +118,8 @@ public class testScreen implements Screen {
         Image No = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 32,0);
 
         // MAKE SOME LISTENERS THAT SEND DATA TO THE SERVER?!?!?!?
-        Yes.addListener(listenerH.testYes);
-        No.addListener(listenerH.testNo);
+        Yes.addListener(listenerH.getTestYes());
+        No.addListener(listenerH.getTestNo());
 
     }
 

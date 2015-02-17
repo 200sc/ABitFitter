@@ -1,19 +1,8 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Json;
-import com.gamifyGame.Corner;
-import com.gamifyGame.GamifyScreen;
-import com.gamifyGame.gamifyGame;
-import com.gamifyGame.renderHelper;
 
 
 /**
@@ -53,11 +42,11 @@ public class Quad4Screen extends GamifyScreen implements Screen {
     @Override
     public void show() {
         retBox = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", renderHelper.getRenderHelper().getLayer(1), 37, -25);
-        retBox.addListener(game.getListener().goScreen(0));
+        retBox.addListener(game.getListenerHelper().goScreen(0));
         Image nuBox = renderHelper.getRenderHelper().imageSetup("print_scan.png", renderHelper.getRenderHelper().getLayer(1), 30,30);
         nuBox.setSize(nuBox.getWidth()/4, nuBox.getHeight()/4);
         nuBox.setColor(com.badlogic.gdx.graphics.Color.MAGENTA);
-        nuBox.addListener(game.getListener().scanningAction());
+        nuBox.addListener(game.getListenerHelper().scanningAction());
 
 
 
