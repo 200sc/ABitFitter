@@ -86,7 +86,7 @@ public class gamifyGame extends Game {
     }
 
     public void graphUpdate(String key, String val){
-        //actionResolver.showToast("GraphUpdate was called");
+        actionResolver.showToast("GraphUpdate: " + val);
         graphPref.putString("activity"+key,val);
         if (val == "running"){
             pref.putInteger("minutesRan",pref.getInteger("minutesRan",0)+1);

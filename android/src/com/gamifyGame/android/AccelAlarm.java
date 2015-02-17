@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.widget.Toast;
 
+import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.Preferences;
 
 import java.lang.ref.Reference;
@@ -18,6 +19,7 @@ import java.util.Calendar;
 public class AccelAlarm extends WakefulBroadcastReceiver {
 
     String GAMIFY_VERSION;
+
 
     Preferences pref;
     @Override
@@ -63,4 +65,5 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
 
     public void setPref(Preferences pref){this.pref = pref;}
     public void setVersion(String version){this.GAMIFY_VERSION = version;}
+
 }

@@ -8,6 +8,7 @@ import android.support.annotation.IntegerRes;
 import android.view.View;
 import android.widget.Toast;
 
+import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -72,16 +73,24 @@ public class AndroidLauncher extends AndroidApplication {
         pref.putString("userID", fakeID);
         pref.flush();
 
+
+        LifeListener gameListener = LifeListener.getLifeListener();
+
+        this.addLifecycleListener(gameListener);
+
         AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
         alarm.setVersion(GAMIFY_VERSION);
+
         alarm.setAlarm(this, GAMIFY_VERSION, fakeID);
+
 
 
         setContentView(R.layout.loginscreenres);
         gameProcess.setPref(pref);
         gameProcess.setGraphPref(graphPref);
         gameProcess.storeUpdatePrefs(updatePref);
+        gameListener.setStatus(true);
         initialize(gameProcess,config);
 
 	}
