@@ -19,7 +19,6 @@ public class BuyScreen extends GamifyScreen implements Screen
     private ClickListener buildingListener;
     private ScrollBar scrollBar;
     private String currentText;
-    // ArrayList<Building> buyableBuildings;
 
     public BuyScreen(gamifyGame game) {
         super(game);
