@@ -104,7 +104,8 @@ public class gamifyGame extends Game {
     }
 
     public void graphUpdate(String key, String val){
-        actionResolver.showToast("GraphUpdate: " + val);
+        pref.putString("graphTmp", "I got " + val + " at time " + key);
+
         graphPref.putString("activity"+key,val);
         if (val == "running"){
             pref.putInteger("minutesRan",pref.getInteger("minutesRan",0)+1);
@@ -115,6 +116,7 @@ public class gamifyGame extends Game {
         } else if (val == "cycling"){
             pref.putInteger("minutesBiked",pref.getInteger("minutesBiked",0)+1);
         }
+        graphPref.flush();
     }
 
     public boolean isActive(){return !paused;}

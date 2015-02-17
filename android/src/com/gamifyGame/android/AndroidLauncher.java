@@ -13,6 +13,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
+import com.gamifyGame.ActionResolver;
 import com.gamifyGame.gamifyGame;
 
 import java.io.BufferedReader;
@@ -52,7 +53,7 @@ public class AndroidLauncher extends AndroidApplication {
 
         try {
             updatePref.clear();
-            File toRead = new File(this.getFilesDir(), "updateFile");
+            File toRead = new File(this.getApplicationContext().getFilesDir(), "updateFile");
             BufferedReader reader = new BufferedReader(new FileReader((toRead)));
             String line = null;
             String[] lineParts;
@@ -61,11 +62,16 @@ public class AndroidLauncher extends AndroidApplication {
             while ((line = reader.readLine()) != null){
                 lineParts = line.split(",");
                 updateFile.put(lineParts[0],lineParts[1]);
+                System.out.println("KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
             }
             updatePref.put(updateFile);
+            System.out.print("This updatefile" + updateFile);
             updatePref.flush();
             // Replace fakeID with userID when userID is implemented
             reader.close();
+
+            // Reset toRead
+            toRead.delete();
         }
         catch (Exception e){
             assert (1 == 0);
@@ -73,6 +79,7 @@ public class AndroidLauncher extends AndroidApplication {
         pref.putString("userID", fakeID);
         pref.flush();
 
+        System.out.println("AndroidLauncher: Android Launcher create!");
 
         LifeListener gameListener = LifeListener.getLifeListener();
 
@@ -91,7 +98,7 @@ public class AndroidLauncher extends AndroidApplication {
         gameProcess.setGraphPref(graphPref);
         gameProcess.storeUpdatePrefs(updatePref);
         gameListener.setStatus(true);
-        initialize(gameProcess,config);
+        initialize(gameProcess, config);
 
 	}
 
@@ -105,6 +112,13 @@ public class AndroidLauncher extends AndroidApplication {
             pref.putString("latestFood", sharedPref.getString("currentFood", null));
             pref.flush();
         }
+
+
+        //ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(this, true);
+        //gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
+
+
+        System.out.println("AndroidLauncher: Android Launcher onResume!");
 
         super.onResume();
 
