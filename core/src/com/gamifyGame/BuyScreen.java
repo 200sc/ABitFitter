@@ -84,4 +84,9 @@ public class BuyScreen extends GamifyScreen implements Screen
        currentText=newText;
     }
 
+    public ArrayList<Building> myBuildings()
+    {
+        return (ArrayList<Building>) scrollBar.getImages();
+    }
+
 }

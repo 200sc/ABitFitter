@@ -26,6 +26,8 @@ public class gamifyGame extends Game {
     private int[] bridges;
 
     private static gamifyGame gamifyGame;
+    private long vitality;
+    private float secondsSinceLastCall=0;
     //READ THIS
     //READDDD
 
@@ -62,10 +64,26 @@ public class gamifyGame extends Game {
         quad3S = new Quad3Screen(this);
         quad4S = new Quad4Screen(this);
         buyS = new BuyScreen(this);
-
+        vitality=this.getPrefs().getLong("vitality", 0);
 
         setScreen(mainS);
     }
+    private void updateVitality(float delta )
+    {
+        secondsSinceLastCall+=delta;
+        if(secondsSinceLastCall>3)
+        {
+            secondsSinceLastCall-=3;
+            for(Building current: buyS.myBuildings())
+            {
+                //TODO: Make buildings care about their trigger conditions
+                vitality+=current.getVitalityPerThreeSeconds();
+            }
+        }
+        this.getPrefs().putLong("vitality", vitality);
+        this.getPrefs().flush();
+    }
+
 
     public void pause(){
         paused = true;

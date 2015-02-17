@@ -156,4 +156,9 @@ public class ScrollBar
             building.moveBy(xMove, yMove);
         }
     }
+
+    public ArrayList<? extends GamifyImage> getImages()
+    {
+        return images;
+    }
 }

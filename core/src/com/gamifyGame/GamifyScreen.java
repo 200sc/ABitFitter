@@ -24,10 +24,12 @@ public abstract class GamifyScreen implements Screen {
     protected int frameCount;
     protected Image retBox;
 
+
     public GamifyScreen(gamifyGame game)
     {
         this.game = game;
     }
+
 
     @Override
     public void render(float delta) {
@@ -35,6 +37,8 @@ public abstract class GamifyScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)){
             game.getActionResolver().toHomeScreen("Back Pressed");
         }
+
+
 
         Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
