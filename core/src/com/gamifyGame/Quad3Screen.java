@@ -96,6 +96,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         boolean showChallengeHours = game.getPrefs().getBoolean("showChallengeHours", false);
         if (showChallengeHours && !shown) {
 
+
             border.moveBy(-300, 0);
             for (int i = 0; i < 7; i++) {
                 for (int j = 0; j < 24; j++) {

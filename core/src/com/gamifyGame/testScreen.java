@@ -39,7 +39,7 @@ public class testScreen implements Screen {
 
         shapes = renderHelper.getRenderHelper().getShapeRenderer();
         batch = renderHelper.getRenderHelper().getBatch();
-        font = renderHelper.getRenderHelper().getFont();
+        font = renderHelper.getRenderHelper().getSmallFont();
     }
 
     @Override

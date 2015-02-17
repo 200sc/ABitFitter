@@ -1,12 +1,9 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
-import com.sun.jmx.remote.internal.ArrayQueue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,7 +18,7 @@ import java.util.TimeZone;
 /**
  * Created by Stephen on 2/16/2015.
  */
-public class HistogramGraph {
+public class LineGraph {
 
     List<Long> keys;
     String type;
@@ -42,11 +39,11 @@ public class HistogramGraph {
     public final int graphHeight = 240;
     public final int graphWidth = 130;
 
-    public HistogramGraph(HashMap<Long,Integer> graphPref, String dataType) {
-         new HistogramGraph(graphPref,dataType,GamifyColor.BLUE,"medium");
+    public LineGraph(HashMap<Long,Integer> graphPref, String dataType) {
+        new HistogramGraph(graphPref,dataType,GamifyColor.BLUE,"medium");
     }
 
-    public HistogramGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor, String scale) {
+    public LineGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor, String scale) {
         data = graphPref;
         type = dataType;
         show();
@@ -83,28 +80,21 @@ public class HistogramGraph {
 
         renderHelper renderer = renderHelper.getRenderHelper();
 
-        shapes1.begin(ShapeRenderer.ShapeType.Filled);
-        shapes1.setColor(color1);
-        for (int i = 0; i < dataPointCount; i+= 2) {
-            if(i % 2 == 0) {
-                shapes1.box(borderX + (xPixelIncrement * i), borderY, 0, xPixelIncrement, yPoints.get(x) * yRatio, 0);
-                x += xIncrement*2;
-            }
-        }
-        shapes1.end();
+
         shapes1.begin(ShapeRenderer.ShapeType.Filled);
         shapes1.setColor(color2);
         x = xIncrement;
+        int lastX = -1;
+        int lastY = -1;
         for (int i = 1; i < dataPointCount; i+=2) {
             shapes1.box(borderX + (xPixelIncrement * i), borderY, 0, xPixelIncrement, yPoints.get(x) * yRatio, 0);
-            x += xIncrement*2;
+            x += xIncrement;
         }
         shapes1.end();
         shapes1.begin(ShapeRenderer.ShapeType.Line);
         shapes1.setColor(color3);
         for (int i = 0; i < graphHeight; i+= graphHeight / leftLabelCount){
             shapes1.line(borderX,borderY+i,renderer.getRenderedWidth()-2,borderY+i);
-            shapes1.line(borderX,borderY+i+1,renderer.getRenderedWidth()-2,borderY+i+1);
         }
         x = 0;
         for (int i = 0; i < dataPointCount; i+= 2) {
