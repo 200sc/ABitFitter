@@ -9,18 +9,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.prefs.Preferences;
 
 /**
  * Created by Stephen on 11/2/2014.
@@ -41,9 +36,17 @@ public class renderHelper {
     ScalingViewport view;
     Stage backgroundLayer, activeLayer, topLayer;
     SpriteBatch batch;
-    BitmapFont font, font2;
+    BitmapFont smallFont, medFont, bigFont;
 
+    // TODO: Because colors are being used in RGB / 255 values, make a function that does this nicer.
     final Color boxColor = new Color(new Float(56)/255,new Float(7)/255,new Float(24)/255,1);
+    public final Color blueDark = new Color(new Float(0)/255,new Float(54)/255,new Float(99)/255,1);
+    public final Color blueLight = new Color(new Float(0)/255,new Float(67)/255,new Float(122)/255,1);
+    public final Color blueOutline = new Color(new Float(0)/255,new Float(39)/255,new Float(71)/255,1);
+    //public final Color greenDark = new Color();
+    //public final Color greenLight = new Color();
+    //public final Color tellowDark = new Color();
+    //public final Color yellowLight = new Color();
 
 
     private static renderHelper renderer;
@@ -110,10 +113,13 @@ public class renderHelper {
         textureHash.put("trophyBox.png",imageLoad("Trophybox.png"));
         textureHash.put("midBox.png",imageLoad("Midbox.png"));
         textureHash.put("48Box.png",imageLoad("48box.png"));
+        textureHash.put("tophalfbox.png",imageLoad("tophalfbox.png"));
+
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
 
         textureHash.put("itemBar.png",imageLoad("ItemBar.png"));
+        textureHash.put("longBox.png",imageLoad("longBox.png"));
         textureHash.put("placeholder128x24.png",imageLoad("placeholder128x24.png"));
         textureHash.put("placeholder140x140.png",imageLoad("placeholder140x140.png"));
         textureHash.put("placeholder64x64.png",imageLoad("placeholder64x64.png"));
@@ -138,11 +144,14 @@ public class renderHelper {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 32;
-        font2 = generator.generateFont(parameter); // font size 12 pixels
-        font2.setColor(1.0f,1.0f,1.0f,1.0f);
+        medFont = generator.generateFont(parameter); // smallFont size 12 pixels
+        medFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         parameter.size = 24;
-        font= generator.generateFont(parameter);
-        font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        smallFont = generator.generateFont(parameter);
+        smallFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        parameter.size = 48;
+        bigFont = generator.generateFont(parameter);
+        bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         generator.dispose();
 
         Gdx.input.setInputProcessor(activeLayer);
@@ -163,10 +172,12 @@ public class renderHelper {
     public void textSet(String text, int x, int y, String str){
         BitmapFont curFont;
         if (str.equals("small")){
-            curFont = font;
+            curFont = smallFont;
+        } else if (str.equals("large")){
+            curFont = bigFont;
         }
         else {
-            curFont = font2;
+            curFont = medFont;
         }
         curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);
     }
@@ -177,15 +188,15 @@ public class renderHelper {
 
     public void textSetCenter(String text, int offsetx, int offsety)
     {
-        BitmapFont.TextBounds bounds = font2.getBounds(text); //TODO: Use text boundaries to center text
+        BitmapFont.TextBounds bounds = medFont.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
-        font2.draw(batch, text, (textLoc.x),
+        medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
     public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
     {
         Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
-        font2.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y );
+        medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
     public Point convertImageCoorsToTextCoors(Point point)
@@ -288,16 +299,24 @@ public class renderHelper {
     // Getters
     public int getWidth(){return scrWidth;}
     public int getHeight(){return scrHeight;}
+    public float getRenderedWidth() { return RENDERED_SCREEN_WIDTH;}
     public ShapeRenderer getShapeRenderer(){return shapes;}
     public ScalingViewport getView(){return view;}
     public SpriteBatch getBatch(){return batch;}
     public Color getBoxColor(){return boxColor;}
-    public BitmapFont getFont(){return font2;}
+    public BitmapFont getSmallFont(){return medFont;}
     public Stage getLayer(int level){
         if (level == 0){return backgroundLayer;}
         else if (level == 1){return activeLayer;}
         else return topLayer;
     }
+
+    public ShapeRenderer newShapeRenderer(){
+        ShapeRenderer toReturn = new ShapeRenderer();
+        toReturn.scale(Float.valueOf(scrWidth)/180,Float.valueOf(scrHeight)/296,1);
+        return toReturn;
+    }
+
     public TextureRegionDrawable getTextureRegionDrawable(String file){
         if (drawableHash.containsKey(file)){
             return drawableHash.get(file);

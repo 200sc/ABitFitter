@@ -53,5 +53,11 @@ public class ActionResolverAndroid implements ActionResolver {
         });
     }
 
+    public void showToast(final CharSequence text){
+
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+
+    }
+
 }
 

@@ -57,7 +57,7 @@ public final class Zxing extends Activity {
         }
         //final CharSequence tmpMessage = result.toString();
         final CharSequence tmpMessage = tmp;
-        Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), tmpMessage, Toast.LENGTH_SHORT).show();
         Intent intent2 = new Intent(getApplicationContext(), AndroidLauncher.class);
 
         intent2.putExtra("Message", tmpMessage);
@@ -91,7 +91,7 @@ public final class Zxing extends Activity {
             try {
                 out = new JSONObject(output);
                 String brand = out.getString("brand_name");
-                Toast.makeText(getApplicationContext(), brand, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), brand, Toast.LENGTH_LONG).show();
                 edit.putString("currentFood", output);
 
             } catch (JSONException e) {

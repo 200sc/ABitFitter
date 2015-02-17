@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public abstract class GamifyScreen implements Screen {
     //protected ActionResolver actionResolver;
-    //protected BitmapFont font;
+    //protected BitmapFont smallFont;
     //protected ShapeRenderer shapes;
     protected gamifyGame game;
     //protected float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
@@ -49,10 +49,6 @@ public abstract class GamifyScreen implements Screen {
         layer2.draw();
 
         //renderer.moveCorner(retBox,Corner.LOWER_LEFT,30);
-
-
-        renderHelper.getRenderHelper().getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
-        renderHelper.getRenderHelper().getShapeRenderer().end();
 
         //batch.begin();
         //batch.end();
