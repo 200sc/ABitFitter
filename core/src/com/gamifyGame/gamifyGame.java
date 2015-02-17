@@ -103,7 +103,7 @@ public class gamifyGame extends Game {
         return pref;
     }
     public ActionResolver getActionResolver() { return actionResolver;}
-    public listenerHelper getListener() {
+    public listenerHelper getListenerHelper() {
         return helper;
     }
 

@@ -1,42 +1,36 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Json;
-import com.gamifyGame.ChangingImage;
-import com.gamifyGame.GamifyScreen;
-import com.gamifyGame.gamifyGame;
-import com.gamifyGame.renderHelper;
-
-import java.util.EventListener;
 
 /**
  * Created by Stephen on 2/1/2015.
  */
 public class BuyScreen extends GamifyScreen implements Screen {
-    DragListener dragHandle;
+    private DragListener dragHandle;
+    private ClickListener buildingListener;
 
 
     public BuyScreen(gamifyGame game) {
         super(game);
+        buildingListener = new ClickListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                ChangingImage eventImage = (ChangingImage) event.getListenerActor();
+                return true;
+            }
+        };
     }
 
     @Override
     public void show() {
         //Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
         Image placeHold = renderHelper.getRenderHelper().imageSetup("placeholder128x24.png", renderHelper.getRenderHelper().getLayer(1), 26, 8);
-        placeHold.addListener(game.getListener().goScreen(0));
+        placeHold.addListener(game.getListenerHelper().goScreen(0));
 
 
         // Make a new instance of the buildings that is interactable
@@ -47,7 +41,7 @@ public class BuyScreen extends GamifyScreen implements Screen {
 
         ChangingImage[] undergroundBuild = renderHelper.getRenderHelper().makeUnderground(renderHelper.getRenderHelper().getLayer(1), underground);
         renderHelper.getRenderHelper().makeBridges(renderHelper.getRenderHelper().getLayer(1), bridges);
-        game.getListener().buildingListeners(undergroundBuild);
+        addBuildingListenerToEachHandle(undergroundBuild);
 
 
         Image buyBar = renderHelper.getRenderHelper().imageSetup("buyBar.png", renderHelper.getRenderHelper().getLayer(1), 0, 254);
@@ -58,10 +52,16 @@ public class BuyScreen extends GamifyScreen implements Screen {
         Image[] imageHandles = renderHelper.getRenderHelper().makeScroll(renderHelper.getRenderHelper().getLayer(1), buyList, 0, 254);
 
         //Make the scroll bar actually scroll
-        dragHandle = game.getListener().scroll(imageHandles, undergroundBuild, true);
-        game.getListener().dragListeners(imageHandles, undergroundBuild);
+        dragHandle = game.getListenerHelper().scroll(imageHandles, undergroundBuild, true);
+        game.getListenerHelper().dragListeners(imageHandles, undergroundBuild);
         buyBar.addListener(dragHandle);
     }
+    private void addBuildingListenerToEachHandle(ChangingImage[] imageHandles){
+        for(int i=0; i <= imageHandles.length-1; i++){
+            imageHandles[i].addListener(buildingListener);
+        }
+    }
+
 
     @Override
     public void hide() {
