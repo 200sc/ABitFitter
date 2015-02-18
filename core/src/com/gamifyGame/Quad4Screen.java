@@ -39,7 +39,6 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         renderer.moveCorner(retBox, Corner.UPPER_LEFT, 30);
 
 
-//
         renderer.getBatch().begin();
         renderer.textSet("Scan new food", 40, 227);
         renderer.textSet("Food Graphs", 100, 227);
@@ -53,7 +52,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
             // Parse the data from its Json form
             Json json = new Json();
             HashMap food = json.fromJson(HashMap.class, latestFood);
-            if(food!= null && food.get("nutrition")!=null) {
+            if (food != null && food.get("nutrition") != null) {
                 JsonValue nutritionJson = (JsonValue) food.get("nutrition");
                 HashMap nutritionMap = json.readValue(HashMap.class, nutritionJson);
 
@@ -82,21 +81,19 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
                 String[] foodDescriptor = {"", "", "Calcium : ", "Calories : ", "Carbs: ", "Protein: ", "Sugar: ", "Fiber: ", "Serving Size: "};
                 renderer.getBatch().begin();
-                renderer.textSet("Your last eaten food information:", 45, 150);
+                renderer.textSet("Your last eaten food information:", 45, 150, "largeiiu");
                 for (int i = 0; i < 9; i++) {
                     if (foodInfo[i] != null) {
                         renderer.textSet(foodDescriptor[i] + foodInfo[i], 45, 130 - 10 * i);
                     }
                 }
                 renderer.getBatch().end();
+            } else {
+                renderer.getBatch().begin();
+                renderer.textSet("Your last eaten food information:", 45, 150, "large");
+                renderer.textSet("Scan food to see data here:", 45, 130);
+                renderer.getBatch().end();
             }
-        }
-        else
-        {
-            renderer.getBatch().begin();
-            renderer.textSet("Your last eaten food information:", 45, 150);
-            renderer.textSet("Scan food to see data here:", 45, 130);
-            renderer.getBatch().end();
         }
     }
 

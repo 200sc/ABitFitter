@@ -193,6 +193,22 @@ public class renderHelper {
         medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
+    public void textSetCenter(String text, int offsetx, int offsety, String str)
+    {
+        BitmapFont curFont;
+        if (str.equals("small")){
+            curFont = smallFont;
+        } else if (str.equals("large")){
+            curFont = bigFont;
+        }
+        else {
+            curFont = medFont;
+        }
+        BitmapFont.TextBounds bounds = curFont.getBounds(text); //TODO: Use text boundaries to center text
+        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
+        curFont.draw(batch, text, (textLoc.x),
+                (textLoc.y));
+    }
     public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
     {
         Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
@@ -351,8 +367,14 @@ public class renderHelper {
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;
+
+        int firstZIndex = 0;
+
+
+
         for(int i=0; i <= buildings.length-1; i++)
         {
+
             GamifyImage toAdd=new GamifyImage("Empty1.png");
             //if(buildings[i].equals(""))
                 //toAdd=new GamifyImage("Empty1.png");
@@ -369,7 +391,16 @@ public class renderHelper {
             row = i/3;
             toAdd.addAt(stage, wOffset + column*width, hOffset - row*height);
             toReturn.add(toAdd);
+            if(i ==0){firstZIndex = toAdd.getZIndex();}
         }
+
+
+        Image basicBox = renderer.imageSetup("tophalfbox.png", stage, wOffset/2, hOffset-(row)*height - 2);
+        basicBox.setSize( width*3, height* (row+1));
+        basicBox.setColor(Color.DARK_GRAY);
+        basicBox.setZIndex(firstZIndex);
+
+
         return toReturn;
     }
 

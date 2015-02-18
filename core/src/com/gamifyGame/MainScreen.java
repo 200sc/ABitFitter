@@ -67,6 +67,9 @@ public class MainScreen extends GamifyScreen implements Screen
             }
             else renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Neithering",50,260);
             */
+
+            renderHelper.getRenderHelper().textSetCenter("Your Vitality:", -25 , 25, "large");
+            renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), -20 , 0, "large");
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),40,20);
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("updaterRunning",0)),20,20);
             renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), String.valueOf(frameCount),50,200);
