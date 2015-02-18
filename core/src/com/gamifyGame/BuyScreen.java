@@ -1,5 +1,6 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.utils.Json;
 
 import java.util.ArrayList;
 
+import javax.xml.soap.Text;
+
 /**
  * Created by Stephen on 2/1/2015.
  */
@@ -17,6 +20,7 @@ public class BuyScreen extends GamifyScreen implements Screen
     private ClickListener buildingListener;
     private ScrollBar scrollBar;
     private String currentText;
+    private TextDisplayBox textDisplayBox;
 
     public BuyScreen(gamifyGame game) {
         super(game);
@@ -36,6 +40,10 @@ public class BuyScreen extends GamifyScreen implements Screen
         Image placeHold = renderHelper.getRenderHelper().imageSetup("longBox.png", renderHelper.getRenderHelper().getLayer(1), 26, 8);
         placeHold.addListener(game.getListenerHelper().goScreen(0));
 
+
+        textDisplayBox=new TextDisplayBox();
+        textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 180, 175);
+        textDisplayBox.addText(new Point(-20, -15),"Vitality: "+game.getVitality( ));
         setUpUnderground();
     }
 
@@ -54,6 +62,8 @@ public class BuyScreen extends GamifyScreen implements Screen
         }
 
         scrollBar=new ScrollBar(new ArrayList<GamifyImage>(Building.getDefaultBuildings().values()), undergroundBuild, game, this);
+
+
     }
 
 
@@ -70,10 +80,19 @@ public class BuyScreen extends GamifyScreen implements Screen
     {
         super.render(delta);
         renderHelper.getRenderHelper().getBatch().begin();
-        renderHelper.getRenderHelper().textSetCenter(currentText, 45, 65);
-        renderHelper.getRenderHelper().textSetCenter("Vitality: "+game.getVitality(), 35, 75);
-        renderHelper.getRenderHelper().imageSetup("midBox.png", renderHelper.getRenderHelper().getLayer(1), 120, 175);
+        //renderHelper.getRenderHelper().textSetCenter(currentText, 45, 65);
+        //renderHelper.getRenderHelper().textSetCenter("Vitality: "+game.getVitality(), 35, 75);
+
+
+
+        //renderHelper.getRenderHelper().imageSetup("midBox.png", renderHelper.getRenderHelper().getLayer(1), 120, 175);
         renderHelper.getRenderHelper().getBatch().end();
+        renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
+    }
+
+    public TextDisplayBox getTextDisplayBox()
+    {
+        return textDisplayBox;
     }
 
 
