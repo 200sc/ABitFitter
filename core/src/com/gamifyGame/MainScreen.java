@@ -95,12 +95,13 @@ public class MainScreen extends GamifyScreen implements Screen
             Json json = new Json();
             String[] tmpImgs = null;
             // ToDO: Change start conditions once buildings can be added
+
             if(pref.getString("undergroundBuildings") != null) {
                tmpImgs = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
             }
             if(pref.getString("undergroundBuildings") == null || tmpImgs == null || tmpImgs.length < 1 ){
-                String[] imgs = {"Empty1.png","HQ1.png", "Empty1.png", "Empty1.png", "Empty1.png",
-                        "Empty1.png", "Forgery1.png","Forgery1.png","Forgery1.png"};
+                String[] imgs = {"Empty","HQ", "Empty", "Empty", "Empty",
+                        "Empty", "Empty","Empty","Empty"};
                 pref.putString("undergroundBuildings", json.toJson(imgs));
                 pref.flush();
             }
@@ -115,6 +116,9 @@ public class MainScreen extends GamifyScreen implements Screen
 
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
             Integer[] bridges        = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
+
+            //for(int i =0; i< underground.length; i++)
+            //game.getActionResolver().showToast(underground[i]);
 
             renderHelper.getRenderHelper().makeUnderground(layer0, underground);
             renderHelper.getRenderHelper().makeBridges(layer0, bridges);

@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.Json;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -73,11 +74,18 @@ public class gamifyGame extends Game {
         secondsSinceLastCall+=delta;
         if(secondsSinceLastCall>3)
         {
+            Json json = new Json();
+            String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
             secondsSinceLastCall-=3;
-            for(Building current: buyS.myBuildings())
+
+
+            for(String name: underground)
             {
                 //TODO: Make buildings care about their trigger conditions
-                vitality+=current.getVitalityPerThreeSeconds();
+                if(!name.equals("Empty"))
+                {
+                    vitality+=Building.getDefaultBuildings().get(name).getVitalityPerThreeSeconds();
+                }
             }
         }
         this.getPrefs().putLong("vitality", vitality);
@@ -142,6 +150,10 @@ public class gamifyGame extends Game {
     public Long getVitality()
     {
         return vitality;
+    }
+    public void addToVitality(Long toAdd)
+    {
+        vitality+=toAdd;
     }
 }
 

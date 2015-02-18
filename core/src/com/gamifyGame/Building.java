@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Andrew on 2/16/2015.
@@ -28,18 +29,18 @@ public class Building extends GamifyImage
     }
 
 
-    public static ArrayList<Building> getDefaultBuildings()
+    public static HashMap<String, Building> getDefaultBuildings()
     {
-        ArrayList<Building> defList=new ArrayList<Building>(10);
-        defList.add(new Building("Armory", "The place where the weapons are", 1, 10, 2, TriggerCondition.FOOD, "Armory1.png"));
-        defList.add(new Building("Computer Room", "The place where the computers are", 3, 12, 1, TriggerCondition.SLEEP, "Computer1.png"));
-        defList.add(new Building("Costume Closet", "A vast wardrobe, filled with costumes.", 3, 14, 2, TriggerCondition.FOOD, "Costume1.png"));
-        defList.add(new Building("Forging Office", "An office filled with stacks of offical seals, brief cases of fake documents and intricate utensils for the creation of more.", 4, 16, 1, TriggerCondition.SLEEP, "Forgery1.png"));
-        defList.add(new Building("Garage", "Where are the cars are", 5, 18, 3, TriggerCondition.RUNNING, "Garage1.png"));
-        defList.add(new Building("Generator", "It makes power", 6, 20, 3, TriggerCondition.NONE, "Generator1.png"));
-        //defList.add(new Building("HQ", "You live here", 6, 3, TriggerCondition.NONE, "HQ1.png"));
-        defList.add(new Building("Lab", "You live here", 6, 22, 3, TriggerCondition.RUNNING, "Lab1.png"));
-        defList.add(new Building("Smuggler's Cove", "You live here", 6, 24, 3, TriggerCondition.NONE, "Smuggler1.png"));
+        HashMap<String, Building> defList=new HashMap<String, Building>();
+        defList.put("Armory", new Building("Armory", "The place where the weapons are", 100, 1, 2, TriggerCondition.FOOD, "Armory1.png"));
+        defList.put("Computer Room", new Building("Computer Room", "The place where the computers are", 300, 2, 1, TriggerCondition.SLEEP, "Computer1.png"));
+        defList.put("Costume Closet", new Building("Costume Closet", "A vast wardrobe, filled with costumes.", 300, 3, 2, TriggerCondition.FOOD, "Costume1.png"));
+        defList.put("Forging Office", new Building("Forging Office", "An office filled with stacks of offical seals, brief cases of fake documents and intricate utensils for the creation of more.", 4, 16, 1, TriggerCondition.SLEEP, "Forgery1.png"));
+        defList.put("Garage", new Building("Garage", "Where are the cars are", 500, 4, 3, TriggerCondition.RUNNING, "Garage1.png"));
+        defList.put("Generator", new Building("Generator", "It makes power", 600, 0, 5, TriggerCondition.NONE, "Generator1.png"));
+        defList.put("HQ", new Building("HQ", "You live here", 6, 100, 3, TriggerCondition.NONE, "HQ1.png"));
+        defList.put("Lab", new Building("Lab", "You live here", 600, 5, 3, TriggerCondition.RUNNING, "Lab1.png"));
+        defList.put("Smuggler's Cove", new Building("Smuggler's Cove", "You live here", 600, 6, 3, TriggerCondition.NONE, "Smuggler1.png"));
 
         /*textureHash.put("Armory1.png",imageLoad("Armory1.png"));
         textureHash.put("Computer1.png",imageLoad("Computer1.png"));
@@ -66,4 +67,11 @@ public class Building extends GamifyImage
     {
         return vitalityPerThreeSeconds;
     }
+
+    public String getBuildingName()
+    {
+        return name;
+    }
+
+
 }

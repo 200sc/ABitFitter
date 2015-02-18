@@ -2,8 +2,6 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -18,30 +16,30 @@ import java.util.ArrayList;
 public class ScrollBar
 {
     private gamifyGame game;
-    private ArrayList<? extends GamifyImage> images;
-    private ChangingImage[] underground;
+    private ArrayList<GamifyImage> images;
+    private ArrayList<GamifyImage> undergroundBuildings;
     private BuyScreen myScreen;
 
-    public ScrollBar(ArrayList<? extends GamifyImage> images, ChangingImage[] undergroundBuild, gamifyGame game, BuyScreen myScreen)
+    public ScrollBar(ArrayList<GamifyImage> images, ArrayList<GamifyImage> undergroundBuildings, gamifyGame game, BuyScreen myScreen)
     {
         this.myScreen=myScreen;
         this.images=images;
         this.game=game;
-        this.underground=undergroundBuild;
+        this.undergroundBuildings =undergroundBuildings;
 
         Image buyBar = renderHelper.getRenderHelper().imageSetup("buyBar.png", renderHelper.getRenderHelper().getLayer(1), 0, 254);
 
         makeScroll(renderHelper.getRenderHelper().getLayer(1), 0, 254);
 
         //Make the getDefaultScrollBarListener bar actually getDefaultScrollBarListener
-        DragListener dragHandle = getDefaultScrollBarListener(images, undergroundBuild, true);
+        DragListener dragHandle = getDefaultScrollBarListener(images, undergroundBuildings, true);
         for(GamifyImage currentImage: images)
         {
-            currentImage.addListener(getDefaultScrollBarListener(images, undergroundBuild, false));
+            currentImage.addListener(getDefaultScrollBarListener(images, undergroundBuildings, false));
         }
         buyBar.addListener(dragHandle);
     }
-    private DragListener getDefaultScrollBarListener(final ArrayList<? extends GamifyImage> imgHandles, final ChangingImage[] underground, final boolean isLongBar)
+    private DragListener getDefaultScrollBarListener(final ArrayList<? extends GamifyImage> imgHandles, final ArrayList<? extends GamifyImage> underground, final boolean isLongBar)
     {
         return new DragListener(){
             private float startX, startY, sY;
@@ -53,7 +51,8 @@ public class ScrollBar
                 startColor = new Color(event.getListenerActor().getColor()); //Deep copy
                 if(isLongBar == false){
                     //event.getListenerActor().setColor(Color.GREEN);
-                    for(int i=0; i <underground.length; i++){underground[i].setColor(Color.GREEN);}
+                    for(GamifyImage current: underground)
+                        current.setColor(Color.GREEN);
                     Building currentEvent=(Building) event.getListenerActor();
                     myScreen.setCurrentText(currentEvent.toString());
                 }
@@ -64,15 +63,16 @@ public class ScrollBar
                 if(isLongBar == false){
                     Building eventImage = (Building) event.getListenerActor();
                     eventImage.setColor(startColor);
-                    for(int i=0; i <underground.length; i++){underground[i].setColor(startColor);}
-                    int index = renderHelper.getRenderHelper().buildCheck(underground,eventImage);
+                    for(GamifyImage current: underground)
+                        current.setColor(startColor);
+                    Integer index = renderHelper.getRenderHelper().buildCheck((ArrayList<Building>) underground,eventImage, game);
                     snapBack(eventImage);
-                    if(index != -1){
+                    if(index !=null ){
                         //Store the change in prefs.
                         Json json = new Json();
                         Preferences pref = game.getPrefs();
                         String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
-                        underground[index] = eventImage.getName();
+                        underground[index] = eventImage.getBuildingName();
                         pref.putString("undergroundBuildings", json.toJson(underground));
                         pref.flush();
                     }

@@ -92,6 +92,8 @@ public class AndroidLauncher extends AndroidApplication {
         alarm.setAlarm(this, GAMIFY_VERSION, fakeID);
 
 
+        // For testing clear prefs here
+        pref.clear();
 
         setContentView(R.layout.loginscreenres);
         gameProcess.setPref(pref);

@@ -338,46 +338,66 @@ public class renderHelper {
     }
 
 
-    public ChangingImage[] makeUnderground(Stage stage, String[] buildings){
-        ChangingImage[] imageList = new ChangingImage[buildings.length];
+    public ArrayList<GamifyImage> makeUnderground(Stage stage, String[] buildings)
+    {
+        ArrayList<GamifyImage> toReturn=new ArrayList<GamifyImage>(buildings.length);
+        //ChangingImage[] imageList = new ChangingImage[buildings.length];
         // Figure out the width and height from the HQ1
         int bridgelen = 8; //TODO: change this
-        int width = textureHash.get(buildings[1]).getWidth() + bridgelen;
-        int height = textureHash.get(buildings[1]).getHeight() + 2;
+
+        int width = textureHash.get("HQ1.png").getWidth() + bridgelen;
+        int height = textureHash.get("HQ1.png").getHeight() + 2;
         int wOffset = 4; //TODO: Find the optimal lengths
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;
-        for(int i=0; i <= buildings.length-1; i++){
+        for(int i=0; i <= buildings.length-1; i++)
+        {
+            GamifyImage toAdd=new GamifyImage("Empty1.png");
+            //if(buildings[i].equals(""))
+                //toAdd=new GamifyImage("Empty1.png");
+            if(!buildings[i].equals("Empty"))
+            {
+                toAdd = Building.getDefaultBuildings().get(buildings[i]);
+                if(toAdd==null) {
+                    toAdd = new GamifyImage("Empty1.png");
+                    toAdd.setColor(Color.CYAN);
+                }
+
+            }
             column = i %3;
             row = i/3;
-            imageList[i] = new ChangingImage(buildings[i], "Empty1.png", stage,wOffset + column*width, hOffset - row*height);
-            imageList[i].putExtra("undergroundIndex", i);
+            toAdd.addAt(stage, wOffset + column*width, hOffset - row*height);
+            toReturn.add(toAdd);
         }
-        return imageList;
+        return toReturn;
     }
 
-    public int buildCheck(ChangingImage[] possibleBuildingSites,Image toBuy ){
+    public Integer buildCheck(ArrayList<Building> possibleBuildingSites, Building toBuy, gamifyGame game )
+    {
+        if(toBuy.getCost()>game.getVitality())
+        {
+            return null;
+        }
+
         int foundIndex = -1;
         float minX = toBuy.getX();
         float maxX = toBuy.getRight();
         float minY = toBuy.getY();
         float maxY = toBuy.getTop();
-        for(int i=0; i<possibleBuildingSites.length; i ++){
-            ChangingImage tmp = possibleBuildingSites[i];
-            if (rectangleCollided(minX, maxX, minY, maxY, tmp.getX(), tmp.getRight(), tmp.getY(), tmp.getTop())){
-                //Here we change the value!
-                if(foundIndex == -1){
-                    possibleBuildingSites[i].nameChange(toBuy.getName());
-                    foundIndex = i;
-                    return i;
-                }
-            }
-            else{
-                //possibleBuildingSites[i].setColor(Color.BLUE);
+
+        for(int i=0; i<possibleBuildingSites.size(); i++)
+        {
+            GamifyImage currentBuilding=possibleBuildingSites.get(i);
+            //TODO: Worry about HQ/other conditions
+            if (rectangleCollided(minX, maxX, minY, maxY, currentBuilding.getX(), currentBuilding.getRight(), currentBuilding.getY(), currentBuilding.getTop()))
+            {
+                game.addToVitality( (long) -toBuy.getCost());
+                return i;
             }
         }
-        return -1;
+
+        return null;
     }
 
 
