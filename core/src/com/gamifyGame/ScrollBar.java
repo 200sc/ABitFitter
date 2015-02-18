@@ -17,7 +17,7 @@ public class ScrollBar
 {
     private gamifyGame game;
     private ArrayList<GamifyImage> images;
-    private ArrayList<GamifyImage> undergroundBuildings;
+    //private ArrayList<GamifyImage> undergroundBuildings;
     private BuyScreen myScreen;
 
     public ScrollBar(ArrayList<GamifyImage> images, ArrayList<GamifyImage> undergroundBuildings, gamifyGame game, BuyScreen myScreen)
@@ -25,21 +25,21 @@ public class ScrollBar
         this.myScreen=myScreen;
         this.images=images;
         this.game=game;
-        this.undergroundBuildings =undergroundBuildings;
+        //this.undergroundBuildings =undergroundBuildings;
 
         Image buyBar = renderHelper.getRenderHelper().imageSetup("buyBar.png", renderHelper.getRenderHelper().getLayer(1), 0, 254);
 
         makeScroll(renderHelper.getRenderHelper().getLayer(1), 0, 254);
 
         //Make the getDefaultScrollBarListener bar actually getDefaultScrollBarListener
-        DragListener dragHandle = getDefaultScrollBarListener(images, undergroundBuildings, true);
+        DragListener dragHandle = getDefaultScrollBarListener( undergroundBuildings, true);
         for(GamifyImage currentImage: images)
         {
-            currentImage.addListener(getDefaultScrollBarListener(images, undergroundBuildings, false));
+            currentImage.addListener(getDefaultScrollBarListener( undergroundBuildings, false));
         }
         buyBar.addListener(dragHandle);
     }
-    private DragListener getDefaultScrollBarListener(final ArrayList<? extends GamifyImage> imgHandles, final ArrayList<? extends GamifyImage> underground, final boolean isLongBar)
+    private DragListener getDefaultScrollBarListener(final ArrayList<GamifyImage> undergroundBuildings, final boolean isLongBar)
     {
         return new DragListener(){
             private float startX, startY, sY;
@@ -51,7 +51,7 @@ public class ScrollBar
                 startColor = new Color(event.getListenerActor().getColor()); //Deep copy
                 if(isLongBar == false){
                     //event.getListenerActor().setColor(Color.GREEN);
-                    for(GamifyImage current: underground)
+                    for(GamifyImage current: undergroundBuildings)
                         current.setColor(Color.GREEN);
                     Building currentEvent=(Building) event.getListenerActor();
                     myScreen.setCurrentText(currentEvent.toString());
@@ -63,11 +63,18 @@ public class ScrollBar
                 if(isLongBar == false){
                     Building eventImage = (Building) event.getListenerActor();
                     eventImage.setColor(startColor);
-                    for(GamifyImage current: underground)
+                    for(GamifyImage current: undergroundBuildings)
                         current.setColor(startColor);
-                    Integer index = renderHelper.getRenderHelper().buildCheck((ArrayList<Building>) underground,eventImage, game);
+                    Integer index = renderHelper.getRenderHelper().buildCheck(undergroundBuildings,eventImage, game);
                     snapBack(eventImage);
-                    if(index !=null ){
+                    if(index !=null )
+                    {
+                        GamifyImage beingReplaced= undergroundBuildings.remove(index.intValue());
+                        undergroundBuildings.add(index,  Building.getDefaultBuildingByName(eventImage.getBuildingName()));
+                        undergroundBuildings.get(index).addAt(beingReplaced.getStage(), beingReplaced.getX(), beingReplaced.getY());
+                        undergroundBuildings.get(index).toBack();
+                        beingReplaced.remove();
+
                         //Store the change in prefs.
                         Json json = new Json();
                         Preferences pref = game.getPrefs();
@@ -132,11 +139,6 @@ public class ScrollBar
             currentImage.setSize(width, height);
             currentImage.addAt(stage, (int) hOrigin+(i*width), (int) vOrigin + buyBarHeight-height);
         }
-
-       /*for(int i=0; i <= images.length-1; i++){
-            imgHandles[i] = imageSetup(images[i], stage, hOrigin+(i*width),vOrigin + textureHash.get("buyBar.png").getHeight()-height);
-            imgHandles[i].setSize(width, height);
-        }*/
     }
     private void moveScroll(float xMove, float yMove)
     {

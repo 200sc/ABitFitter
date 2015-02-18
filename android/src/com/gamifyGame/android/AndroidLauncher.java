@@ -93,7 +93,7 @@ public class AndroidLauncher extends AndroidApplication {
 
 
         // For testing clear prefs here
-        pref.clear();
+        //pref.clear();
 
         setContentView(R.layout.loginscreenres);
         gameProcess.setPref(pref);

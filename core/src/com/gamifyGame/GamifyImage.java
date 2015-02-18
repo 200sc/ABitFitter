@@ -18,7 +18,8 @@ public class GamifyImage extends Image
         this.setName(path);
     }
 
-    public void addAt(Stage stage, int hOrigin, int vOrigin)
+
+    public void addAt(Stage stage, float hOrigin, float vOrigin)
     {
         this.setPosition(hOrigin, vOrigin);
         stage.addActor(this);

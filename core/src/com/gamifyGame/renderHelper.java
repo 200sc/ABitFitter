@@ -373,7 +373,7 @@ public class renderHelper {
         return toReturn;
     }
 
-    public Integer buildCheck(ArrayList<Building> possibleBuildingSites, Building toBuy, gamifyGame game )
+    public Integer buildCheck(ArrayList<GamifyImage> possibleBuildingSites, Building toBuy, gamifyGame game )
     {
         if(toBuy.getCost()>game.getVitality())
         {
