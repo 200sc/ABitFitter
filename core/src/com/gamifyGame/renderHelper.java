@@ -139,7 +139,7 @@ public class renderHelper {
         textureHash.put("Lab1.png",imageLoad("Lab1.png"));
         textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));
         textureHash.put("popUpBoxBlue.png",imageLoad("popUpBoxBlue.png"));
-
+        textureHash.put("smallPopUpBoxBlue.png",imageLoad("smallPopUpBoxBlue.png"));
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
@@ -233,9 +233,13 @@ public class renderHelper {
         BitmapFont.TextBounds curBounds = medFont.getBounds(text);
         Point convertedDimensions=new Point(curBounds.width, curBounds.height);
         convertedDimensions=convertTextCoorsToImageCoors(convertedDimensions);
-        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2- convertedDimensions.x/2 , offsety+image.getY()+image.getImageHeight()/2);
 
-        textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, image.getWidth()/2);
+        float toOffset = convertedDimensions.x/2;
+        if(convertedDimensions.x/2 > image.getImageWidth()/2){toOffset = image.getImageWidth()/2;}
+
+        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
+
+        textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, image.getWidth());
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
@@ -436,7 +440,7 @@ public class renderHelper {
     {
         if(toBuy.getCost()>game.getVitality())
         {
-            new PopUpBox(30, 150, 10, "You cannot afford that building");
+            new PopUpBox(40, 150, 10, "You cannot afford that building");
             return null;
         }
 

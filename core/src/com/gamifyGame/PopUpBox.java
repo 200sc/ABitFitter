@@ -14,7 +14,7 @@ public class PopUpBox extends GamifyImage
 
     public PopUpBox(float x, float y, final float startLifespan, String myString)
     {
-        super("popUpBoxBlue.png");
+        super("smallPopUpBoxBlue.png");
         this.addAt(renderHelper.getRenderHelper().getLayer(2), x, y);
         this.lifeSpan=startLifespan;
         this.addAction(new Action() {
