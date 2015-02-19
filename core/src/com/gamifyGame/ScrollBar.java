@@ -19,6 +19,7 @@ public class ScrollBar
     private ArrayList<GamifyImage> images;
     //private ArrayList<GamifyImage> undergroundBuildings;
     private BuyScreen myScreen;
+    public static final long PADDING=2;
 
     public ScrollBar(ArrayList<GamifyImage> images, ArrayList<GamifyImage> undergroundBuildings, gamifyGame game, BuyScreen myScreen)
     {
@@ -119,20 +120,20 @@ public class ScrollBar
         else if(index==0)
         {
             neighbor=images.get(index+1);
-            newX=neighbor.getX()-toSnap.getWidth();
+            newX=neighbor.getX()-toSnap.getWidth()-ScrollBar.PADDING;
         }
         else
         {
             neighbor=images.get(index-1);
-            newX=neighbor.getX()+toSnap.getWidth();
+            newX=neighbor.getX()+toSnap.getWidth()+ScrollBar.PADDING;
         }
         toSnap.setPosition(newX, neighbor.getY());
     }
 
     private void makeScroll(Stage stage, int hOrigin, int vOrigin){
         // Gotta have some size so I will for now use the Basic size of the HQ1 but scaled down a teensy bit
-        int width  = (int)(.8 *renderHelper.getRenderHelper().textureHash.get("HQ1.png").getWidth());
-        int height = (int) (.8* renderHelper.getRenderHelper().textureHash.get("HQ1.png").getHeight());
+        int width  = (int)(.75 *renderHelper.getRenderHelper().textureHash.get("HQ1.png").getWidth());
+        int height = (int) (.75* renderHelper.getRenderHelper().textureHash.get("HQ1.png").getHeight());
         int buyBarHeight=renderHelper.getRenderHelper().textureHash.get("buyBar.png").getHeight();
 
         //Image[] imgHandles = new Image[images.size()];
@@ -140,7 +141,7 @@ public class ScrollBar
         {
             GamifyImage currentImage=images.get(i);
             currentImage.setSize(width, height);
-            currentImage.addAt(stage, (int) hOrigin+(i*width), (int) vOrigin + buyBarHeight-height);
+            currentImage.addAt(stage, (int) hOrigin+(i*(width+PADDING)-PADDING), (int) vOrigin + buyBarHeight-(height*16/15));
         }
     }
     private void moveScroll(float xMove, float yMove)

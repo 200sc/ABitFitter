@@ -199,6 +199,8 @@ public class renderHelper {
         textSet(text,x,y,"normal");
     }
 
+
+
     public void textSetCenter(String text, float offsetx, float offsety)
     {
         BitmapFont.TextBounds bounds = medFont.getBounds(text); //TODO: Use text boundaries to center text
@@ -224,15 +226,28 @@ public class renderHelper {
     }
     public void drawTextOnImage(String text, Image image, float offsetx, float offsety) {
         Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2 , offsety+image.getY()+image.getImageHeight()/2);
-        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth()/2-offsetx);
+        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth()/2);
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety) {
+        BitmapFont.TextBounds curBounds = medFont.getBounds(text);
+        Point convertedDimensions=new Point(curBounds.width, curBounds.height);
+        convertedDimensions=convertTextCoorsToImageCoors(convertedDimensions);
+        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2- convertedDimensions.x/2 , offsety+image.getY()+image.getImageHeight()/2);
+
+        textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, image.getWidth()/2);
+        //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
+    }
+
 
     public Point convertImageCoorsToTextCoors(Point point)
     {
         return new Point(point.x*scrWidth/RENDERED_SCREEN_WIDTH, point.y*scrHeight/RENDERED_SCREEN_HEIGHT);
     }
-
+    public Point convertTextCoorsToImageCoors(Point point)
+    {
+        return new Point(point.x*RENDERED_SCREEN_WIDTH/scrWidth, point.y*RENDERED_SCREEN_HEIGHT/scrHeight);
+    }
 
     public static Texture imageLoad(String file)
     { return new Texture(file);}
@@ -421,7 +436,7 @@ public class renderHelper {
     {
         if(toBuy.getCost()>game.getVitality())
         {
-            new PopUpBox(0, 100, 10, "You cannot afford that building");
+            new PopUpBox(30, 150, 10, "You cannot afford that building");
             return null;
         }
 
