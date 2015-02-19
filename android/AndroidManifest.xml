@@ -57,6 +57,8 @@
             android:exported="false"/>
         <receiver
             android:name=".AccelAlarm"/>
+        <receiver
+            android:name=".challengeAlarm"/>
         <activity android:name="ZXingTestActivity"
             android:label="Scanner"></activity>
         <activity android:name="Zxing"

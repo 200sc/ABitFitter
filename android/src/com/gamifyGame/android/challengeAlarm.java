@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
@@ -22,11 +23,6 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
     gamifyGame game;
 
     public void onReceive(Context context, Intent intent) {
-        //Determine if a new Challenge should be started this hour.
-        ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(context, false);
-        gamifyGame game = gamifyGame.getGamifyGame(actionResolverAndroid);
-        Preferences pref = game.getPrefs();
-
         // This stuff happens every day at midnight!
         /*
         if (pref != null) {
@@ -101,29 +97,73 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
             }
             }
             */
+        if(LifeListener.getLifeListener().getStatus()) {
+            ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(context, false);
+            game = gamifyGame.getGamifyGame(actionResolverAndroid);
+            Preferences pref = game.getPrefs();
 
             boolean availableThisHour = pref.getBoolean(challengeTime(), false);
+            sendChallengeNotification(context, String.valueOf(challengeTime()));
             float challengeChancesToday = getChallengeChances();
 
             // If available and this hour is randomly chosen from those available,
             if (availableThisHour && Math.random() < 1f / challengeChancesToday) {
                 pref.putBoolean("waitingChallenge", true);
+                pref.putBoolean("challengeHour", true);
                 pref.putBoolean("challengedToday", true);
+                sendChallengeNotification(context,"ChallengePrompt");
                 pref.flush();
+            }
+        }
+        else{
+            SharedPreferences sPref = context.getApplicationContext().getSharedPreferences("bitFitpref", 0);
+            boolean availableThisHour = sPref.getBoolean(challengeTime(), false);
+            float challengeChancesToday = getSharedChallengeChances(sPref);
         }
     }
 
+    private void sendChallengeNotification(Context context, String msg) {
+        NotificationManager mNotificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent intent = new Intent(context, AndroidLauncher.class);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle("Challenge in Progress!")
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(msg))
+                        .setContentText(msg);
+
+        mBuilder.setContentIntent(contentIntent);
+        mNotificationManager.notify(1, mBuilder.build());
+    }
+
     private String challengeTime(){
-        int day = Calendar.DAY_OF_WEEK;
-        int hour = Calendar.HOUR_OF_DAY;
-        return String.valueOf(day) + ',' + String.valueOf(hour);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        return String.valueOf(day-1) + ',' + String.valueOf(hour);
     }
 
     private float getChallengeChances(){
         float total = 1;
-        String day = String.valueOf(Calendar.DAY_OF_WEEK);
-        for (int i = Calendar.HOUR_OF_DAY+1; i < 24; i++) {
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+        for (int i = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+1; i < 24; i++) {
             if (game.getPrefs().getBoolean(day + ',' + String.valueOf(i),false)){
+                total++;
+            }
+        }
+        return total;
+    }
+
+    private float getSharedChallengeChances(SharedPreferences pref){
+        float total = 1;
+        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+        for (int i = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+1; i < 24; i++) {
+            if (pref.getBoolean(day + ',' + String.valueOf(i),false)){
                 total++;
             }
         }
