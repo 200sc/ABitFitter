@@ -47,26 +47,54 @@ public class serverHelper {
     }
 
 
-//    protected static void sendBuidlings(int confirm, String userID){
-//        Map<String, String> parameters = new HashMap<String, String>();
-//        parameters.put("userID", userID);
-//        parameters.put("rooms",  gamifyGame.getPreferences );
-//
-//        Net.HttpRequest httpPost = new Net.HttpRequest(Net.HttpMethods.POST);
-//        httpPost.setUrl("http://104.131.171.125:3000/api/storeFood");
-//        httpPost.setContent(HttpParametersUtils.convertHttpParameters(parameters));
-//        Gdx.net.sendHttpRequest (httpPost, new Net.HttpResponseListener() {
-//            public void handleHttpResponse(Net.HttpResponse httpResponse) {
-//                status = httpResponse.getResultAsString();
-//            //do stuff here based on response
-//            }
-//            public void failed(Throwable t) {
-//                status = "failed";
-//            //do stuff here based on the failed attempt
-//            }
-//            public void cancelled(){
-//            }
-//        });
+    protected static void sendBuidlings( String userID, String buildings) {
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("userID", userID);
+        parameters.put("rooms", buildings);
+
+        Net.HttpRequest httpPost = new Net.HttpRequest(Net.HttpMethods.POST);
+        httpPost.setUrl("http://104.131.171.125:3000/api/storeRooms");
+        httpPost.setContent(HttpParametersUtils.convertHttpParameters(parameters));
+        Gdx.net.sendHttpRequest(httpPost, new Net.HttpResponseListener() {
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                status = httpResponse.getResultAsString();
+                //do stuff here based on response
+            }
+
+            public void failed(Throwable t) {
+                status = "failed";
+                //do stuff here based on the failed attempt
+            }
+
+            public void cancelled() {
+            }
+        });
+    }
+
+    protected static void sendFood( String userID, String food, int servings) {
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("userID", userID);
+        parameters.put("food", food);
+        parameters.put("servings", String.valueOf(servings));
+
+        Net.HttpRequest httpPost = new Net.HttpRequest(Net.HttpMethods.POST);
+        httpPost.setUrl("http://104.131.171.125:3000/api/storeFood");
+        httpPost.setContent(HttpParametersUtils.convertHttpParameters(parameters));
+        Gdx.net.sendHttpRequest(httpPost, new Net.HttpResponseListener() {
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                status = httpResponse.getResultAsString();
+                //do stuff here based on response
+            }
+
+            public void failed(Throwable t) {
+                status = "failed";
+                //do stuff here based on the failed attempt
+            }
+
+            public void cancelled() {
+            }
+        });
+    }
 
 
 }
