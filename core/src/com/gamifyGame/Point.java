@@ -32,4 +32,23 @@ public class Point {
         this.y*=toScale;
     }
 
+    @Override
+    public boolean equals(Object other)
+    {
+        if(! (other instanceof Point))
+        {
+            return false;
+        }
+        else
+        {
+            Point otherPoint=(Point) other;
+            return (this.x == otherPoint.x && this.y == otherPoint.y);
+        }
+    }
+    @Override
+    public int hashCode()
+    {
+        return (new Float(x).hashCode()*13)+new Float(y).hashCode();
+    }
+
 }
