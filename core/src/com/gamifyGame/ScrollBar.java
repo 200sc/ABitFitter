@@ -54,9 +54,19 @@ public class ScrollBar
                 if(isLongBar == false){
                     //event.getListenerActor().setColor(Color.GREEN);
                     for(GamifyImage current: undergroundBuildings)
-                        current.setColor(Color.GREEN);
+                    {
+                        if(current instanceof Building) {
+                            Building currentBuild = (Building) current;
+                            if(currentBuild.isReplaceable())
+                                current.setColor(Color.GREEN);
+                            else
+                                current.setColor(Color.RED);
+                        }
+                       else
+                            current.setColor(Color.GREEN);
+                    }
                     Building currentEvent=(Building) event.getListenerActor();
-                    myScreen.setCurrentText(currentEvent.toString());
+                    myScreen.setSelectedBuilding(currentEvent);
                 }
                 //myScreen.getTextDisplayBox().waitThenGradualMoveToPosition(120, 175, 1.5f, 10);
                 myScreen.getTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
@@ -95,7 +105,7 @@ public class ScrollBar
                 Image eventImage = (Image) event.getListenerActor();
                 if(sY-eventImage.getY() > eventImage.getHeight()/3 || notScroll ){
                     notScroll = true;
-                    eventImage.setColor(Color.RED);
+                    eventImage.setColor(Color.GREEN);
                     eventImage.moveBy(x-startX/2, y-startY);
                 }
                 else
@@ -169,7 +179,7 @@ public class ScrollBar
         {
             new PopUpBox(40, 150, 10, "You cannot afford that building");
 
-            this.myScreen.getTextDisplayBox().setColor(Color.RED);
+            this.myScreen.getTextDisplayBox().setColor(Color.BLACK);
             this.myScreen.getTextDisplayBox().addAction(new Action()
             {
                 private float remainingTime=1;
@@ -196,12 +206,28 @@ public class ScrollBar
 
         for(int i=0; i<possibleBuildingSites.size(); i++)
         {
-            GamifyImage currentBuilding=possibleBuildingSites.get(i);
+            GamifyImage currentImage=possibleBuildingSites.get(i);
             //TODO: Worry about HQ/other conditions
-            if (renderHelper.getRenderHelper().rectangleCollided(minX, maxX, minY, maxY, currentBuilding.getX(), currentBuilding.getRight(), currentBuilding.getY(), currentBuilding.getTop()))
+            if (renderHelper.getRenderHelper().rectangleCollided(minX, maxX, minY, maxY, currentImage.getX(), currentImage.getRight(), currentImage.getY(), currentImage.getTop()))
             {
-                game.addToVitality( (long) -toBuy.getCost());
-                return i;
+                boolean success;
+                if(currentImage instanceof  Building)
+                {
+                    Building currentBuilding=(Building) currentImage;
+                    success=currentBuilding.isReplaceable();
+                }
+                else
+                {
+                    success=true;
+                }
+                if(success) {
+                    game.addToVitality((long) -toBuy.getCost());
+                    return i;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
