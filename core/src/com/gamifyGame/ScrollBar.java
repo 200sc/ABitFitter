@@ -2,6 +2,7 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -69,7 +70,7 @@ public class ScrollBar
                     eventImage.setColor(startColor);
                     for(GamifyImage current: undergroundBuildings)
                         current.setColor(startColor);
-                    Integer index = renderHelper.getRenderHelper().buildCheck(undergroundBuildings,eventImage, game);
+                    Integer index = buildCheck(undergroundBuildings, eventImage, game);
                     snapBack(eventImage);
                     if(index !=null )
                     {
@@ -161,6 +162,50 @@ public class ScrollBar
         {
             building.moveBy(xMove, yMove);
         }
+    }
+    private Integer buildCheck(ArrayList<GamifyImage> possibleBuildingSites, Building toBuy, gamifyGame game )
+    {
+        if(toBuy.getCost()>game.getVitality())
+        {
+            new PopUpBox(40, 150, 10, "You cannot afford that building");
+
+            this.myScreen.getTextDisplayBox().setColor(Color.RED);
+            this.myScreen.getTextDisplayBox().addAction(new Action()
+            {
+                private float remainingTime=1;
+                @Override
+                public boolean act(float delta)
+                {
+                    remainingTime-=delta;
+                    if(remainingTime<0)
+                    {
+                        myScreen.getTextDisplayBox().resetColor();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            return null;
+        }
+
+        int foundIndex = -1;
+        float minX = toBuy.getX();
+        float maxX = toBuy.getRight();
+        float minY = toBuy.getY();
+        float maxY = toBuy.getTop();
+
+        for(int i=0; i<possibleBuildingSites.size(); i++)
+        {
+            GamifyImage currentBuilding=possibleBuildingSites.get(i);
+            //TODO: Worry about HQ/other conditions
+            if (renderHelper.getRenderHelper().rectangleCollided(minX, maxX, minY, maxY, currentBuilding.getX(), currentBuilding.getRight(), currentBuilding.getY(), currentBuilding.getTop()))
+            {
+                game.addToVitality( (long) -toBuy.getCost());
+                return i;
+            }
+        }
+
+        return null;
     }
 
     public ArrayList<? extends GamifyImage> getImages()

@@ -436,34 +436,6 @@ public class renderHelper {
         return toReturn;
     }
 
-    public Integer buildCheck(ArrayList<GamifyImage> possibleBuildingSites, Building toBuy, gamifyGame game )
-    {
-        if(toBuy.getCost()>game.getVitality())
-        {
-            new PopUpBox(40, 150, 10, "You cannot afford that building");
-            return null;
-        }
-
-        int foundIndex = -1;
-        float minX = toBuy.getX();
-        float maxX = toBuy.getRight();
-        float minY = toBuy.getY();
-        float maxY = toBuy.getTop();
-
-        for(int i=0; i<possibleBuildingSites.size(); i++)
-        {
-            GamifyImage currentBuilding=possibleBuildingSites.get(i);
-            //TODO: Worry about HQ/other conditions
-            if (rectangleCollided(minX, maxX, minY, maxY, currentBuilding.getX(), currentBuilding.getRight(), currentBuilding.getY(), currentBuilding.getTop()))
-            {
-                game.addToVitality( (long) -toBuy.getCost());
-                return i;
-            }
-        }
-
-        return null;
-    }
-
 
 
     public boolean rectangleCollided(float minX1, float maxX1, float minY1, float maxY1,

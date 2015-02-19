@@ -89,8 +89,8 @@ public class BuyScreen extends GamifyScreen implements Screen
         renderHelper.getRenderHelper().getBatch().end();
 
 
-        textDisplayBox.addText(new Point(-30, 10), currentText);
-        textDisplayBox.addText(new Point(-20, -15),"Vitality: "+game.getVitality( ));
+        textDisplayBox.addText(new Point(0, 20), currentText);
+        textDisplayBox.addText(new Point(0, -15),"Vitality: "+game.getVitality( ));
     }
 
     public TextDisplayBox getTextDisplayBox()

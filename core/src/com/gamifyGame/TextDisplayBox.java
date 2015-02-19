@@ -1,5 +1,6 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 
@@ -11,6 +12,7 @@ import java.util.HashMap;
 public class TextDisplayBox extends GamifyImage
 {
     private HashMap<Point, String> locationToText;
+    private Color myBaseColor;
 
     private float pixelsPerSecondX;
     private float pixelsPerSecondY;
@@ -62,6 +64,8 @@ public class TextDisplayBox extends GamifyImage
                 return false;
             }
         });
+
+        this.myBaseColor=new Color(this.getColor());
     }
 
     public void addText(Point location, String text)
@@ -76,7 +80,7 @@ public class TextDisplayBox extends GamifyImage
         renderHelper.getRenderHelper().getBatch().begin();
         for(Point curLoc: locationToText.keySet())
         {
-            renderHelper.getRenderHelper().drawTextOnImage(locationToText.get(curLoc), this, curLoc.x, curLoc.y);
+            renderHelper.getRenderHelper().drawTextOnImageNicely(locationToText.get(curLoc), this, curLoc.x, curLoc.y);
         }
         renderHelper.getRenderHelper().getBatch().end();
         b.begin();
@@ -118,7 +122,7 @@ public class TextDisplayBox extends GamifyImage
 
     public void waitThenGradualMoveToPosition(float x, float y, float moveTime, float waitTime)
     {
-        if(remainingMoveTime==0 && remainingWaitingTime==0) {
+        if(remainingMoveTime==0 || remainingWaitingTime>0) {
             remainingWaitingTime = waitTime;
             gradualMovePos(x, y, moveTime);
         }
@@ -129,5 +133,10 @@ public class TextDisplayBox extends GamifyImage
             queuedGoalx=x;
             queuedGoalY=y;
         }
+    }
+
+    public void resetColor()
+    {
+        this.setColor(myBaseColor);
     }
 }
