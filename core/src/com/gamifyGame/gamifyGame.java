@@ -137,7 +137,7 @@ public class gamifyGame extends Game {
     }
 
     public void sendInt(String key, int val) {
-        serverHelper.sendTestConfirm(val); //TODO: different application of this function,
+        //serverHelper.sendTestConfirm(val); //TODO: different application of this function,
         // might not need this function later.
     }
 
