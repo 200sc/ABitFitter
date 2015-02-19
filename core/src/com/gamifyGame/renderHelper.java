@@ -221,10 +221,10 @@ public class renderHelper {
         curFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
-    public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
-    {
-        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
-        medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
+    public void drawTextOnImage(String text, Image image, float offsetx, float offsety) {
+        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2 , offsety+image.getY()+image.getImageHeight()/2);
+        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y);
+        //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
     public Point convertImageCoorsToTextCoors(Point point)
