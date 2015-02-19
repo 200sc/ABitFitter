@@ -395,8 +395,8 @@ public class renderHelper {
         }
 
 
-        Image basicBox = renderer.imageSetup("tophalfbox.png", stage, wOffset/2, hOffset-(row)*height - 2);
-        basicBox.setSize( width*3, height* (row+1));
+        Image basicBox = renderer.imageSetup("tophalfbox.png", renderHelper.getRenderHelper().getLayer(0), wOffset/2, hOffset-(row)*height - 2);
+        basicBox.setSize( width*3-bridgelen, height* (row+1));
         basicBox.setColor(Color.DARK_GRAY);
         basicBox.setZIndex(firstZIndex);
 
