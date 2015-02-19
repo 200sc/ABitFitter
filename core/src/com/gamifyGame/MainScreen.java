@@ -72,6 +72,7 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), -20 , 0, "large");
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),40,20);
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("updaterRunning",0)),20,20);
+            renderHelper.getRenderHelper().textSet("This is a really long string that shouldn't fit into a single line", 80,230,30);
             renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), String.valueOf(frameCount),50,200);
             renderHelper.getRenderHelper().getBatch().end();
             // If we want to do more things with frame counting in groups of 30

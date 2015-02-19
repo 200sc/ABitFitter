@@ -21,7 +21,7 @@ import java.util.HashMap;
  */
 public class Quad1Screen extends GamifyScreen implements Screen {
 
-    HistogramGraph testGraph;
+    LineGraph testGraph;
 
     public Quad1Screen(gamifyGame game) {
         super(game);
@@ -70,12 +70,12 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         testData.put(System.currentTimeMillis()-140000,78);
         testData.put(System.currentTimeMillis()-100000,40);
         testData.put(System.currentTimeMillis()-90000,45);
-        testData.put(System.currentTimeMillis()-80000,20);
+        testData.put(System.currentTimeMillis()-80000,0);
         testData.put(System.currentTimeMillis()-70000,68);
         testData.put(System.currentTimeMillis()-60000,104);
         testData.put(System.currentTimeMillis()-50000,34);
         testData.put(System.currentTimeMillis()-40000,78);
-        testGraph = new HistogramGraph(testData,"Test Data",GamifyColor.BLUE,"small");
+        testGraph = new LineGraph(testData,"Test Data",GamifyColor.BLUE);
         retBox.addListener(game.getListenerHelper().goScreen(0));
     }
 

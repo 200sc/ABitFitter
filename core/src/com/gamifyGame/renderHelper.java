@@ -169,21 +169,32 @@ public class renderHelper {
         stage.addActor(image);
         return image;
     }
-    public void textSet(String text, float x, float y, String str){
-        BitmapFont curFont;
-        if (str.equals("small")){
-            curFont = smallFont;
-        } else if (str.equals("large")){
-            curFont = bigFont;
+
+    private BitmapFont getFontSize(String size){
+        if (size.equals("small")){
+            return smallFont;
         }
-        else {
-            curFont = medFont;
+        else if (size.equals("large")){
+            return bigFont;
         }
+        return medFont;
+    }
+
+    public void textSet(String text, int x, int y, int lineWidth){
+        textSet(text,x,y,"medium",lineWidth);
+    }
+
+    public void textSet(String text, int x, int y, String size, int lineWidth){
+        BitmapFont curFont = getFontSize(size);
+        curFont.drawWrapped(batch,text,(x * scrWidth) / 180,(y * scrHeight) / 296, (lineWidth * scrWidth) / 180);
+    }
+
+    public void textSet(String text, int x, int y, String size){
+        BitmapFont curFont = getFontSize(size);
         curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);
     }
 
-    public void textSet(String text, float x, float y)
-    {
+    public void textSet(String text, int x, int y){
         textSet(text,x,y,"normal");
     }
 
@@ -210,12 +221,10 @@ public class renderHelper {
         curFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
-    
-    public void drawTextOnImage(String text, Image image, float offsetx, float offsety)
+    public void drawTextOnImage(String text, Image image, int offsetx, int offsety)
     {
-        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2 , offsety+image.getY()+image.getImageHeight()/2);
-        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y);
-        //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
+        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
+        medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
     public Point convertImageCoorsToTextCoors(Point point)
@@ -370,8 +379,14 @@ public class renderHelper {
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;
+
+        int firstZIndex = 0;
+
+
+
         for(int i=0; i <= buildings.length-1; i++)
         {
+
             GamifyImage toAdd=new GamifyImage("Empty1.png");
             //if(buildings[i].equals(""))
                 //toAdd=new GamifyImage("Empty1.png");
@@ -388,7 +403,16 @@ public class renderHelper {
             row = i/3;
             toAdd.addAt(stage, wOffset + column*width, hOffset - row*height);
             toReturn.add(toAdd);
+            if(i ==0){firstZIndex = toAdd.getZIndex();}
         }
+
+
+        Image basicBox = renderer.imageSetup("tophalfbox.png", renderHelper.getRenderHelper().getLayer(0), wOffset/2, hOffset-(row)*height - 2);
+        basicBox.setSize( width*3-bridgelen, height* (row+1));
+        basicBox.setColor(Color.DARK_GRAY);
+        basicBox.setZIndex(firstZIndex);
+
+
         return toReturn;
     }
 

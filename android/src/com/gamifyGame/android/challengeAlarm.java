@@ -28,6 +28,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
         Preferences pref = game.getPrefs();
 
         // This stuff happens every day at midnight!
+        /*
         if (pref != null) {
             if (Calendar.HOUR_OF_DAY == 0) {
                 pref.putBoolean("challengedToday", false);
@@ -98,6 +99,8 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
                 pref.flush();
                 return;
             }
+            }
+            */
 
             boolean availableThisHour = pref.getBoolean(challengeTime(), false);
             float challengeChancesToday = getChallengeChances();
@@ -107,7 +110,6 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
                 pref.putBoolean("waitingChallenge", true);
                 pref.putBoolean("challengedToday", true);
                 pref.flush();
-            }
         }
     }
 

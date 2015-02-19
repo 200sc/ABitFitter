@@ -38,8 +38,6 @@ public abstract class GamifyScreen implements Screen {
             game.getActionResolver().toHomeScreen("Back Pressed");
         }
 
-
-
         Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
         Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
