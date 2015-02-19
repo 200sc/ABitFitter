@@ -96,5 +96,28 @@ public class serverHelper {
         });
     }
 
+    protected static void sendVitality( String userID,long vitality) {
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("userID", userID);
+        parameters.put("servings", String.valueOf(vitality));
+
+        Net.HttpRequest httpPost = new Net.HttpRequest(Net.HttpMethods.POST);
+        httpPost.setUrl("http://104.131.171.125:3000/api/storeScore");
+        httpPost.setContent(HttpParametersUtils.convertHttpParameters(parameters));
+        Gdx.net.sendHttpRequest(httpPost, new Net.HttpResponseListener() {
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                status = httpResponse.getResultAsString();
+                //do stuff here based on response
+            }
+
+            public void failed(Throwable t) {
+                status = "failed";
+                //do stuff here based on the failed attempt
+            }
+
+            public void cancelled() {
+            }
+        });
+    }
 
 }

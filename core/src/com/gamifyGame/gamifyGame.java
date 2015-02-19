@@ -97,6 +97,7 @@ public class gamifyGame extends Game {
     public void pause(){
         paused = true;
         serverHelper.sendBuidlings(pref.getString("userID"), pref.getString("undergroundBuildings"));
+        serverHelper.sendVitality(pref.getString("userID"), getVitality());
     }
 
     public void resume(){
