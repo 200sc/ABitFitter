@@ -138,6 +138,7 @@ public class renderHelper {
         textureHash.put("HQ1.png",imageLoad("HQ1.png"));
         textureHash.put("Lab1.png",imageLoad("Lab1.png"));
         textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));
+        textureHash.put("popUpBoxBlue.png",imageLoad("popUpBoxBlue.png"));
 
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
@@ -223,7 +224,7 @@ public class renderHelper {
     }
     public void drawTextOnImage(String text, Image image, float offsetx, float offsety) {
         Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2 , offsety+image.getY()+image.getImageHeight()/2);
-        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth());
+        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth()/2-offsetx);
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
@@ -420,7 +421,7 @@ public class renderHelper {
     {
         if(toBuy.getCost()>game.getVitality())
         {
-            new PopUpBox(100, 50, 10, "You cannot afford that building");
+            new PopUpBox(0, 100, 10, "You cannot afford that building");
             return null;
         }
 
