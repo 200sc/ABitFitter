@@ -56,12 +56,13 @@ public class ScrollBar
                     Building currentEvent=(Building) event.getListenerActor();
                     myScreen.setCurrentText(currentEvent.toString());
                 }
+                //myScreen.getTextDisplayBox().waitThenGradualMoveToPosition(120, 175, 1.5f, 10);
                 myScreen.getTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
                 return true;
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
-                myScreen.getTextDisplayBox().waitThenGradualMoveToPosition(180, 175, 1.5f, 10);
+               myScreen.getTextDisplayBox().waitThenGradualMoveToPosition(180, 175, 1.5f, 5);
                 if(isLongBar == false){
                     Building eventImage = (Building) event.getListenerActor();
                     eventImage.setColor(startColor);

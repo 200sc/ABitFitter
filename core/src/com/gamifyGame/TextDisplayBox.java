@@ -1,6 +1,5 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 
@@ -18,11 +17,19 @@ public class TextDisplayBox extends GamifyImage
     private float remainingMoveTime;
     private float remainingWaitingTime;
 
+    private float queuedGoalx;
+    private float queuedGoalY;
+    private float queuedRemainingMoveTime;
+    private float queuedRemainingWaitTime;
+
     public TextDisplayBox()
     {
         super("midBox.png");
         locationToText=new HashMap<Point, String>();
         remainingMoveTime =0;
+        remainingWaitingTime=0;
+        queuedRemainingMoveTime =0;
+        queuedRemainingWaitTime =0;
 
         this.addAction(new Action() {
             @Override
@@ -37,9 +44,16 @@ public class TextDisplayBox extends GamifyImage
                     remainingWaitingTime =0;
                     if(remainingMoveTime <=0)
                     {
-                        remainingMoveTime =0;
+                        remainingMoveTime=0;
+                        if(queuedRemainingMoveTime>0) {
+                            waitThenGradualMoveToPosition(queuedGoalx, queuedGoalY, queuedRemainingMoveTime, queuedRemainingWaitTime);
+                            queuedRemainingMoveTime = 0;
+                            queuedRemainingWaitTime = 0;
+                            queuedRemainingMoveTime = 0;
+                            queuedRemainingWaitTime = 0;
+                        }
                     }
-                    else
+                    if(remainingMoveTime > 0 && remainingWaitingTime<=0)
                     {
                         moveBy(delta*pixelsPerSecondX, delta*pixelsPerSecondY);
                         remainingMoveTime -=delta;
@@ -68,21 +82,25 @@ public class TextDisplayBox extends GamifyImage
         b.begin();
     }
 
-
-
-
     private boolean gradualMoveBy(float x, float y, float time)
     {
-        remainingMoveTime =time;
-        pixelsPerSecondX =x;
-        pixelsPerSecondY =y;
+        remainingMoveTime = time;
+        pixelsPerSecondX = x;
+        pixelsPerSecondY = y;
+
         return true;
     }
 
     public void gradualMoveToPosition(float x, float y, float time)
     {
-        remainingWaitingTime =0;
-        gradualMovePos(x, y, time);
+        if(remainingMoveTime<=0) {
+            remainingWaitingTime = 0;
+            queuedRemainingMoveTime = 0;
+            queuedRemainingWaitTime = 0;
+            queuedGoalx = 0;
+            queuedGoalY = 0;
+            gradualMovePos(x, y, time);
+        }
     }
     private void gradualMovePos(float x, float y, float time)
     {
@@ -100,8 +118,16 @@ public class TextDisplayBox extends GamifyImage
 
     public void waitThenGradualMoveToPosition(float x, float y, float moveTime, float waitTime)
     {
-        if(!(remainingWaitingTime==0 && remainingMoveTime>0))
-            remainingWaitingTime =waitTime;
-        gradualMovePos(x, y, moveTime);
+        if(remainingMoveTime==0 && remainingWaitingTime==0) {
+            remainingWaitingTime = waitTime;
+            gradualMovePos(x, y, moveTime);
+        }
+        else if(queuedRemainingMoveTime ==0)
+        {
+            queuedRemainingWaitTime =waitTime;
+            queuedRemainingMoveTime=moveTime;
+            queuedGoalx=x;
+            queuedGoalY=y;
+        }
     }
 }

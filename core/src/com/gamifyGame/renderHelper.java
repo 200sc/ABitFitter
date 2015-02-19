@@ -169,7 +169,7 @@ public class renderHelper {
         stage.addActor(image);
         return image;
     }
-    public void textSet(String text, int x, int y, String str){
+    public void textSet(String text, float x, float y, String str){
         BitmapFont curFont;
         if (str.equals("small")){
             curFont = smallFont;
@@ -182,18 +182,19 @@ public class renderHelper {
         curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);
     }
 
-    public void textSet(String text, int x, int y){
+    public void textSet(String text, float x, float y)
+    {
         textSet(text,x,y,"normal");
     }
 
-    public void textSetCenter(String text, int offsetx, int offsety)
+    public void textSetCenter(String text, float offsetx, float offsety)
     {
         BitmapFont.TextBounds bounds = medFont.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
-    public void textSetCenter(String text, int offsetx, int offsety, String str)
+    public void textSetCenter(String text, float offsetx, float offsety, String str)
     {
         BitmapFont curFont;
         if (str.equals("small")){
@@ -212,8 +213,9 @@ public class renderHelper {
     
     public void drawTextOnImage(String text, Image image, float offsetx, float offsety)
     {
-        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
-        medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
+        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2 , offsety+image.getY()+image.getImageHeight()/2);
+        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y);
+        //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
     public Point convertImageCoorsToTextCoors(Point point)
