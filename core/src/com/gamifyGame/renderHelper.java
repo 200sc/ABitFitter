@@ -235,9 +235,9 @@ public class renderHelper {
         convertedDimensions=convertTextCoorsToImageCoors(convertedDimensions);
 
         float toOffset = convertedDimensions.x/2;
-        if(convertedDimensions.x/2 > image.getImageWidth()/2){toOffset = image.getImageWidth()/2;}
+        if(convertedDimensions.x/2 > (image.getImageWidth()-4)/2){toOffset = image.getImageWidth()/2;}
 
-        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
+        Point textCoorsLoc=new Point(offsetx+image.getX()+(image.getImageWidth()+4)/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
 
         textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, image.getWidth());
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);

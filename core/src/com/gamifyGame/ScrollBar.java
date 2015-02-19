@@ -81,7 +81,7 @@ public class ScrollBar
                     for(GamifyImage current: undergroundBuildings)
                         current.setColor(startColor);
                     Integer index = buildCheck(undergroundBuildings, eventImage, game);
-                    snapBack(eventImage);
+                    notScroll =  snapBack(eventImage);
                     if(index !=null )
                     {
                         GamifyImage beingReplaced= undergroundBuildings.remove(index.intValue());
@@ -117,7 +117,7 @@ public class ScrollBar
     }
 
 
-    private void snapBack(GamifyImage toSnap)
+    private boolean snapBack(GamifyImage toSnap)
     {
         int index=images.lastIndexOf(toSnap);
         float newX;
@@ -126,7 +126,7 @@ public class ScrollBar
         if(images.size()==1)
         {
             toSnap.setPosition(0, 0);
-            return;
+            return false;
         }
         else if(index==0)
         {
@@ -139,6 +139,7 @@ public class ScrollBar
             newX=neighbor.getX()+toSnap.getWidth()+ScrollBar.PADDING;
         }
         toSnap.setPosition(newX, neighbor.getY());
+        return false;
     }
 
     private void makeScroll(Stage stage, int hOrigin, int vOrigin){
