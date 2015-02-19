@@ -41,7 +41,7 @@ public class BuyScreen extends GamifyScreen implements Screen
         placeHold.addListener(game.getListenerHelper().goScreen(0));
 
 
-        textDisplayBox=new TextDisplayBox();
+        textDisplayBox=new TextDisplayBox("midBox.png");
         textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 180, 175);
 
         setUpUnderground();
@@ -91,6 +91,7 @@ public class BuyScreen extends GamifyScreen implements Screen
 
         textDisplayBox.addText(new Point(0, 20), currentText);
         textDisplayBox.addText(new Point(0, -15),"Vitality: "+game.getVitality( ));
+        textDisplayBox.addText(new Point( (renderHelper.getRenderHelper().getBounds("Vitality: "+game.getVitality( )).x+5), 20), "Cost: ");
     }
 
     public TextDisplayBox getTextDisplayBox()

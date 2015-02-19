@@ -24,9 +24,9 @@ public class TextDisplayBox extends GamifyImage
     private float queuedRemainingMoveTime;
     private float queuedRemainingWaitTime;
 
-    public TextDisplayBox()
+    public TextDisplayBox(String path)
     {
-        super("midBox.png");
+        super(path);
         locationToText=new HashMap<Point, String>();
         remainingMoveTime =0;
         remainingWaitingTime=0;

@@ -243,6 +243,13 @@ public class renderHelper {
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
+    public Point getBounds(String text)
+    {
+        BitmapFont.TextBounds curBounds = medFont.getBounds(text);
+        Point convertedDimensions=convertTextCoorsToImageCoors(new Point(curBounds.width, curBounds.height));
+        return new Point(convertedDimensions.x, convertedDimensions.y);
+    }
+
 
     public Point convertImageCoorsToTextCoors(Point point)
     {
