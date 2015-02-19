@@ -1,6 +1,7 @@
 package com.gamifyGame.android;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
@@ -29,6 +30,18 @@ public class ActionResolverAndroid implements ActionResolver {
     }
 
     private void setContext(Context context){this.context = context;}
+
+    public void putSharedPrefs(final String key, final String val) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences pref = context.getSharedPreferences("bitPref", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString(key,val);
+                editor.apply();
+            }
+        });
+    }
 
     public void scanAct(final CharSequence text) {
         handler.post(new Runnable() {

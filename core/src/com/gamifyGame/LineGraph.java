@@ -39,11 +39,7 @@ public class LineGraph {
     public final int graphHeight = 240;
     public final int graphWidth = 130;
 
-    public LineGraph(HashMap<Long,Integer> graphPref, String dataType) {
-        new HistogramGraph(graphPref,dataType,GamifyColor.BLUE,"medium");
-    }
-
-    public LineGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor, String scale) {
+    public LineGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor) {
         data = graphPref;
         type = dataType;
         show();
@@ -57,22 +53,15 @@ public class LineGraph {
             case GREEN:
             case YELLOW:
         }
-        if (scale.equals("small")){
-            dataPointCount = 32;
-        }
-        else if (scale.equals("large")){
-            dataPointCount = 8;
-        }
-        else dataPointCount = 16;
+        dataPointCount = 16;
         update();
     }
 
     public void shapeRender(){
         ShapeRenderer shapes1 = renderHelper.getRenderHelper().getShapeRenderer();
 
-        float yRatio = (((float)graphHeight-15) / yMax);
-        int xIncrement = (xPoints.size()/dataPointCount);
-        int xPixelIncrement = (graphWidth/dataPointCount);
+        float yRatio = (((float)graphHeight-25) / yMax);
+        int xPixelIncrement = (graphWidth/yPoints.size());
 
         int x = 0;
         int borderX = 48;
@@ -83,25 +72,23 @@ public class LineGraph {
 
         shapes1.begin(ShapeRenderer.ShapeType.Filled);
         shapes1.setColor(color2);
-        x = xIncrement;
-        int lastX = -1;
-        int lastY = -1;
-        for (int i = 1; i < dataPointCount; i+=2) {
-            shapes1.box(borderX + (xPixelIncrement * i), borderY, 0, xPixelIncrement, yPoints.get(x) * yRatio, 0);
-            x += xIncrement;
+        int lastX = borderX;
+        float lastY = borderY + 10;
+        int thisX;
+        float thisY;
+        for (int i = 0; i < yPoints.size(); i++) {
+            thisX = lastX + xPixelIncrement;
+            thisY = (yPoints.get(i)* yRatio) + borderY + 10;
+            shapes1.line(lastX,lastY,thisX,thisY);
+            shapes1.circle(thisX,thisY,2);
+            lastX = thisX;
+            lastY = thisY;
         }
         shapes1.end();
         shapes1.begin(ShapeRenderer.ShapeType.Line);
         shapes1.setColor(color3);
         for (int i = 0; i < graphHeight; i+= graphHeight / leftLabelCount){
             shapes1.line(borderX,borderY+i,renderer.getRenderedWidth()-2,borderY+i);
-        }
-        x = 0;
-        for (int i = 0; i < dataPointCount; i+= 2) {
-            if(i % 2 == 0) {
-                shapes1.box(borderX + (xPixelIncrement * i), borderY, 0, xPixelIncrement, yPoints.get(x) * yRatio, 0);
-                x += xIncrement*2;
-            }
         }
         shapes1.end();
 

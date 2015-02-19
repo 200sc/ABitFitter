@@ -169,16 +169,28 @@ public class renderHelper {
         stage.addActor(image);
         return image;
     }
-    public void textSet(String text, int x, int y, String str){
-        BitmapFont curFont;
-        if (str.equals("small")){
-            curFont = smallFont;
-        } else if (str.equals("large")){
-            curFont = bigFont;
+
+    private BitmapFont getFontSize(String size){
+        if (size.equals("small")){
+            return smallFont;
         }
-        else {
-            curFont = medFont;
+        else if (size.equals("large")){
+            return bigFont;
         }
+        return medFont;
+    }
+
+    public void textSet(String text, int x, int y, int lineWidth){
+        textSet(text,x,y,"medium",lineWidth);
+    }
+
+    public void textSet(String text, int x, int y, String size, int lineWidth){
+        BitmapFont curFont = getFontSize(size);
+        curFont.drawWrapped(batch,text,(x * scrWidth) / 180,(y * scrHeight) / 296, (lineWidth * scrWidth) / 180);
+    }
+
+    public void textSet(String text, int x, int y, String size){
+        BitmapFont curFont = getFontSize(size);
         curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);
     }
 

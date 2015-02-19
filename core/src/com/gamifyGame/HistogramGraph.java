@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
-import com.sun.jmx.remote.internal.ArrayQueue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -108,10 +107,8 @@ public class HistogramGraph {
         }
         x = 0;
         for (int i = 0; i < dataPointCount; i+= 2) {
-            if(i % 2 == 0) {
-                shapes1.box(borderX + (xPixelIncrement * i), borderY, 0, xPixelIncrement, yPoints.get(x) * yRatio, 0);
-                x += xIncrement*2;
-            }
+            shapes1.box(borderX + (xPixelIncrement * i), borderY, 0, xPixelIncrement, yPoints.get(x) * yRatio, 0);
+            x += xIncrement*2;
         }
         shapes1.end();
 
