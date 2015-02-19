@@ -38,7 +38,7 @@ public class Building extends GamifyImage
         defList.put("Forging Office", new Building("Forging Office", "An office filled with stacks of offical seals, brief cases of fake documents and intricate utensils for the creation of more.", 4, 16, 1, TriggerCondition.SLEEP, "Forgery1.png"));
         defList.put("Garage", new Building("Garage", "Where are the cars are", 500, 4, 3, TriggerCondition.RUNNING, "Garage1.png"));
         defList.put("Generator", new Building("Generator", "It makes power", 600, 0, 5, TriggerCondition.NONE, "Generator1.png"));
-        defList.put("HQ", new Building("HQ", "You live here", 6, 100, 3, TriggerCondition.NONE, "HQ1.png"));
+        defList.put("HQ", new Building("HQ", "You live here", 1000000000, 100, 3, TriggerCondition.NONE, "HQ1.png"));
         defList.put("Lab", new Building("Lab", "You live here", 600, 5, 3, TriggerCondition.RUNNING, "Lab1.png"));
         defList.put("Smuggler's Cove", new Building("Smuggler's Cove", "You live here", 600, 6, 3, TriggerCondition.NONE, "Smuggler1.png"));
 
