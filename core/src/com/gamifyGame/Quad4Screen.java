@@ -27,6 +27,9 @@ import javax.swing.Renderer;
  */
 public class Quad4Screen extends GamifyScreen implements Screen {
 
+
+    private TextDisplayBox textDisplayBox;
+
     public Quad4Screen(gamifyGame game) {
 
         super(game);
@@ -98,6 +101,8 @@ public class Quad4Screen extends GamifyScreen implements Screen {
                 renderer.getBatch().end();
             }
         }
+        showRecentFoods(textDisplayBox);
+
     }
 
 
@@ -123,6 +128,8 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
         Image basicBox = renderer.imageSetup("tophalfbox.png", renderer.getLayer(1), 0, 30);
 
+        textDisplayBox=new TextDisplayBox("midBox.png");
+        textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 120, 150);
 
 
 
@@ -130,5 +137,8 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
     }
 
+    private void showRecentFoods(TextDisplayBox displayBox){
+        displayBox.addText(new Point(-30, 10), "Hi");
+    }
 
 }

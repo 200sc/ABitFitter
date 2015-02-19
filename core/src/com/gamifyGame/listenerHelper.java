@@ -8,6 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Json;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  * Created by Patrick Stephen on 2/1/2015.
  * This guy should hold all the listeners. Anyone who wants a listener should go here to get it.
@@ -54,10 +57,41 @@ public class listenerHelper {
         servingsChosen = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                Color tmpColor = new Color(event.getListenerActor().getColor());
-                event.getListenerActor().setColor(Color.GREEN);
-                if(game.getPrefs().getString("latestFood") != null)
-                    serverHelper.sendFood(pref.getString("userID"), pref.getString("latestFood"), 1);
+                new PopUpBox(60, 150, 10, "Food chosen");
+
+                if(game.getPrefs().getString("latestFood") != null) {
+                    String latestFood = pref.getString("latestFood");
+                    serverHelper.sendFood(pref.getString("userID"),latestFood, 1);
+
+                    // create recent food list
+                    String recentFoodCheck = pref.getString("recentFoods");
+                    Json json = new Json();
+                    if(recentFoodCheck == null) {
+                        Queue<String> queueForPrefs = new PriorityQueue<String>();
+                        pref.putString("recentFoods", json.toJson(queueForPrefs));
+                    }
+
+                    try {
+                        Queue recentFoods = json.fromJson(Queue.class, recentFoodCheck);
+
+
+                        if(!recentFoods.contains(latestFood)) {
+
+                            if (recentFoods.size() > 5) {
+                                recentFoods.poll();
+                            }
+
+                            recentFoods.add(latestFood);
+
+                            pref.putString("recentFoods", json.toJson(recentFoods));
+                            pref.flush();
+                        }
+
+                    }catch(Exception e){
+                            new PopUpBox(60, 150, 10, "recent foods is not a queue");
+                    }
+                }
+
 
                 return true;
             }};
