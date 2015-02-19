@@ -14,6 +14,7 @@ import com.gamifyGame.gamifyGame;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Calendar;
+import java.util.Random;
 
 /**
  * Created by Stephen on 2/14/2015.
@@ -21,6 +22,7 @@ import java.util.Calendar;
 public class challengeAlarm extends WakefulBroadcastReceiver {
 
     gamifyGame game;
+    private final String[] CHALLENGE_PROMPTS = {"Try a new food!","Be active this hour!"};
 
     public void onReceive(Context context, Intent intent) {
         // This stuff happens every day at midnight!
@@ -105,21 +107,46 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
             boolean availableThisHour = pref.getBoolean(challengeTime(), false);
             sendChallengeNotification(context, String.valueOf(challengeTime()));
             float challengeChancesToday = getChallengeChances();
-
-            // If available and this hour is randomly chosen from those available,
             if (availableThisHour && Math.random() < 1f / challengeChancesToday) {
                 pref.putBoolean("waitingChallenge", true);
                 pref.putBoolean("challengeHour", true);
                 pref.putBoolean("challengedToday", true);
-                sendChallengeNotification(context,"ChallengePrompt");
+                String challengePrompt = generateChallenge();
+                pref.putString("challengeVariety", challengePrompt);
+                sendChallengeNotification(context, challengePrompt);
                 pref.flush();
             }
         }
         else{
             SharedPreferences sPref = context.getApplicationContext().getSharedPreferences("bitFitpref", 0);
+
             boolean availableThisHour = sPref.getBoolean(challengeTime(), false);
             float challengeChancesToday = getSharedChallengeChances(sPref);
+            if (availableThisHour && Math.random() < 1f / challengeChancesToday) {
+                SharedPreferences.Editor editor = sPref.edit();
+                editor.putBoolean("waitingChallenge", true);
+                editor.putBoolean("challengeHour", true);
+                editor.putBoolean("challengedToday", true);
+                String challengePrompt = generateChallenge();
+                editor.putString("challengeVariety", challengePrompt);
+                sendChallengeNotification(context, challengePrompt);
+                editor.apply();
+            }
         }
+    }
+
+    private String generateChallenge(){
+        float[] weights = new float[2];
+        weights[0] = .5f;
+        weights[1] = .5f;
+        double rand = new Random(5).nextDouble();
+        double acc = 0;
+        int i = -1;
+        while(acc < rand){
+            i++;
+            acc += weights[i];
+        }
+        return CHALLENGE_PROMPTS[i];
     }
 
     private void sendChallengeNotification(Context context, String msg) {
@@ -163,7 +190,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
         float total = 1;
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
         for (int i = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+1; i < 24; i++) {
-            if (pref.getBoolean(day + ',' + String.valueOf(i),false)){
+            if (pref.getBoolean(day + ',' + String.valueOf(i), false)){
                 total++;
             }
         }
