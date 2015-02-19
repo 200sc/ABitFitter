@@ -193,11 +193,27 @@ public class renderHelper {
         medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
+    public void textSetCenter(String text, int offsetx, int offsety, String str)
+    {
+        BitmapFont curFont;
+        if (str.equals("small")){
+            curFont = smallFont;
+        } else if (str.equals("large")){
+            curFont = bigFont;
+        }
+        else {
+            curFont = medFont;
+        }
+        BitmapFont.TextBounds bounds = curFont.getBounds(text); //TODO: Use text boundaries to center text
+        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
+        curFont.draw(batch, text, (textLoc.x),
+                (textLoc.y));
+    }
+    
     public void drawTextOnImage(String text, Image image, float offsetx, float offsety)
     {
-        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2+offsetx , image.getY()+image.getImageHeight()/2+offsety);
-        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y);
-       // medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
+        Point textCoorsLoc=new Point(image.getX()+image.getImageWidth()/2 , image.getY()+image.getImageHeight()/2);
+        medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
     public Point convertImageCoorsToTextCoors(Point point)

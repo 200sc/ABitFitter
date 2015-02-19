@@ -95,6 +95,8 @@ public class AndroidLauncher extends AndroidApplication {
         // For testing clear prefs here
         //pref.clear();
 
+
+
         setContentView(R.layout.loginscreenres);
         gameProcess.setPref(pref);
         gameProcess.setGraphPref(graphPref);
@@ -109,12 +111,15 @@ public class AndroidLauncher extends AndroidApplication {
 
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("bitPref", 0);
 
+
         if(sharedPref.getString("currentFood", null) != null){
 
             pref.putString("latestFood", sharedPref.getString("currentFood", null));
             pref.flush();
         }
 
+        // Force clearing for testing
+        //sharedPref.edit().clear().commit();
 
         //ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(this, true);
         //gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
