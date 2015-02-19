@@ -42,6 +42,9 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         renderer.getBatch().begin();
         renderer.textSet("Scan new food", 40, 227);
         renderer.textSet("Food Graphs", 100, 227);
+
+        renderer.textSet("Click for number", 70, 277);
+        renderer.textSet(" of servings", 70, 267);
         renderer.getBatch().end();
 
         //Set up the data from the last food seen
@@ -107,6 +110,9 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
         // Set up scanning Image and its background
         Image scanBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), -30,60);
+
+        Image dumbServingsBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 0,110);
+        dumbServingsBox.addListener(game.getListenerHelper().getServingsChosen());
 
         Image graphBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 30, 60);
         // Silly scanning image with tongue

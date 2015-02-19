@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Json;
 public class listenerHelper {
     private final gamifyGame game;
     private ClickListener challengeListener;
-    private ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, scanAction;
+    private ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, scanAction, servingsChosen;
 
     public listenerHelper(gamifyGame gamify){
         this.game = gamify;
@@ -45,9 +45,22 @@ public class listenerHelper {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {pref.putInteger("confirmed",-1); pref.flush(); game.sendInt("userConfirm",0); return true;}};
 
+
+
         scanAction = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             { game.getActionResolver().scanAct("ScanScreen"); return true;}};
+
+        servingsChosen = new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                Color tmpColor = new Color(event.getListenerActor().getColor());
+                event.getListenerActor().setColor(Color.GREEN);
+                if(game.getPrefs().getString("latestFood") != null)
+                    serverHelper.sendFood(pref.getString("userID"), pref.getString("latestFood"), 1);
+
+                return true;
+            }};
 
         challengeListener = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -64,6 +77,7 @@ public class listenerHelper {
     public ClickListener getTestYes(){return testYes;}
     public ClickListener getTestNo(){return testNo;}
     public ClickListener scanningAction(){return scanAction;}
+    public ClickListener getServingsChosen(){return servingsChosen;}
 
     public ClickListener goScreen(int val) {
         switch (val) {
