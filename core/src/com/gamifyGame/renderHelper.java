@@ -208,17 +208,9 @@ public class renderHelper {
         medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
-    public void textSetCenter(String text, float offsetx, float offsety, String str)
+    public void textSetCenter(String text, float offsetx, float offsety, String size)
     {
-        BitmapFont curFont;
-        if (str.equals("small")){
-            curFont = smallFont;
-        } else if (str.equals("large")){
-            curFont = bigFont;
-        }
-        else {
-            curFont = medFont;
-        }
+        BitmapFont curFont = getFontSize(size);
         BitmapFont.TextBounds bounds = curFont.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         curFont.draw(batch, text, (textLoc.x),
@@ -229,8 +221,9 @@ public class renderHelper {
         textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth()/2);
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
-    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety) {
-        BitmapFont.TextBounds curBounds = medFont.getBounds(text);
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size) {
+        BitmapFont curFont = getFontSize(size);
+        BitmapFont.TextBounds curBounds = curFont.getBounds(text);
         Point convertedDimensions=new Point(curBounds.width, curBounds.height);
         convertedDimensions=convertTextCoorsToImageCoors(convertedDimensions);
 
@@ -239,7 +232,7 @@ public class renderHelper {
 
         Point textCoorsLoc=new Point(offsetx+image.getX()+(image.getImageWidth()+4)/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
 
-        textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, image.getWidth());
+        textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, size,  image.getWidth());
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 

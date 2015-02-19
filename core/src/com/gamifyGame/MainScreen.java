@@ -17,7 +17,8 @@ import java.util.Calendar;
 public class MainScreen extends GamifyScreen implements Screen
 {
     private Image quad3;
-    private float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
+    private float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z, deltaCount;
+    private TextDisplayBox loadingBox;
 
     public MainScreen(gamifyGame game) {
          super(game);
@@ -69,11 +70,12 @@ public class MainScreen extends GamifyScreen implements Screen
             */
 
             if(game.getLoadedFlag()){
-                renderHelper.getRenderHelper().textSet("Are Currently Loading Activity Data",40,40, "Large");
+                if(frameCount/5 % 3 == 0){   loadingBox.addText(new Point(0, 0), "Loading.", "small");}
+                if(frameCount/5 % 3 == 1){   loadingBox.addText(new Point(0, 0), "Loading..", "small");}
+                if(frameCount/5 % 3 == 2){   loadingBox.addText(new Point(0, 0), "Loading...", "small");}
             }
             else{
-                renderHelper.getRenderHelper().textSet("Not Currently Loading Activity Data",40,40, "Large");
-
+                loadingBox.addText(new Point(0, 0), "Loaded   ", "small");
             }
 
             renderHelper.getRenderHelper().textSetCenter("Your Vitality:", -25 , 25, "large");
@@ -85,6 +87,7 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().getBatch().end();
             // If we want to do more things with frame counting in groups of 30
             frameCount = (frameCount + 1) % 30;
+            deltaCount = (deltaCount+1) % 50;
         }
 
         @Override
@@ -140,6 +143,13 @@ public class MainScreen extends GamifyScreen implements Screen
             Image quad4 = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 37, -25);
             Image midbox = renderHelper.getRenderHelper().imageSetupCenter("midBox.png", layer1, 0, 12);
 
+
+
+            loadingBox =new TextDisplayBox("activeHour.png");
+            loadingBox.addAt(renderHelper.getRenderHelper().getLayer(0), 40, 40);
+            loadingBox.setColor(Color.NAVY);
+
+
             // Assign items their listeners
             quad1.addListener(game.getListenerHelper().goScreen(1));
             //quad1.addListener(listenerH.setInt("toScreen",1));
@@ -148,6 +158,8 @@ public class MainScreen extends GamifyScreen implements Screen
             quad4.addListener(game.getListenerHelper().goScreen(4));
             midbox.addListener(game.getListenerHelper().goScreen(5));
             frameCount = 0;
+            deltaCount = 0;
+
         }
 
         private String timeOfDay(){

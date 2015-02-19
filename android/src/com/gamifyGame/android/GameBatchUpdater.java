@@ -70,6 +70,7 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
             game.setLoadedFlag(false);
         }catch(Exception e){
             System.out.println("GAMEBATCHUPDATER: crash in background");
+            game.setLoadedFlag(false);
         }
 
         System.out.println("GAMEBATCHUPDATER: Ending");
