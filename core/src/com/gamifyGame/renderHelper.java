@@ -198,14 +198,14 @@ public class renderHelper {
         textSet(text,x,y,"normal");
     }
 
-    public void textSetCenter(String text, int offsetx, int offsety)
+    public void textSetCenter(String text, float offsetx, float offsety)
     {
         BitmapFont.TextBounds bounds = medFont.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
-    public void textSetCenter(String text, int offsetx, int offsety, String str)
+    public void textSetCenter(String text, float offsetx, float offsety, String str)
     {
         BitmapFont curFont;
         if (str.equals("small")){

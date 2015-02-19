@@ -92,9 +92,6 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().imageSetup(timeOfDay(), layer0, 0, 0);
             renderHelper.getRenderHelper().imageSetup("background.png", layer0, 0, 0);
 
-            //Testing purposes
-            //pref.clear();
-
             // Create now for put/get
             Json json = new Json();
             String[] tmpImgs = null;
