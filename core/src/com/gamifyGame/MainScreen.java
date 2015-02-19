@@ -69,10 +69,11 @@ public class MainScreen extends GamifyScreen implements Screen
             else renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Neithering",50,260);
             */
 
-            if(game.getLoadedFlag()){
-                if(frameCount/5 % 3 == 0){   loadingBox.addText(new Point(0, 0), "Loading.", "small");}
-                if(frameCount/5 % 3 == 1){   loadingBox.addText(new Point(0, 0), "Loading..", "small");}
-                if(frameCount/5 % 3 == 2){   loadingBox.addText(new Point(0, 0), "Loading...", "small");}
+            if(game.getLoadingFlag()){
+                if(deltaCount/8 % 4 == 0){   loadingBox.addText(new Point(0, 0), "Loading   ", "small");}
+                if(deltaCount/8 % 4 == 1){   loadingBox.addText(new Point(0, 0), "Loading.  ", "small");}
+                if(deltaCount/8 % 4 == 2){   loadingBox.addText(new Point(0, 0), "Loading.. ", "small");}
+                if(deltaCount/8 % 4 == 3){   loadingBox.addText(new Point(0, 0), "Loading...", "small");}
             }
             else{
                 loadingBox.addText(new Point(0, 0), "Loaded   ", "small");
@@ -87,7 +88,7 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().getBatch().end();
             // If we want to do more things with frame counting in groups of 30
             frameCount = (frameCount + 1) % 30;
-            deltaCount = (deltaCount+1) % 50;
+            deltaCount = (deltaCount+1) % 32;
         }
 
         @Override

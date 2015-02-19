@@ -116,10 +116,10 @@ public class gamifyGame extends Game {
         }
     }
 
-    public void setLoadedFlag(boolean value){
+    public void setLoadingFlag(boolean value){
         isLoadingSomething = value;
     }
-    public boolean getLoadedFlag(){
+    public boolean getLoadingFlag(){
         return isLoadingSomething;
     }
 

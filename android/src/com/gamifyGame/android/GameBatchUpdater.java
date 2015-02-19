@@ -45,7 +45,7 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
     protected String doInBackground(JSONObject... jsonObjects) {
         System.out.println("GAMEBATCHUPDATER: Start");
         try {
-            game.setLoadedFlag(true);
+            game.setLoadingFlag(true);
             File toRead = new File(context.getFilesDir(), "updateFile");
             BufferedReader reader = new BufferedReader(new FileReader((toRead)));
             String line = null;
@@ -67,11 +67,10 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
             toRead.delete();
 
             game.storeUpdatePrefs(updatePref);
-            game.setLoadedFlag(false);
         }catch(Exception e){
             System.out.println("GAMEBATCHUPDATER: crash in background");
-            game.setLoadedFlag(false);
         }
+        game.setLoadingFlag(false);
 
         System.out.println("GAMEBATCHUPDATER: Ending");
 
