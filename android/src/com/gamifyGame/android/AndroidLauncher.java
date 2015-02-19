@@ -110,12 +110,16 @@ public class AndroidLauncher extends AndroidApplication {
         Bundle extras = this.getIntent().getExtras();
 
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("bitPref", 0);
+        SharedPreferences.Editor edit = sharedPref.edit();
 
 
         if(sharedPref.getString("currentFood", null) != null){
 
             pref.putString("latestFood", sharedPref.getString("currentFood", null));
             pref.flush();
+            edit.remove("currentFood");
+            edit.commit();
+
         }
 
         // Force clearing for testing
