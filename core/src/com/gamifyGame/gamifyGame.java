@@ -119,6 +119,9 @@ public class gamifyGame extends Game {
     public void setLoadedFlag(boolean value){
         isLoadingSomething = value;
     }
+    public boolean getLoadedFlag(){
+        return isLoadingSomething;
+    }
 
     public void graphUpdate(String key, String val){
         pref.putString("graphTmp", "I got " + val + " at time " + key);

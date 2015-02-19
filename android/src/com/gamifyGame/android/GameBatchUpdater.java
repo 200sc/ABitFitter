@@ -26,7 +26,7 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 
 
-public abstract class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
+public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
 
     Preferences pref;
     Preferences updatePref;
@@ -40,8 +40,10 @@ public abstract class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, St
         game = gamifyGame;
 
     }
+    protected void onPostExecute(String output){}
     @Override
     protected String doInBackground(JSONObject... jsonObjects) {
+        System.out.println("GAMEBATCHUPDATER: Start");
         try {
             game.setLoadedFlag(true);
             File toRead = new File(context.getFilesDir(), "updateFile");
@@ -53,7 +55,7 @@ public abstract class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, St
             while ((line = reader.readLine()) != null) {
                 lineParts = line.split(",");
                 updateFile.put(lineParts[0], lineParts[1]);
-                System.out.println("KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+                System.out.println("\"GAMEBATCHUPDATER: KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
             }
             updatePref.put(updateFile);
             System.out.print("This updatefile" + updateFile);
@@ -70,8 +72,9 @@ public abstract class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, St
             System.out.println("GAMEBATCHUPDATER: crash in background");
         }
 
+        System.out.println("GAMEBATCHUPDATER: Ending");
 
         return "Ended";
     }
-    protected abstract String parseResponse (String response);
+    protected String parseResponse (String response){return response;}
 }

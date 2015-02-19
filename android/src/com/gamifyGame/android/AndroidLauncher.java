@@ -1,5 +1,6 @@
 package com.gamifyGame.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.gamifyGame.ActionResolver;
 import com.gamifyGame.gamifyGame;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -79,8 +82,12 @@ public class AndroidLauncher extends AndroidApplication {
 //        }
 
 
+
         pref.putString("userID", fakeID);
         pref.flush();
+
+
+        new GameBatchUpdate(pref, updatePref, this.getContext(), gameProcess).execute();
 
         System.out.println("AndroidLauncher: Android Launcher create!");
 
@@ -136,6 +143,12 @@ public class AndroidLauncher extends AndroidApplication {
 
         super.onResume();
 
+    }
+
+    class GameBatchUpdate extends GameBatchUpdater<String> {
+        public GameBatchUpdate(Preferences basicPref, Preferences updaterPrefs, Context mainContext, gamifyGame gamifyGame){
+            super(basicPref, updaterPrefs, mainContext, gamifyGame);
+        }
     }
 
 }
