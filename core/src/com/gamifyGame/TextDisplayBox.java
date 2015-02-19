@@ -122,7 +122,7 @@ public class TextDisplayBox extends GamifyImage
 
     public void waitThenGradualMoveToPosition(float x, float y, float moveTime, float waitTime)
     {
-        if(remainingMoveTime==0 || remainingWaitingTime>0) {
+        if(remainingMoveTime==0 && remainingWaitingTime==0) {
             remainingWaitingTime = waitTime;
             gradualMovePos(x, y, moveTime);
         }
