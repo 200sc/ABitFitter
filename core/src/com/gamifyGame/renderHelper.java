@@ -180,21 +180,21 @@ public class renderHelper {
         return medFont;
     }
 
-    public void textSet(String text, int x, int y, int lineWidth){
+    public void textSet(String text, float x, float y, float lineWidth){
         textSet(text,x,y,"medium",lineWidth);
     }
 
-    public void textSet(String text, int x, int y, String size, int lineWidth){
+    public void textSet(String text, float x, float y, String size, float lineWidth){
         BitmapFont curFont = getFontSize(size);
         curFont.drawWrapped(batch,text,(x * scrWidth) / 180,(y * scrHeight) / 296, (lineWidth * scrWidth) / 180);
     }
 
-    public void textSet(String text, int x, int y, String size){
+    public void textSet(String text, float x, float y, String size){
         BitmapFont curFont = getFontSize(size);
         curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);
     }
 
-    public void textSet(String text, int x, int y){
+    public void textSet(String text, float x, float y){
         textSet(text,x,y,"normal");
     }
 
@@ -223,7 +223,7 @@ public class renderHelper {
     }
     public void drawTextOnImage(String text, Image image, float offsetx, float offsety) {
         Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2 , offsety+image.getY()+image.getImageHeight()/2);
-        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y);
+        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth());
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
@@ -420,6 +420,7 @@ public class renderHelper {
     {
         if(toBuy.getCost()>game.getVitality())
         {
+            new PopUpBox(100, 50, 10, "You cannot afford that building");
             return null;
         }
 

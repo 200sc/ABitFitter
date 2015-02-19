@@ -43,7 +43,7 @@ public class BuyScreen extends GamifyScreen implements Screen
 
         textDisplayBox=new TextDisplayBox();
         textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 180, 175);
-        textDisplayBox.addText(new Point(-20, -15),"Vitality: "+game.getVitality( ));
+
         setUpUnderground();
     }
 
@@ -87,9 +87,10 @@ public class BuyScreen extends GamifyScreen implements Screen
 
         //renderHelper.getRenderHelper().imageSetup("midBox.png", renderHelper.getRenderHelper().getLayer(1), 120, 175);
         renderHelper.getRenderHelper().getBatch().end();
-        renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
+
 
         textDisplayBox.addText(new Point(-30, 10), currentText);
+        textDisplayBox.addText(new Point(-20, -15),"Vitality: "+game.getVitality( ));
     }
 
     public TextDisplayBox getTextDisplayBox()
