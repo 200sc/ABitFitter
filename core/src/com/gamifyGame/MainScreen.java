@@ -28,11 +28,12 @@ public class MainScreen extends GamifyScreen implements Screen
         public void render(float delta)
         {
             super.render(delta);
+            int challengeProgress = game.getPrefs().getInteger("challengeProgress",0);
 
-            int challengeProgress = game.getPrefs().getInteger("challengeProgress",50);
+
 
             renderHelper.getRenderHelper().getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
-            if (challengeProgress == 100){renderHelper.getRenderHelper().getShapeRenderer().setColor(new Color(0.99f,0.99f,0.0f,1.0f));}
+            if (challengeProgress == 100){renderHelper.getRenderHelper().getShapeRenderer().setColor(renderHelper.getRenderHelper().yellowLight);}
             else renderHelper.getRenderHelper().getShapeRenderer().setColor(new Color(0.30f,1.0f,0.0f,1.0f));
             renderHelper.getRenderHelper().getShapeRenderer().box(quad3.getX()+4,quad3.getY()+4,0,(float)(challengeProgress/2.5),3,0);
             renderHelper.getRenderHelper().getShapeRenderer().end();
@@ -43,11 +44,6 @@ public class MainScreen extends GamifyScreen implements Screen
 
             // ***** DEBUG PRINTING ***** //
             if (frameCount % 5 == 0) {
-                challengeProgress--;
-                if (challengeProgress < 0){
-                    challengeProgress = 100;
-                }
-                game.getPrefs().putInteger("challengeProgress", challengeProgress);
                 game.getPrefs().flush();
                 A5x = A2x;
                 A5y = A2y;
@@ -81,10 +77,8 @@ public class MainScreen extends GamifyScreen implements Screen
 
             renderHelper.getRenderHelper().textSetCenter("Your Vitality:", -25 , 25, "large");
             renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), -20 , 0, "large");
-            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),40,60);
-            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("updaterRunning",0)),20,20);
-            renderHelper.getRenderHelper().textSet("This is a really long string that shouldn't fit into a single line", 80,230,30);
-            renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), String.valueOf(frameCount),50,200);
+            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),15,30);
+            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour",0)),5,30);
             renderHelper.getRenderHelper().getBatch().end();
             // If we want to do more things with frame counting in groups of 30
             frameCount = (frameCount + 1) % 30;

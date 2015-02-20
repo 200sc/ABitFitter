@@ -54,6 +54,7 @@ public abstract class GamifyScreen implements Screen {
         layer1.draw();
         layer2.draw();
         layer3.draw();
+        game.updateChallenge();
         game.updateVitality(delta);
         renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());

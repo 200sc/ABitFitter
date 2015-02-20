@@ -35,22 +35,14 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         String showText;
         if (!showChallengeHours) {
             showText = "Hours for\nChallenges";
-            int challengeProgress = pref.getInteger("challengeProgress", 50);
+            int challengeProgress = pref.getInteger("challengeProgress", 0);
 
             shapes.begin(ShapeRenderer.ShapeType.Filled);
             if (challengeProgress == 100) {
-                shapes.setColor(new Color(0.99f, 0.99f, 0.0f, 1.0f));
+                shapes.setColor(renderHelper.getRenderHelper().yellowLight);
             } else shapes.setColor(new Color(0.30f, 1.0f, 0.0f, 1.0f));
             shapes.box(retBox.getX() + 4, retBox.getY() + 4, 0, (float) (challengeProgress / 2.5), 3, 0);
             shapes.end();
-            if (frameCount % 5 == 0) {
-                challengeProgress--;
-                if (challengeProgress < 0) {
-                    challengeProgress = 100;
-                }
-                pref.putInteger("challengeProgress", challengeProgress);
-                pref.flush();
-            }
         } else showText = "Close \nWindow";
 
         batch.begin();
@@ -116,7 +108,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
 
         retBox = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
-        Image placeholder62 = renderHelper.getRenderHelper().imageSetup("48Box.png", layer1, 0, 0);
+        Image showBox = renderHelper.getRenderHelper().imageSetup("48Box.png", layer1, 0, 0);
 
         int borderX = 19;
         int borderY = 20;
@@ -143,19 +135,19 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         }
 
         retBox.addListener(game.getListenerHelper().goScreen(0));
-        placeholder62.addListener(game.getListenerHelper().setBoolean("showChallengeHours", 'a'));
+        showBox.addListener(game.getListenerHelper().setBoolean("showChallengeHours", 'a'));
 
     }
 
     @Override
     public void hide() {
-        super.hide();
-        border.moveBy(-300, 0);
+        border.moveBy(300, 0);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
-                Week[i][j].moveBy(-300, 0);
+                Week[i][j].moveBy(300, 0);
             }
         }
+        super.hide();
     }
 
 }

@@ -62,9 +62,9 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         Intent updateIntent = new Intent(this, GameUpdater.class);
         updateIntent.putExtra("curActivity",intToStringActivity(activity));
         ComponentName d = this.startService(updateIntent);
-        if (Math.random() < .025) {
-            sendNotification("What activity have you been doing recently?");
-        }
+        //if (Math.random() < .025) {
+        //    sendNotification("What activity have you been doing recently?");
+        //}
     }
 
     protected int Classify(String completeData){

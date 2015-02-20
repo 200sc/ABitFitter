@@ -94,6 +94,24 @@ public class gamifyGame extends Game {
         this.getPrefs().flush();
     }
 
+    public void updateChallenge(){
+        if(isLoadingSomething || pref.getInteger("challengeProgress") == 100){
+            pref.putInteger("challengeProgress",0);
+            return;
+        }
+        String challenge = pref.getString("challengeVariety","none");
+        int progress = 0;
+        if(challenge.equals("Be active this hour!")){
+            progress = 5 * (pref.getInteger("minutesWalkedThisHour",0) + pref.getInteger("minutesRanThisHour",0)
+                      + pref.getInteger("minutesDancedThisHour",0) + pref.getInteger("minutesBikedThisHour",0));
+
+        }
+        else if (challenge.equals("Try a new food!")){
+            progress = 100*pref.getInteger("newFoodThisHour");
+        }
+        pref.putInteger("challengeProgress",Math.min(progress + pref.getInteger("challengeProgress",0),100));
+    }
+
 
     public void pause(){
         paused = true;
@@ -114,6 +132,7 @@ public class gamifyGame extends Game {
             String val = String.valueOf(kvPairs.get(key));
             graphUpdate(key,val);
         }
+        updatePref.clear();
     }
 
     public void setLoadingFlag(boolean value){
@@ -127,15 +146,16 @@ public class gamifyGame extends Game {
         pref.putString("graphTmp", "I got " + val + " at time " + key);
 
         graphPref.putString("activity"+key,val);
-        if (val == "running"){
-            pref.putInteger("minutesRan",pref.getInteger("minutesRan",0)+1);
-        } else if (val == "walking"){
-            pref.putInteger("minutesWalked",pref.getInteger("minutesWalked",0)+1);
-        } else if (val == "dancing"){
-            pref.putInteger("minutesDanced",pref.getInteger("minutesDanced",0)+1);
-        } else if (val == "cycling"){
-            pref.putInteger("minutesBiked",pref.getInteger("minutesBiked",0)+1);
+        if (val.equals("running")){
+            pref.putInteger("minutesRanThisHour",pref.getInteger("minutesRanThisHour",0)+1);
+        } else if (val.equals("active")){
+            pref.putInteger("minutesWalkedThisHour",pref.getInteger("minutesWalkedThisHour",0)+1);
+        } else if (val.equals("dancing")){
+            pref.putInteger("minutesDancedThisHour",pref.getInteger("minutesDancedThisHour",0)+1);
+        } else if (val.equals("cycling")){
+            pref.putInteger("minutesBikedThisHour",pref.getInteger("minutesBikedThisHour",0)+1);
         }
+        pref.flush();
         graphPref.flush();
     }
 

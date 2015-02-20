@@ -104,18 +104,39 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
             game = gamifyGame.getGamifyGame(actionResolverAndroid);
             Preferences pref = game.getPrefs();
 
+            // Daily reset
+            if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 0) {
+                //pref.putInteger("challengeProgress",0);
+            }
+
+            // Hourly reset
+            pref.putInteger("minutesWalked",pref.getInteger("minutesWalked",0)
+                            + pref.getInteger("minutesWalkedThisHour",0));
+            pref.putInteger("minutesRan",pref.getInteger("minutesRan",0)
+                            + pref.getInteger("minutesRanThisHour",0));
+            pref.putInteger("minutesDanced",pref.getInteger("minutesDanced",0)
+                            + pref.getInteger("minutesDancedThisHour",0));
+            pref.putInteger("minutesBiked",pref.getInteger("minutesBiked",0)
+                            + pref.getInteger("minutesBikedThisHour",0));
+
+            pref.putInteger("minutesWalkedThisHour",0);
+            pref.putInteger("minutesRanThisHour",0);
+            pref.putInteger("minutesDancedThisHour",0);
+            pref.putInteger("minutesBikedThisHour",0);
+            pref.putInteger("newFoodThisHour", 0);
+
+
             boolean availableThisHour = pref.getBoolean(challengeTime(), false);
-            sendChallengeNotification(context, String.valueOf(challengeTime()));
             float challengeChancesToday = getChallengeChances();
-            if (availableThisHour && Math.random() < 1f / challengeChancesToday) {
-                pref.putBoolean("waitingChallenge", true);
+            sendChallengeNotification(context,String.valueOf(challengeTime()) + " " + String.valueOf(availableThisHour) + " " + String.valueOf(challengeChancesToday));
+            if (availableThisHour && Math.random() <= 1f / challengeChancesToday) {
                 pref.putBoolean("challengeHour", true);
                 pref.putBoolean("challengedToday", true);
                 String challengePrompt = generateChallenge();
                 pref.putString("challengeVariety", challengePrompt);
                 sendChallengeNotification(context, challengePrompt);
-                pref.flush();
             }
+            pref.flush();
         }
         else{
             SharedPreferences sPref = context.getApplicationContext().getSharedPreferences("bitFitpref", 0);
