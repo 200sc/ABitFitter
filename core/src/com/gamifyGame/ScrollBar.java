@@ -68,13 +68,13 @@ public class ScrollBar
                     Building currentEvent=(Building) event.getListenerActor();
                     myScreen.setSelectedBuilding(currentEvent);
                 }
-                //myScreen.getTextDisplayBox().waitThenGradualMoveToPosition(120, 175, 1.5f, 10);
-                myScreen.getTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
+                //myScreen.getMovingTextDisplayBox().waitThenGradualMoveToPosition(120, 175, 1.5f, 10);
+                myScreen.getMovingTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
                 return true;
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
-               myScreen.getTextDisplayBox().waitThenGradualMoveToPosition(180, 175, 1.5f, 5);
+               myScreen.getMovingTextDisplayBox().waitThenGradualMoveToPosition(180, 175, 1.5f, 5);
                 if(isLongBar == false){
                     Building eventImage = (Building) event.getListenerActor();
                     eventImage.setColor(startColor);
@@ -180,8 +180,8 @@ public class ScrollBar
         {
             new PopUpBox(40, 150, 10, "You cannot afford that building");
 
-            this.myScreen.getTextDisplayBox().setColor(Color.BLACK);
-            this.myScreen.getTextDisplayBox().addAction(new Action()
+            this.myScreen.getMovingTextDisplayBox().setColor(Color.BLACK);
+            this.myScreen.getMovingTextDisplayBox().addAction(new Action()
             {
                 private float remainingTime=1;
                 @Override
@@ -190,7 +190,7 @@ public class ScrollBar
                     remainingTime-=delta;
                     if(remainingTime<0)
                     {
-                        myScreen.getTextDisplayBox().resetColor();
+                        myScreen.getMovingTextDisplayBox().resetColor();
                         return true;
                     }
                     return false;
