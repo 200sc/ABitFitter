@@ -106,7 +106,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
 
             // Daily reset
             if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 0) {
-                //pref.putInteger("challengeProgress",0);
+
             }
 
             // Hourly reset
@@ -128,8 +128,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
 
             boolean availableThisHour = pref.getBoolean(challengeTime(), false);
             float challengeChancesToday = getChallengeChances();
-            sendChallengeNotification(context,String.valueOf(challengeTime()) + " " + String.valueOf(availableThisHour) + " " + String.valueOf(challengeChancesToday));
-            if (availableThisHour && Math.random() <= 1f / challengeChancesToday) {
+            if (availableThisHour && Math.random() <= 1f / challengeChancesToday && !pref.getBoolean("challengedToday", false)) {
                 pref.putBoolean("challengeHour", true);
                 pref.putBoolean("challengedToday", true);
                 String challengePrompt = generateChallenge();
@@ -140,19 +139,34 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
         }
         else{
             SharedPreferences sPref = context.getApplicationContext().getSharedPreferences("bitFitpref", 0);
+            SharedPreferences.Editor editor = sPref.edit();
+            editor.putBoolean("challengeAlarmTriggered",true);
+
+            editor.putInt("minutesWalked",sPref.getInt("minutesWalked",0)
+                    + sPref.getInt("minutesWalkedThisHour",0));
+            editor.putInt("minutesRan",sPref.getInt("minutesRan",0)
+                    + sPref.getInt("minutesRanThisHour",0));
+            editor.putInt("minutesDanced",sPref.getInt("minutesDanced",0)
+                    + sPref.getInt("minutesDancedThisHour",0));
+            editor.putInt("minutesBiked",sPref.getInt("minutesBiked",0)
+                    + sPref.getInt("minutesBikedThisHour",0));
+
+            editor.putInt("minutesWalkedThisHour",0);
+            editor.putInt("minutesRanThisHour",0);
+            editor.putInt("minutesDancedThisHour",0);
+            editor.putInt("minutesBikedThisHour",0);
+            editor.putInt("newFoodThisHour", 0);
 
             boolean availableThisHour = sPref.getBoolean(challengeTime(), false);
             float challengeChancesToday = getSharedChallengeChances(sPref);
-            if (availableThisHour && Math.random() < 1f / challengeChancesToday) {
-                SharedPreferences.Editor editor = sPref.edit();
-                editor.putBoolean("waitingChallenge", true);
+            if (availableThisHour && Math.random() < 1f / challengeChancesToday && !sPref.getBoolean("challengedToday", false)) {
                 editor.putBoolean("challengeHour", true);
                 editor.putBoolean("challengedToday", true);
                 String challengePrompt = generateChallenge();
                 editor.putString("challengeVariety", challengePrompt);
                 sendChallengeNotification(context, challengePrompt);
-                editor.apply();
             }
+            editor.apply();
         }
     }
 

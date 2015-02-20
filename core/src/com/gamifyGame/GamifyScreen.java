@@ -54,7 +54,9 @@ public abstract class GamifyScreen implements Screen {
         layer1.draw();
         layer2.draw();
         layer3.draw();
-        game.updateChallenge();
+        if (frameCount % 180 == 0) {
+            game.updateChallenge();
+        }
         game.updateVitality(delta);
         renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());
@@ -63,6 +65,7 @@ public abstract class GamifyScreen implements Screen {
 
         //batch.begin();
         //batch.end();
+        frameCount = (frameCount + 1) % 180;
     }
 
     @Override

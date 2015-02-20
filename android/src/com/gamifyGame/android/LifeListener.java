@@ -33,7 +33,7 @@ public class LifeListener implements LifecycleListener {
 
     @Override
     public void resume() {
-        //isAlive = true;
+        isAlive = true;
     }
 
     @Override

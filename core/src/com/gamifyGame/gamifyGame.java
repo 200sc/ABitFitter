@@ -6,9 +6,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 public class gamifyGame extends Game {
     private Preferences pref, graphPref;
@@ -96,7 +101,6 @@ public class gamifyGame extends Game {
 
     public void updateChallenge(){
         if(isLoadingSomething || pref.getInteger("challengeProgress") == 100){
-            pref.putInteger("challengeProgress",0);
             return;
         }
         String challenge = pref.getString("challengeVariety","none");
@@ -109,7 +113,7 @@ public class gamifyGame extends Game {
         else if (challenge.equals("Try a new food!")){
             progress = 100*pref.getInteger("newFoodThisHour");
         }
-        pref.putInteger("challengeProgress",Math.min(progress + pref.getInteger("challengeProgress",0),100));
+        pref.putInteger("challengeProgress",Math.min(progress,100));
     }
 
 
@@ -131,8 +135,9 @@ public class gamifyGame extends Game {
             String key = String.valueOf(i.next());
             String val = String.valueOf(kvPairs.get(key));
             graphUpdate(key,val);
+            System.out.println("GAMIFYGAME: " + key + " " + String.valueOf(val));
         }
-        updatePref.clear();
+        updatePref.flush();
     }
 
     public void setLoadingFlag(boolean value){
@@ -142,13 +147,18 @@ public class gamifyGame extends Game {
         return isLoadingSomething;
     }
 
-    public void graphUpdate(String key, String val){
+    public void graphUpdate(String inKey, String val){
+        Date date = new Date(Long.valueOf(inKey));
+        DateFormat format = new SimpleDateFormat("HH:mm", Locale.US);
+        format.setTimeZone(TimeZone.getDefault());
+        String key = format.format(date);
         pref.putString("graphTmp", "I got " + val + " at time " + key);
 
         graphPref.putString("activity"+key,val);
         if (val.equals("running")){
             pref.putInteger("minutesRanThisHour",pref.getInteger("minutesRanThisHour",0)+1);
         } else if (val.equals("active")){
+            System.out.println("GAMIFYGAME: gonna increse it");
             pref.putInteger("minutesWalkedThisHour",pref.getInteger("minutesWalkedThisHour",0)+1);
         } else if (val.equals("dancing")){
             pref.putInteger("minutesDancedThisHour",pref.getInteger("minutesDancedThisHour",0)+1);

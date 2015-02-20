@@ -57,9 +57,10 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
 
         // Set up a Calendar which represents this hour, and send an intent then + 60 minutes, repeating.
         Calendar challengeCalendar = Calendar.getInstance();
-        challengeCalendar.set(Calendar.YEAR,Calendar.MONTH,Calendar.HOUR_OF_DAY);
+        challengeCalendar.set(challengeCalendar.get(Calendar.YEAR),challengeCalendar.get(Calendar.MONTH),
+                              challengeCalendar.get(Calendar.DAY_OF_MONTH),challengeCalendar.get(Calendar.HOUR_OF_DAY),0,0);
         alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, challengeCalendar.getTimeInMillis()-1,
-                1000 * 10, challengeAlarmIntent);
+                1000 * 60 * 60, challengeAlarmIntent);
 
     }
 

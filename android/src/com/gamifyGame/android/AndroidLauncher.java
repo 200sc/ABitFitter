@@ -84,10 +84,28 @@ public class AndroidLauncher extends AndroidApplication {
 
 
         pref.putString("userID", fakeID);
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("bitPref", 0);
+        if(sharedPref.getBoolean("challengeAlarmTriggered",false)){
+            pref.putInteger("minutesWalked",sharedPref.getInt("minutesWalked",0));
+            pref.putInteger("minutesRan",sharedPref.getInt("minutesRan",0));
+            pref.putInteger("minutesDanced",sharedPref.getInt("minutesDanced",0));
+            pref.putInteger("minutesBiked",sharedPref.getInt("minutesBiked",0));
+
+            pref.putInteger("minutesWalkedThisHour",sharedPref.getInt("minutesWalkedThisHour",0));
+            pref.putInteger("minutesRanThisHour",sharedPref.getInt("minutesRanThisHour",0));
+            pref.putInteger("minutesDancedThisHour",sharedPref.getInt("minutesDancedThisHour",0));
+            pref.putInteger("minutesBikedThisHour",sharedPref.getInt("minutesBikedThisHour",0));
+            pref.putInteger("newFoodThisHour", sharedPref.getInt("newFoodThisHour",0));
+            pref.putBoolean("challengeHour", sharedPref.getBoolean("challengeHour",false));
+            pref.putBoolean("challengedToday", sharedPref.getBoolean("challengedToday",false));
+            pref.putString("challengeVariety", sharedPref.getString("challengeVariety","none"));
+            sharedPref.edit().putBoolean("challengeAlarmTriggered",false).apply();
+        }
         pref.flush();
 
 
         new GameBatchUpdate(pref, updatePref, this.getContext(), gameProcess).execute();
+
 
         System.out.println("AndroidLauncher: Android Launcher create!");
 
@@ -128,7 +146,7 @@ public class AndroidLauncher extends AndroidApplication {
             pref.putString("latestFood", sharedPref.getString("currentFood", null));
             pref.flush();
             edit.remove("currentFood");
-            edit.commit();
+            edit.apply();
 
         }
 

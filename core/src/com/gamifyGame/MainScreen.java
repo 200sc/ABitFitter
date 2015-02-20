@@ -30,8 +30,6 @@ public class MainScreen extends GamifyScreen implements Screen
             super.render(delta);
             int challengeProgress = game.getPrefs().getInteger("challengeProgress",0);
 
-
-
             renderHelper.getRenderHelper().getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
             if (challengeProgress == 100){renderHelper.getRenderHelper().getShapeRenderer().setColor(renderHelper.getRenderHelper().yellowLight);}
             else renderHelper.getRenderHelper().getShapeRenderer().setColor(new Color(0.30f,1.0f,0.0f,1.0f));
@@ -39,31 +37,6 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().getShapeRenderer().end();
 
             renderHelper.getRenderHelper().getBatch().begin();
-
-
-
-            // ***** DEBUG PRINTING ***** //
-            if (frameCount % 5 == 0) {
-                game.getPrefs().flush();
-                A5x = A2x;
-                A5y = A2y;
-                A5z = A2z;
-                A2x = Ax;
-                A2y = Ay;
-                A2z = Az;
-                Ax = Gdx.input.getAccelerometerX();
-                Ay = Gdx.input.getAccelerometerY();
-                Az = Gdx.input.getAccelerometerZ();
-            }
-            /*
-            if (Ax < 5 && Ax > 3 && Ay > 1 && Ay < 4 && Az > 6 && Az < 9){
-                renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Sitting",50,260);
-            }
-            else if (Ax < 0 && Ax > -4 && Ay > 7 && Ay < 10 && Az > -1 && Az < 4){
-                renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Standing",50,260);
-            }
-            else renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Neithering",50,260);
-            */
 
             if(game.getLoadingFlag()){
                 if(deltaCount/8 % 4 == 0){   loadingBox.addText(new Point(0, 0), "Loading   ", "small");}
@@ -80,8 +53,6 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),15,30);
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour",0)),5,30);
             renderHelper.getRenderHelper().getBatch().end();
-            // If we want to do more things with frame counting in groups of 30
-            frameCount = (frameCount + 1) % 30;
             deltaCount = (deltaCount+1) % 32;
         }
 

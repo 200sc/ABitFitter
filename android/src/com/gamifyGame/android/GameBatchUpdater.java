@@ -2,7 +2,9 @@ package com.gamifyGame.android;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.preference.Preference;
+import android.widget.Toast;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Preferences;
 import com.gamifyGame.gamifyGame;
@@ -64,7 +66,7 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
             reader.close();
 
             // Reset toRead
-            toRead.delete();
+            if(!toRead.delete())
 
             game.storeUpdatePrefs(updatePref);
         }catch(Exception e){
