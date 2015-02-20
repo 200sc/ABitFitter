@@ -97,7 +97,8 @@ public class Building extends GamifyImage
         return replaceable;
     }
 
-
-
-
+    public TriggerCondition getTriggerCondition()
+    {
+        return triggerCondition;
+    }
 }

@@ -24,6 +24,7 @@ public class gamifyGame extends Game {
     public Quad2Screen quad2S;
     public Quad3Screen quad3S;
     public Quad4Screen quad4S;
+    public ConsumableScreen consumableScreen;
     public BuyScreen buyS;
     private listenerHelper helper;
     boolean paused;
@@ -72,6 +73,7 @@ public class gamifyGame extends Game {
         quad3S = new Quad3Screen(this);
         quad4S = new Quad4Screen(this);
         buyS = new BuyScreen(this);
+        consumableScreen=new ConsumableScreen(this);
         vitality=this.getPrefs().getLong("vitality", 0);
 
         setScreen(mainS);
@@ -85,13 +87,23 @@ public class gamifyGame extends Game {
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
             secondsSinceLastCall-=3;
 
+            ArrayList<Consumable> activeConsumables=consumableScreen.getActiveConsumables();
 
             for(String name: underground)
             {
                 //TODO: Make buildings care about their trigger conditions
                 if(!name.equals("Empty"))
                 {
-                    vitality+=Building.getDefaultBuildings().get(name).getVitalityPerThreeSeconds();
+                    Building currentBuilding=Building.getDefaultBuildings().get(name);
+                    int baseIncrease=currentBuilding.getVitalityPerThreeSeconds();
+                    for(Consumable currentConsumable: activeConsumables)
+                    {
+                        if(currentConsumable.getCondition()==currentBuilding.getTriggerCondition())
+                        {
+                            baseIncrease*=currentConsumable.getMultiplier();
+                        }
+                    }
+                    vitality+=baseIncrease;
                 }
             }
         }
