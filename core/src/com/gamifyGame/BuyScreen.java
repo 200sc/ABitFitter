@@ -17,7 +17,7 @@ public class BuyScreen extends GamifyScreen implements Screen
     private ClickListener buildingListener;
     private ScrollBar scrollBar;
     private Building selectedBuilding;
-    private TextDisplayBox textDisplayBox;
+    private MovingTextDisplayBox textDisplayBox;
 
     public BuyScreen(gamifyGame game) {
         super(game);
@@ -34,11 +34,11 @@ public class BuyScreen extends GamifyScreen implements Screen
     @Override
     public void show() {
         //Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
-        Image placeHold = renderHelper.getRenderHelper().imageSetup("longBox.png", renderHelper.getRenderHelper().getLayer(1), 26, 8);
+        Image placeHold = renderHelper.getRenderHelper().imageSetup("longBox.png", renderHelper.getRenderHelper().getLayer(1), 26, 12);
         placeHold.addListener(game.getListenerHelper().goScreen(0));
 
 
-        textDisplayBox=new TextDisplayBox("midBox.png");
+        textDisplayBox=new MovingTextDisplayBox("midBox.png");
         textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 180, 175);
 
         setUpUnderground();
@@ -58,7 +58,7 @@ public class BuyScreen extends GamifyScreen implements Screen
             currentGamifyImage.addListener(buildingListener);
         }
 
-        scrollBar=new ScrollBar(new ArrayList<GamifyImage>(Building.getDefaultBuildings().values()), undergroundBuild, game, this);
+        scrollBar=new ScrollBar(new ArrayList<GamifyImage>(Building.getBuyableBuildings().values()), undergroundBuild, game, this);
 
 
     }
@@ -91,7 +91,7 @@ public class BuyScreen extends GamifyScreen implements Screen
 
     }
 
-    public TextDisplayBox getTextDisplayBox()
+    public MovingTextDisplayBox getMovingTextDisplayBox()
     {
         return textDisplayBox;
     }

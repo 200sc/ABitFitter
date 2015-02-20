@@ -58,6 +58,14 @@ public class Building extends GamifyImage
         textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));*/
         return defList;
     }
+
+    public static HashMap<String, Building> getBuyableBuildings()
+    {
+        HashMap<String, Building> defBuilds=getDefaultBuildings();
+        defBuilds.remove("HQ");
+        return defBuilds;
+    }
+
     public static Building getDefaultBuildingByName(String name)
     {
         return getDefaultBuildings().get(name);
