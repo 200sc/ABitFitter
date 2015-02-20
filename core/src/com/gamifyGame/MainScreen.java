@@ -147,12 +147,12 @@ public class MainScreen extends GamifyScreen implements Screen
 
 
             loadingBox =new TextDisplayBox("activeHour.png");
-            loadingBox.addAt(renderHelper.getRenderHelper().getLayer(0), 3, 3);
+            loadingBox.addAt(renderHelper.getRenderHelper().getLayer(0), 3, 2);
             loadingBox.setColor(Color.NAVY);
 
 
             HelpDisplay helpBox =new HelpDisplay("inactiveHour.png");
-            helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), 157, 3);
+            helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), 85, 1);
             helpBox.setColor(Color.WHITE);
 
             // Assign items their listeners
