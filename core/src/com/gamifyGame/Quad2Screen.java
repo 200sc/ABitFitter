@@ -33,6 +33,6 @@ public class Quad2Screen extends GamifyScreen implements Screen {
         testData.put(4,33);
         testData.put(5,46);
         testData.put(6,64);
-        testGraph = new SpiderGraph(testData,"Test Data",GamifyColor.BLUE);
+        testGraph = new SpiderGraph(testData,"Test Data",GamifyColor.YELLOW);
     }
 }

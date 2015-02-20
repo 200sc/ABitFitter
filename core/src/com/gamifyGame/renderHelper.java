@@ -39,14 +39,16 @@ public class renderHelper {
     BitmapFont smallFont, medFont, bigFont;
 
     // TODO: Because colors are being used in RGB / 255 values, make a function that does this nicer.
-    final Color boxColor = new Color(new Float(56)/255,new Float(7)/255,new Float(24)/255,1);
-    public final Color blueDark = new Color(new Float(0)/255,new Float(54)/255,new Float(99)/255,1);
-    public final Color blueLight = new Color(new Float(0)/255,new Float(67)/255,new Float(122)/255,1);
-    public final Color blueOutline = new Color(new Float(0)/255,new Float(39)/255,new Float(71)/255,1);
-    //public final Color greenDark = new Color();
-    //public final Color greenLight = new Color();
-    //public final Color tellowDark = new Color();
-    //public final Color yellowLight = new Color();
+    final Color boxColor = new Color(56f/255,7f/255,24f/255,1);
+    public final Color blueDark = new Color(0f/255,54f/255,99f/255,1);
+    public final Color blueLight = new Color(0f/255,67f/255,122f/255,1);
+    public final Color blueOutline = new Color(0f/255,39f/255,71f/255,1);
+    public final Color greenDark = new Color(0f/255, 99f/255, 9f/255, 1);
+    public final Color greenLight = new Color(0f/255, 150f/255, 15f/255, 1);
+    public final Color greenOutline = new Color(0f/255, 125f/255, 14f/255, 1);
+    public final Color yellowDark = new Color(150f/255, 122f/255, 0f/255, 1);
+    public final Color yellowLight = new Color(252f/255, 206f/255, 0f/255,1);
+    public final Color yellowOutline = new Color(201f/255, 164f/255, 0f/255, 1);
 
 
     private static renderHelper renderer;

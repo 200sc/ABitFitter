@@ -60,7 +60,15 @@ public class SpiderGraph {
                 color3 = renderHelper.getRenderHelper().blueOutline;
                 break;
             case GREEN:
+                color1 = renderHelper.getRenderHelper().greenLight;
+                color2 = renderHelper.getRenderHelper().greenDark;
+                color3 = renderHelper.getRenderHelper().greenOutline;
+                break;
             case YELLOW:
+                color1 = renderHelper.getRenderHelper().yellowLight;
+                color2 = renderHelper.getRenderHelper().yellowDark;
+                color3 = renderHelper.getRenderHelper().yellowOutline;
+                break;
         }
     }
 
@@ -92,6 +100,15 @@ public class SpiderGraph {
 
         shapes1.begin(ShapeRenderer.ShapeType.Filled);
         shapes1.setColor(color1);
+
+        /*float[] vertices = {centerX+ (data.get(1)*hex1X),centerY + (data.get(1)*hex1Y),
+                centerX+ (data.get(2)*hex2X), centerY + (data.get(2)*hex2Y),
+                centerX+ (data.get(3)*hex3X), centerY + (data.get(3)*hex3Y),
+                centerX+ (data.get(4)*hex4X), centerY + (data.get(4)*hex4Y),
+                centerX+ (data.get(5)*hex5X), centerY + (data.get(5)*hex5Y),
+                centerX+ (data.get(6)*hex6X), centerY + (data.get(6)*hex6Y)};
+        */
+        //shapes1.polygon(vertices);
 
         shapes1.line(centerX+ (data.get(1)*hex1X),centerY + (data.get(1)*hex1Y), centerX+ (data.get(2)*hex2X), centerY+ (data.get(2)*hex2Y));
         shapes1.line(centerX+ (data.get(2)*hex2X),centerY + (data.get(2)*hex2Y), centerX+ (data.get(3)*hex3X), centerY+ (data.get(3)*hex3Y));
