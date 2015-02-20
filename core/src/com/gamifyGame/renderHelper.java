@@ -1,6 +1,7 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -34,19 +35,21 @@ public class renderHelper {
 
     ShapeRenderer shapes;
     ScalingViewport view;
-    Stage backgroundLayer, activeLayer, topLayer;
+    Stage backgroundLayer, activeLayer, effectsLayer, overlayLayer;
     SpriteBatch batch;
     BitmapFont smallFont, medFont, bigFont;
 
     // TODO: Because colors are being used in RGB / 255 values, make a function that does this nicer.
-    final Color boxColor = new Color(new Float(56)/255,new Float(7)/255,new Float(24)/255,1);
-    public final Color blueDark = new Color(new Float(0)/255,new Float(54)/255,new Float(99)/255,1);
-    public final Color blueLight = new Color(new Float(0)/255,new Float(67)/255,new Float(122)/255,1);
-    public final Color blueOutline = new Color(new Float(0)/255,new Float(39)/255,new Float(71)/255,1);
-    //public final Color greenDark = new Color();
-    //public final Color greenLight = new Color();
-    //public final Color tellowDark = new Color();
-    //public final Color yellowLight = new Color();
+    final Color boxColor = new Color(56f/255,7f/255,24f/255,1);
+    public final Color blueDark = new Color(0f/255,54f/255,99f/255,1);
+    public final Color blueLight = new Color(0f/255,67f/255,122f/255,1);
+    public final Color blueOutline = new Color(0f/255,39f/255,71f/255,1);
+    public final Color greenDark = new Color(0f/255, 99f/255, 9f/255, 1);
+    public final Color greenLight = new Color(0f/255, 150f/255, 15f/255, 1);
+    public final Color greenOutline = new Color(0f/255, 125f/255, 14f/255, 1);
+    public final Color yellowDark = new Color(150f/255, 122f/255, 0f/255, 1);
+    public final Color yellowLight = new Color(252f/255, 206f/255, 0f/255,1);
+    public final Color yellowOutline = new Color(201f/255, 164f/255, 0f/255, 1);
 
 
     private static renderHelper renderer;
@@ -72,7 +75,8 @@ public class renderHelper {
 
         backgroundLayer = new Stage(view);
         activeLayer = new Stage(view);
-        topLayer = new Stage(view);
+        effectsLayer = new Stage(view);
+        overlayLayer = new Stage(view);
         batch = new SpriteBatch();
 
         // Load all image files
@@ -155,7 +159,16 @@ public class renderHelper {
         bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         generator.dispose();
 
-        Gdx.input.setInputProcessor(activeLayer);
+        Gdx.input.setInputProcessor(new InputMultiplexer(activeLayer, overlayLayer));
+
+    }
+
+    public void resetProcessor(){
+        Gdx.input.setInputProcessor(new InputMultiplexer(activeLayer, overlayLayer));
+    }
+
+    public void setProcessor(int which){
+        Gdx.input.setInputProcessor(new InputMultiplexer(overlayLayer));
     }
 
     /*
@@ -179,6 +192,17 @@ public class renderHelper {
             return bigFont;
         }
         return medFont;
+    }
+
+    public void textSet(String text, float x, float y, String size, String align){
+        textSet(text,x,y,size,align,0);
+    }
+
+    public void textSet(String text, float x, float y, String size, String align, float lineWidth){
+        BitmapFont curFont = getFontSize(size);
+        if (align.equals("right")) x -= (180*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
+        else if (align.equals("center")) x-= (90*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
+        textSet(text,x,y,size,lineWidth);
     }
 
     public void textSet(String text, float x, float y, float lineWidth){
@@ -356,7 +380,8 @@ public class renderHelper {
     public Stage getLayer(int level){
         if (level == 0){return backgroundLayer;}
         else if (level == 1){return activeLayer;}
-        else return topLayer;
+        else if (level == 2){return effectsLayer;}
+        else return overlayLayer;
     }
 
     public ShapeRenderer newShapeRenderer(){

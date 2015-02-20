@@ -57,7 +57,15 @@ public class HistogramGraph {
                 color3 = renderHelper.getRenderHelper().blueOutline;
                 break;
             case GREEN:
+                color1 = renderHelper.getRenderHelper().greenLight;
+                color2 = renderHelper.getRenderHelper().greenDark;
+                color3 = renderHelper.getRenderHelper().greenOutline;
+                break;
             case YELLOW:
+                color1 = renderHelper.getRenderHelper().yellowLight;
+                color2 = renderHelper.getRenderHelper().yellowDark;
+                color3 = renderHelper.getRenderHelper().yellowOutline;
+                break;
         }
         if (scale.equals("small")){
             dataPointCount = 32;
