@@ -183,6 +183,17 @@ public class renderHelper {
         return medFont;
     }
 
+    public void textSet(String text, float x, float y, String size, String align){
+        textSet(text,x,y,size,align,0);
+    }
+
+    public void textSet(String text, float x, float y, String size, String align, float lineWidth){
+        BitmapFont curFont = getFontSize(size);
+        if (align.equals("right")) x -= (180*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
+        else if (align.equals("center")) x-= (90*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
+        textSet(text,x,y,size,lineWidth);
+    }
+
     public void textSet(String text, float x, float y, float lineWidth){
         textSet(text,x,y,"medium",lineWidth);
     }
