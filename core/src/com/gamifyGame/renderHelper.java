@@ -39,6 +39,8 @@ public class renderHelper {
     SpriteBatch batch;
     BitmapFont smallFont, medFont, bigFont;
 
+    InputMultiplexer normalProcessor;
+
     // TODO: Because colors are being used in RGB / 255 values, make a function that does this nicer.
     final Color boxColor = new Color(56f/255,7f/255,24f/255,1);
     public final Color blueDark = new Color(0f/255,54f/255,99f/255,1);
@@ -159,12 +161,13 @@ public class renderHelper {
         bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         generator.dispose();
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(activeLayer, overlayLayer));
+        normalProcessor = new InputMultiplexer(activeLayer, overlayLayer);
+        Gdx.input.setInputProcessor(normalProcessor);
 
     }
 
     public void resetProcessor(){
-        Gdx.input.setInputProcessor(new InputMultiplexer(activeLayer, overlayLayer));
+        Gdx.input.setInputProcessor(normalProcessor);
     }
 
     public void setProcessor(int which){
