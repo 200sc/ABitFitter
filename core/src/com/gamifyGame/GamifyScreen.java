@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import javax.xml.soap.Text;
+
 /**
  * Created by Andrew on 2/9/2015.
  */
@@ -23,6 +25,7 @@ public abstract class GamifyScreen implements Screen {
     //protected float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     protected int frameCount;
     protected Image retBox;
+
 
 
     public GamifyScreen(gamifyGame game)
@@ -41,6 +44,7 @@ public abstract class GamifyScreen implements Screen {
         Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
         Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
+        Stage layer3 = renderHelper.getRenderHelper().getLayer(3);
 
         // Undraw the last screen
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -49,6 +53,7 @@ public abstract class GamifyScreen implements Screen {
         layer0.draw();
         layer1.draw();
         layer2.draw();
+        layer3.draw();
         game.updateVitality(delta);
         renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());

@@ -1,6 +1,7 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -34,7 +35,7 @@ public class renderHelper {
 
     ShapeRenderer shapes;
     ScalingViewport view;
-    Stage backgroundLayer, activeLayer, topLayer;
+    Stage backgroundLayer, activeLayer, effectsLayer, overlayLayer;
     SpriteBatch batch;
     BitmapFont smallFont, medFont, bigFont;
 
@@ -72,7 +73,8 @@ public class renderHelper {
 
         backgroundLayer = new Stage(view);
         activeLayer = new Stage(view);
-        topLayer = new Stage(view);
+        effectsLayer = new Stage(view);
+        overlayLayer = new Stage(view);
         batch = new SpriteBatch();
 
         // Load all image files
@@ -155,7 +157,16 @@ public class renderHelper {
         bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         generator.dispose();
 
-        Gdx.input.setInputProcessor(activeLayer);
+        Gdx.input.setInputProcessor(new InputMultiplexer(activeLayer, overlayLayer));
+
+    }
+
+    public void resetProcessor(){
+        Gdx.input.setInputProcessor(new InputMultiplexer(activeLayer, overlayLayer));
+    }
+
+    public void setProcessor(int which){
+        Gdx.input.setInputProcessor(new InputMultiplexer(overlayLayer));
     }
 
     /*
@@ -356,7 +367,8 @@ public class renderHelper {
     public Stage getLayer(int level){
         if (level == 0){return backgroundLayer;}
         else if (level == 1){return activeLayer;}
-        else return topLayer;
+        else if (level == 2){return effectsLayer;}
+        else return overlayLayer;
     }
 
     public ShapeRenderer newShapeRenderer(){
