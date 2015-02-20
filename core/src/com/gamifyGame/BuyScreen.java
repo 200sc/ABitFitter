@@ -1,6 +1,5 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,8 +9,6 @@ import com.badlogic.gdx.utils.Json;
 
 import java.util.ArrayList;
 
-import javax.xml.soap.Text;
-
 /**
  * Created by Stephen on 2/1/2015.
  */
@@ -19,7 +16,7 @@ public class BuyScreen extends GamifyScreen implements Screen
 {
     private ClickListener buildingListener;
     private ScrollBar scrollBar;
-    private String currentText;
+    private Building selectedBuilding;
     private TextDisplayBox textDisplayBox;
 
     public BuyScreen(gamifyGame game) {
@@ -30,7 +27,7 @@ public class BuyScreen extends GamifyScreen implements Screen
                 return true;
             }
         };
-        currentText="";
+        selectedBuilding =null;
         // Make a new instance of the buildings that is interactable
     }
 
@@ -41,7 +38,7 @@ public class BuyScreen extends GamifyScreen implements Screen
         placeHold.addListener(game.getListenerHelper().goScreen(0));
 
 
-        textDisplayBox=new TextDisplayBox();
+        textDisplayBox=new TextDisplayBox("midBox.png");
         textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 180, 175);
 
         setUpUnderground();
@@ -88,9 +85,10 @@ public class BuyScreen extends GamifyScreen implements Screen
         //renderHelper.getRenderHelper().imageSetup("midBox.png", renderHelper.getRenderHelper().getLayer(1), 120, 175);
         renderHelper.getRenderHelper().getBatch().end();
 
+        if(selectedBuilding !=null)
+            textDisplayBox.addText(new Point(0, 30), selectedBuilding.toString());
+        textDisplayBox.addText(new Point(0, -15),"Vitality: "+game.getVitality( ));
 
-        textDisplayBox.addText(new Point(-30, 10), currentText);
-        textDisplayBox.addText(new Point(-20, -15),"Vitality: "+game.getVitality( ));
     }
 
     public TextDisplayBox getTextDisplayBox()
@@ -99,9 +97,9 @@ public class BuyScreen extends GamifyScreen implements Screen
     }
 
 
-    public void setCurrentText(String newText)
+    public void setSelectedBuilding(Building newBuilding)
     {
-       currentText=newText;
+       selectedBuilding =newBuilding;
     }
 
     public ArrayList<Building> myBuildings()

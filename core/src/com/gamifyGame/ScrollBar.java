@@ -2,6 +2,7 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -53,9 +54,19 @@ public class ScrollBar
                 if(isLongBar == false){
                     //event.getListenerActor().setColor(Color.GREEN);
                     for(GamifyImage current: undergroundBuildings)
-                        current.setColor(Color.GREEN);
+                    {
+                        if(current instanceof Building) {
+                            Building currentBuild = (Building) current;
+                            if(currentBuild.isReplaceable())
+                                current.setColor(Color.GREEN);
+                            else
+                                current.setColor(Color.RED);
+                        }
+                       else
+                            current.setColor(Color.GREEN);
+                    }
                     Building currentEvent=(Building) event.getListenerActor();
-                    myScreen.setCurrentText(currentEvent.toString());
+                    myScreen.setSelectedBuilding(currentEvent);
                 }
                 //myScreen.getTextDisplayBox().waitThenGradualMoveToPosition(120, 175, 1.5f, 10);
                 myScreen.getTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
@@ -69,8 +80,8 @@ public class ScrollBar
                     eventImage.setColor(startColor);
                     for(GamifyImage current: undergroundBuildings)
                         current.setColor(startColor);
-                    Integer index = renderHelper.getRenderHelper().buildCheck(undergroundBuildings,eventImage, game);
-                    snapBack(eventImage);
+                    Integer index = buildCheck(undergroundBuildings, eventImage, game);
+                    notScroll =  snapBack(eventImage);
                     if(index !=null )
                     {
                         GamifyImage beingReplaced= undergroundBuildings.remove(index.intValue());
@@ -94,7 +105,7 @@ public class ScrollBar
                 Image eventImage = (Image) event.getListenerActor();
                 if(sY-eventImage.getY() > eventImage.getHeight()/3 || notScroll ){
                     notScroll = true;
-                    eventImage.setColor(Color.RED);
+                    eventImage.setColor(Color.GREEN);
                     eventImage.moveBy(x-startX/2, y-startY);
                 }
                 else
@@ -106,7 +117,7 @@ public class ScrollBar
     }
 
 
-    private void snapBack(GamifyImage toSnap)
+    private boolean snapBack(GamifyImage toSnap)
     {
         int index=images.lastIndexOf(toSnap);
         float newX;
@@ -115,7 +126,7 @@ public class ScrollBar
         if(images.size()==1)
         {
             toSnap.setPosition(0, 0);
-            return;
+            return false;
         }
         else if(index==0)
         {
@@ -128,6 +139,7 @@ public class ScrollBar
             newX=neighbor.getX()+toSnap.getWidth()+ScrollBar.PADDING;
         }
         toSnap.setPosition(newX, neighbor.getY());
+        return false;
     }
 
     private void makeScroll(Stage stage, int hOrigin, int vOrigin){
@@ -161,6 +173,66 @@ public class ScrollBar
         {
             building.moveBy(xMove, yMove);
         }
+    }
+    private Integer buildCheck(ArrayList<GamifyImage> possibleBuildingSites, Building toBuy, gamifyGame game )
+    {
+        if(toBuy.getCost()>game.getVitality())
+        {
+            new PopUpBox(40, 150, 10, "You cannot afford that building");
+
+            this.myScreen.getTextDisplayBox().setColor(Color.BLACK);
+            this.myScreen.getTextDisplayBox().addAction(new Action()
+            {
+                private float remainingTime=1;
+                @Override
+                public boolean act(float delta)
+                {
+                    remainingTime-=delta;
+                    if(remainingTime<0)
+                    {
+                        myScreen.getTextDisplayBox().resetColor();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            return null;
+        }
+
+        int foundIndex = -1;
+        float minX = toBuy.getX();
+        float maxX = toBuy.getRight();
+        float minY = toBuy.getY();
+        float maxY = toBuy.getTop();
+
+        for(int i=0; i<possibleBuildingSites.size(); i++)
+        {
+            GamifyImage currentImage=possibleBuildingSites.get(i);
+            //TODO: Worry about HQ/other conditions
+            if (renderHelper.getRenderHelper().rectangleCollided(minX, maxX, minY, maxY, currentImage.getX(), currentImage.getRight(), currentImage.getY(), currentImage.getTop()))
+            {
+                boolean success;
+                if(currentImage instanceof  Building)
+                {
+                    Building currentBuilding=(Building) currentImage;
+                    success=currentBuilding.isReplaceable();
+                }
+                else
+                {
+                    success=true;
+                }
+                if(success) {
+                    game.addToVitality((long) -toBuy.getCost());
+                    return i;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        return null;
     }
 
     public ArrayList<? extends GamifyImage> getImages()

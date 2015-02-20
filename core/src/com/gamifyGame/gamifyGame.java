@@ -29,6 +29,7 @@ public class gamifyGame extends Game {
     private static gamifyGame gamifyGame;
     private long vitality;
     private float secondsSinceLastCall=0;
+    private boolean isLoadingSomething;
     //READ THIS
     //READDDD
 
@@ -106,12 +107,20 @@ public class gamifyGame extends Game {
 
     public void storeUpdatePrefs(Preferences updatePref){
         Map<String,?> kvPairs = updatePref.get();
+        updatePref.clear();
         Set<String> keySet = kvPairs.keySet();
         for(Iterator i = keySet.iterator(); i.hasNext();){
             String key = String.valueOf(i.next());
             String val = String.valueOf(kvPairs.get(key));
             graphUpdate(key,val);
         }
+    }
+
+    public void setLoadingFlag(boolean value){
+        isLoadingSomething = value;
+    }
+    public boolean getLoadingFlag(){
+        return isLoadingSomething;
     }
 
     public void graphUpdate(String key, String val){

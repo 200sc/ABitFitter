@@ -210,17 +210,9 @@ public class renderHelper {
         medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
     }
-    public void textSetCenter(String text, float offsetx, float offsety, String str)
+    public void textSetCenter(String text, float offsetx, float offsety, String size)
     {
-        BitmapFont curFont;
-        if (str.equals("small")){
-            curFont = smallFont;
-        } else if (str.equals("large")){
-            curFont = bigFont;
-        }
-        else {
-            curFont = medFont;
-        }
+        BitmapFont curFont = getFontSize(size);
         BitmapFont.TextBounds bounds = curFont.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         curFont.draw(batch, text, (textLoc.x),
@@ -231,18 +223,26 @@ public class renderHelper {
         textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth()/2);
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
-    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety) {
-        BitmapFont.TextBounds curBounds = medFont.getBounds(text);
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size) {
+        BitmapFont curFont = getFontSize(size);
+        BitmapFont.TextBounds curBounds = curFont.getBounds(text);
         Point convertedDimensions=new Point(curBounds.width, curBounds.height);
         convertedDimensions=convertTextCoorsToImageCoors(convertedDimensions);
 
         float toOffset = convertedDimensions.x/2;
-        if(convertedDimensions.x/2 > image.getImageWidth()/2){toOffset = image.getImageWidth()/2;}
+        if(convertedDimensions.x/2 > (image.getImageWidth()-4)/2){toOffset = image.getImageWidth()/2;}
 
-        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
+        Point textCoorsLoc=new Point(offsetx+image.getX()+(image.getImageWidth()+4)/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
 
-        textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, image.getWidth());
+        textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, size,  image.getWidth());
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
+    }
+
+    public Point getBounds(String text)
+    {
+        BitmapFont.TextBounds curBounds = medFont.getBounds(text);
+        Point convertedDimensions=convertTextCoorsToImageCoors(new Point(curBounds.width, curBounds.height));
+        return new Point(convertedDimensions.x, convertedDimensions.y);
     }
 
 
@@ -436,34 +436,6 @@ public class renderHelper {
 
 
         return toReturn;
-    }
-
-    public Integer buildCheck(ArrayList<GamifyImage> possibleBuildingSites, Building toBuy, gamifyGame game )
-    {
-        if(toBuy.getCost()>game.getVitality())
-        {
-            new PopUpBox(40, 150, 10, "You cannot afford that building");
-            return null;
-        }
-
-        int foundIndex = -1;
-        float minX = toBuy.getX();
-        float maxX = toBuy.getRight();
-        float minY = toBuy.getY();
-        float maxY = toBuy.getTop();
-
-        for(int i=0; i<possibleBuildingSites.size(); i++)
-        {
-            GamifyImage currentBuilding=possibleBuildingSites.get(i);
-            //TODO: Worry about HQ/other conditions
-            if (rectangleCollided(minX, maxX, minY, maxY, currentBuilding.getX(), currentBuilding.getRight(), currentBuilding.getY(), currentBuilding.getTop()))
-            {
-                game.addToVitality( (long) -toBuy.getCost());
-                return i;
-            }
-        }
-
-        return null;
     }
 
 

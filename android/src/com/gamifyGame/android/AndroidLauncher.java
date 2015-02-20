@@ -1,5 +1,6 @@
 package com.gamifyGame.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.gamifyGame.ActionResolver;
 import com.gamifyGame.gamifyGame;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,33 +54,40 @@ public class AndroidLauncher extends AndroidApplication {
         double ID = Math.random()*(Math.pow(10d,15d))%Math.pow(10d,15d)+Math.pow(10d,16d);
         String fakeID = pref.getString("userID",String.valueOf(ID));
 
-        try {
-            updatePref.clear();
-            File toRead = new File(this.getApplicationContext().getFilesDir(), "updateFile");
-            BufferedReader reader = new BufferedReader(new FileReader((toRead)));
-            String line = null;
-            String[] lineParts;
-            HashMap<String,String> updateFile = new HashMap<String,String>();
-            int i = 0;
-            while ((line = reader.readLine()) != null){
-                lineParts = line.split(",");
-                updateFile.put(lineParts[0],lineParts[1]);
-                System.out.println("KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
-            }
-            updatePref.put(updateFile);
-            System.out.print("This updatefile" + updateFile);
-            updatePref.flush();
-            // Replace fakeID with userID when userID is implemented
-            reader.close();
+//        //TODO: move to GameBatchUpdater
+//        try {
+//            updatePref.clear();
+//            File toRead = new File(this.getApplicationContext().getFilesDir(), "updateFile");
+//            BufferedReader reader = new BufferedReader(new FileReader((toRead)));
+//            String line = null;
+//            String[] lineParts;
+//            HashMap<String,String> updateFile = new HashMap<String,String>();
+//            int i = 0;
+//            while ((line = reader.readLine()) != null){
+//                lineParts = line.split(",");
+//                updateFile.put(lineParts[0],lineParts[1]);
+//                System.out.println("KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+//            }
+//            updatePref.put(updateFile);
+//            System.out.print("This updatefile" + updateFile);
+//            updatePref.flush();
+//            // Replace fakeID with userID when userID is implemented
+//            reader.close();
+//
+//            // Reset toRead
+//            toRead.delete();
+//        }
+//        catch (Exception e){
+//            assert (1 == 0);
+//        }
 
-            // Reset toRead
-            toRead.delete();
-        }
-        catch (Exception e){
-            assert (1 == 0);
-        }
+
+
         pref.putString("userID", fakeID);
         pref.flush();
+
+
+        new GameBatchUpdate(pref, updatePref, this.getContext(), gameProcess).execute();
 
         System.out.println("AndroidLauncher: Android Launcher create!");
 
@@ -100,7 +110,7 @@ public class AndroidLauncher extends AndroidApplication {
         setContentView(R.layout.loginscreenres);
         gameProcess.setPref(pref);
         gameProcess.setGraphPref(graphPref);
-        gameProcess.storeUpdatePrefs(updatePref);
+        //gameProcess.storeUpdatePrefs(updatePref);
         gameListener.setStatus(true);
         initialize(gameProcess, config);
 
@@ -133,6 +143,12 @@ public class AndroidLauncher extends AndroidApplication {
 
         super.onResume();
 
+    }
+
+    class GameBatchUpdate extends GameBatchUpdater<String> {
+        public GameBatchUpdate(Preferences basicPref, Preferences updaterPrefs, Context mainContext, gamifyGame gamifyGame){
+            super(basicPref, updaterPrefs, mainContext, gamifyGame);
+        }
     }
 
 }

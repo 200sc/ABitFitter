@@ -17,7 +17,8 @@ import java.util.Calendar;
 public class MainScreen extends GamifyScreen implements Screen
 {
     private Image quad3;
-    private float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
+    private float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z, deltaCount;
+    private TextDisplayBox loadingBox;
 
     public MainScreen(gamifyGame game) {
          super(game);
@@ -68,15 +69,26 @@ public class MainScreen extends GamifyScreen implements Screen
             else renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), "Neithering",50,260);
             */
 
+            if(game.getLoadingFlag()){
+                if(deltaCount/8 % 4 == 0){   loadingBox.addText(new Point(0, 0), "Loading   ", "small");}
+                if(deltaCount/8 % 4 == 1){   loadingBox.addText(new Point(0, 0), "Loading.  ", "small");}
+                if(deltaCount/8 % 4 == 2){   loadingBox.addText(new Point(0, 0), "Loading.. ", "small");}
+                if(deltaCount/8 % 4 == 3){   loadingBox.addText(new Point(0, 0), "Loading...", "small");}
+            }
+            else{
+                loadingBox.addText(new Point(0, 0), "Loaded   ", "small");
+            }
+
             renderHelper.getRenderHelper().textSetCenter("Your Vitality:", -25 , 25, "large");
             renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), -20 , 0, "large");
-            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),40,20);
+            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),40,60);
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("updaterRunning",0)),20,20);
             renderHelper.getRenderHelper().textSet("This is a really long string that shouldn't fit into a single line", 80,230,30);
             renderHelper.getRenderHelper().getSmallFont().draw(renderHelper.getRenderHelper().getBatch(), String.valueOf(frameCount),50,200);
             renderHelper.getRenderHelper().getBatch().end();
             // If we want to do more things with frame counting in groups of 30
             frameCount = (frameCount + 1) % 30;
+            deltaCount = (deltaCount+1) % 32;
         }
 
         @Override
@@ -132,6 +144,13 @@ public class MainScreen extends GamifyScreen implements Screen
             Image quad4 = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 37, -25);
             Image midbox = renderHelper.getRenderHelper().imageSetupCenter("midBox.png", layer1, 0, 12);
 
+
+
+            loadingBox =new TextDisplayBox("activeHour.png");
+            loadingBox.addAt(renderHelper.getRenderHelper().getLayer(0), 40, 40);
+            loadingBox.setColor(Color.NAVY);
+
+
             // Assign items their listeners
             quad1.addListener(game.getListenerHelper().goScreen(1));
             //quad1.addListener(listenerH.setInt("toScreen",1));
@@ -140,6 +159,8 @@ public class MainScreen extends GamifyScreen implements Screen
             quad4.addListener(game.getListenerHelper().goScreen(4));
             midbox.addListener(game.getListenerHelper().goScreen(5));
             frameCount = 0;
+            deltaCount = 0;
+
         }
 
         private String timeOfDay(){
