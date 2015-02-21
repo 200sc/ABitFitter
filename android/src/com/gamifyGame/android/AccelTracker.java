@@ -39,7 +39,8 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         SensorManager mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        SystemClock.sleep(30000);
+        //SystemClock.sleep(30000);
+        SystemClock.sleep(10000);
         mSensorManager.unregisterListener(this);
         String completeData = writeData.substring(0);
         activity = Classify(completeData);
@@ -126,12 +127,39 @@ public class AccelTracker extends IntentService implements SensorEventListener {
     }
 
     protected int activityAnalysis(float x, float y, float z, int t){
+        /*
         if ((x < 0) && (y < -10) && (z < -5) && t < 5000){
             // "active", or walking
-            //sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
+            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
             return 1;
         }
-        //sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 0");
+        */
+
+        if (((x < 10) && (x > -10)) && ((y < 20) && (y > -10)) && ((z > -10) && (z < 12))){
+            //return running
+            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
+            return 2;
+        }
+
+        if (((x < 10) && (x > -5)) && ((y < 20) && (y > 0)) && ((z > -5) && (z < 10))){
+            //return walking
+            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
+            return 5;
+        }
+
+        if (((x < 5) && (x > 4)) && ((y < 5) && (y > 3)) && ((z > 7) && (z < 8))){
+            //return sitting
+            return 6;
+        }
+
+
+        if (((x < 0) && (x > -2)) && ((y < 10) && (y > 9)) && ((z > 0) && (z < 1.5))){
+            //return standing
+            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
+            return 7;
+        }
+
+        sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 0");
         // 0 currently means in-active
         return 0;
     }
@@ -206,6 +234,9 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             case 2: return "running";
             case 3: return "cycling";
             case 4: return "dancing";
+            case 5: return "walking";
+            case 6: return "sitting";
+            case 7: return "standing";
             default: return "nothing";
         }
     }

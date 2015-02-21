@@ -48,8 +48,6 @@ public class AccelSender extends IntentService {
             doJSONReq(toSend);
         }
         try {
-
-
             JSONObject toSend = new JSONObject();
             toSend.put("userID", 1234);
             toSend.put("activity", actId[0]+","+actId[1]+","+actId[2]);
@@ -146,6 +144,12 @@ public class AccelSender extends IntentService {
             case 3: curActivity = "cycling";
                 break;
             case 4: curActivity = "dancing";
+                break;
+            case 5: curActivity = "walking";
+                break;
+            case 6: curActivity = "sitting";
+                break;
+            case 7: curActivity = "standing";
                 break;
         }
         intent.putExtra("curActivity", curActivity);
