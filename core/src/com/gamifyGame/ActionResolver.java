@@ -9,4 +9,5 @@ public interface ActionResolver {
     public void scanAct(CharSequence text);
     public void toHomeScreen(CharSequence text);
     public void showToast(CharSequence text);
+    public void putSharedPrefs(String key, String value);
 }

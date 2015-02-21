@@ -53,7 +53,10 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp", "null")), 15, 30);
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour", 0)), "black", 5, 30, "medium");
             renderHelper.getRenderHelper().getBatch().end();
+
             deltaCount = (deltaCount+1) % 32;
+
+            renderHelper.getRenderHelper().endRender();
         }
 
         @Override
@@ -89,7 +92,6 @@ public class MainScreen extends GamifyScreen implements Screen
                 pref.putString("undergroundBridges", json.toJson(tmpBridges));
                 pref.flush();
             }
-
 
 
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
@@ -133,9 +135,11 @@ public class MainScreen extends GamifyScreen implements Screen
             float sleepX = (renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
             sleepBox.addAt(renderHelper.getRenderHelper().getLayer(1), sleepX,12);
             sleepBox.addText(new Point(0,0), "Click to Start Sleep Logging");
-            sleepBox.addListener(new SleepOverlayListener(game));
+            SleepOverlayListener sleepListener = new SleepOverlayListener(game);
+            sleepBox.addListener(sleepListener);
 
 
+            if(pref.getString("isSleeping", "false").equals("true")){sleepListener.setSleepOverlay();}
 
             // Assign items their listeners
             quad1.addListener(new GoScreenClickListener(game.quad1S, game));

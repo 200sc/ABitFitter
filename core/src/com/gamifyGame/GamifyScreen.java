@@ -53,7 +53,7 @@ public abstract class GamifyScreen implements Screen {
         layer0.draw();
         layer1.draw();
         layer2.draw();
-        layer3.draw();
+
         if (frameCount % 180 == 0) {
             game.updateChallenge();
         }
@@ -65,6 +65,9 @@ public abstract class GamifyScreen implements Screen {
 
         //batch.begin();
         //batch.end();
+
+        renderHelper.getRenderHelper().endRender();
+
         frameCount = (frameCount + 1) % 180;
     }
 

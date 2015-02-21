@@ -1,6 +1,7 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -64,21 +65,20 @@ public class OverlayHelper extends GamifyImage {
         super.draw(b, parentAlpha);
         renderHelper renderer = renderHelper.getRenderHelper();
 
-        b.end();
-        renderer.getShapeRenderer().begin();
 
-        if(toDraw != null){
 
-            for(ShapeInfo shape : toDraw){
-                renderer.makeBox(renderer.getShapeRenderer(), renderer.getLayer(3),
-                        shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+//        if(toDraw != null){
+//            b.end();
+//            renderer.getShapeRenderer().begin();
+//
+//            for(ShapeInfo shape : toDraw){
+//                renderer.makeBox(renderer.getShapeRenderer(), renderer.getLayer(3),
+//                        shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+//            }
+//            renderer.getShapeRenderer().end();
+//            b.begin();
+//        }
 
-            }
-
-        }
-
-        renderer.getShapeRenderer().end();
-        b.begin();
     }
 
     public void addShape(int x, int y, int width, int height){
