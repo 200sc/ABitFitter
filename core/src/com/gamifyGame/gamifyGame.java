@@ -99,7 +99,7 @@ public class gamifyGame extends Game {
                     int baseIncrease=currentBuilding.getVitalityPerThreeSeconds();
                     for(Consumable currentConsumable: activeConsumables)
                     {
-                        if(currentConsumable.getCondition()==currentBuilding.getTriggerCondition())
+                        if(currentConsumable.getTriggerCondition()==currentBuilding.getTriggerCondition())
                         {
                             baseIncrease*=currentConsumable.getMultiplier();
                         }
