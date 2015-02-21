@@ -66,7 +66,7 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
             reader.close();
 
             // Reset toRead
-            if(!toRead.delete())
+            toRead.delete();
 
             game.storeUpdatePrefs(updatePref);
         }catch(Exception e){
