@@ -50,8 +50,8 @@ public class MainScreen extends GamifyScreen implements Screen
 
             renderHelper.getRenderHelper().textSetCenter("Your Vitality:", -25 , 25, "large");
             renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), -20 , 0, "large");
-            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),15,30);
-            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour",0)),"black", 5,30, "medium");
+            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp", "null")), 15, 30);
+            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour", 0)), "black", 5, 30, "medium");
             renderHelper.getRenderHelper().getBatch().end();
             deltaCount = (deltaCount+1) % 32;
         }
@@ -133,6 +133,7 @@ public class MainScreen extends GamifyScreen implements Screen
             float sleepX = (renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
             sleepBox.addAt(renderHelper.getRenderHelper().getLayer(1), sleepX,12);
             sleepBox.addText(new Point(0,0), "Click to Start Sleep Logging");
+            sleepBox.addListener(new SleepOverlayListener(game));
 
 
 

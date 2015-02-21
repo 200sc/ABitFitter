@@ -66,9 +66,12 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
             reader.close();
 
             // Reset toRead
-            toRead.delete();
-
+            if(!toRead.delete()){System.out.println("GAMEBATCHUPDATER: Failed to delete file");}
+            if (toRead.exists()){System.out.println("GAMEBATCHUPDATER: Failed to delete file correctly");}
             game.storeUpdatePrefs(updatePref);
+
+            updatePref.get();
+
         }catch(Exception e){
             System.out.println("GAMEBATCHUPDATER:" + e.getMessage());
             System.out.println("GAMEBATCHUPDATER: crash in background");

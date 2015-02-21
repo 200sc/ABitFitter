@@ -2,6 +2,7 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Folly on 2/19/2015.
+ * Makes the help button which will on click overlay with a contextual help interface for screens.
  */
 public class HelpDisplay extends TextDisplayBox {
     final String helpBoxResource = "placeholder140x140.png";
@@ -29,30 +31,20 @@ public class HelpDisplay extends TextDisplayBox {
     }
 
     private void displayHelpContext(){
-        if(displayingFlag){return ;}
-        displayingFlag = true;
-        toBeRestored= new Array<Actor>( renderHelper.getRenderHelper().getLayer(3).getActors());
 
-        //Make it so the other layers are not interactable
-        renderHelper.getRenderHelper().setProcessor(3);
-
-
-
-        //Construct the overlay
 
         float xLoc = renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH/2 - imgWidth/2;
-        float yLoc = renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT/2 - imgHeight/2;
-        TextDisplayBox helpMenu =new TextDisplayBox(helpBoxResource);
-        helpMenu.setSize(renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH, renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT);
-        helpMenu.addAt(renderHelper.getRenderHelper().getLayer(3), 0,0);
+        float yLoc = renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT/3;
 
-        helpMenu.getColor().a = 0.4f;
+        //Construct the overlay
+        OverlayHelper overlay = new OverlayHelper(helpBoxResource, game);
+        if(!overlay.setup()){return;} // Part of the promise otherwise bad things could happen
 
 
         TextDisplayBox resumeGame = new TextDisplayBox("longBox.png");
-        resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc + 5, yLoc);
+        resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc + 5, yLoc-renderHelper.getRenderHelper().textureHash.get("longBox.png").getHeight()/2);
         resumeGame.addText(new Point(0,0), "Resume Game");
-        resumeGame.addListener(resumeListener);
+        resumeGame.addListener(overlay.resumeListener);
 
 
         Screen curScreen =  game.getScreen();
@@ -70,28 +62,8 @@ public class HelpDisplay extends TextDisplayBox {
         this.addListener(helpListener);
     }
 
-    private void resumeGame(){ // Gets the user back to the main screen away from help overlay
-        renderHelper.getRenderHelper().getLayer(3).clear();
-        for(Actor actor: toBeRestored){
-            renderHelper.getRenderHelper().getLayer(3).addActor(actor);
-        }
-        renderHelper.getRenderHelper().resetProcessor();
-        displayingFlag = false;
-    }
-ClickListener resumeListener = new ClickListener(){
-    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){ resumeGame(); return true;}};
-
-
     private void mainScreenDisplay(){
-//        TextDisplayBox midBoxDesc  =new TextDisplayBox("48Box.png");
-//        midBoxDesc.addAt(renderHelper.getRenderHelper().getLayer(3), 85, renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT/2);
-//        midBoxDesc.setColor(renderHelper.getRenderHelper().yellowOutline);
-//        midBoxDesc.getColor().a = 0.3f;
-//        midBoxDesc.addText(new Point(0,0), "This Goes to buying stuff");
-
-        HelpInfoBox midBoxDesc = new HelpInfoBox("48Box.png", 85, renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT/2 + 10, "The middle box displays your vitality which is the main resource of the game. \n If clicked on this will bring up the screen used to buy new buildings" , "black");
-
-
+        HelpInfoBox midBoxDesc = new HelpInfoBox("48Box.png", 85, renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT/2 + 10, "The middle box displays your vitality which is the main resource of the game. \n If clicked on this will bring up the screen used to buy new buildings" , "green");
         return ;
     }
     private void quadScreen1Display(){
@@ -107,6 +79,15 @@ ClickListener resumeListener = new ClickListener(){
         return ;
     }
     private void buyScreenDisplay(){
+        renderHelper renderer = renderHelper.getRenderHelper();
+        Texture t48 = renderer.textureHash.get("48Box.png");
+        HelpInfoBox scrollDesc = new HelpInfoBox("48Box.png", 15, renderer.RENDERED_SCREEN_HEIGHT -t48.getHeight(), "\n\n Top bar is a scrollbar of buildings.\n" , "green");
+        HelpInfoBox scrollBoxDesc = new HelpInfoBox("48Box.png", 120, renderer.RENDERED_SCREEN_HEIGHT - t48.getHeight()-60, "\n\n Pull a building down to see its description and cost." , "green");
+        HelpInfoBox buildingSpaceDesc = new HelpInfoBox("48Box.png", renderer.RENDERED_SCREEN_WIDTH/2-t48.getWidth()
+                        , renderer.RENDERED_SCREEN_HEIGHT/2 - t48.getHeight()/2, " \n\nDrag Buildings from scrollbar. If there are valid spaces they will appear green.\n" , "green");
+
+        HelpInfoBox expandDesc = new HelpInfoBox("48Box.png", renderer.RENDERED_SCREEN_WIDTH/2, renderer.RENDERED_SCREEN_HEIGHT/6 , "\n\n Buy a level extender to be able to build up to 3 levels deep!.\n" , "green");
+
         return ;
     }
 
