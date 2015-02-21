@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Json;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
@@ -125,7 +126,7 @@ public class gamifyGame extends Game {
         else if (challenge.equals("Try a new food!")){
             progress = 100*pref.getInteger("newFoodThisHour");
         }
-        pref.putInteger("challengeProgress",Math.min(progress,100));
+        pref.putInteger("challengeProgress", Math.min(progress, 100));
     }
 
 

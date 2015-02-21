@@ -51,7 +51,7 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().textSetCenter("Your Vitality:", -25 , 25, "large");
             renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), -20 , 0, "large");
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp","null")),15,30);
-            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour",0)),5,30);
+            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour",0)),"black", 5,30, "medium");
             renderHelper.getRenderHelper().getBatch().end();
             deltaCount = (deltaCount+1) % 32;
         }
@@ -116,9 +116,19 @@ public class MainScreen extends GamifyScreen implements Screen
             loadingBox.setColor(Color.NAVY);
 
 
-            HelpDisplay helpBox =new HelpDisplay("inactiveHour.png");
+            //TODO: Decide if this is the right place for help
+            //Sets up the button for triggering help
+            HelpDisplay helpBox =new HelpDisplay("inactiveHour.png", game);
             helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), 85, 1);
             helpBox.setColor(Color.WHITE);
+
+            //Set up the sleep bar
+            TextDisplayBox sleepBox = new TextDisplayBox("longBox.png");
+            float sleepX = (renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
+            sleepBox.addAt(renderHelper.getRenderHelper().getLayer(1), sleepX,12);
+            sleepBox.addText(new Point(0,0), "Click to Start Sleep Logging");
+
+
 
             // Assign items their listeners
             quad1.addListener(game.getListenerHelper().goScreen(1));
