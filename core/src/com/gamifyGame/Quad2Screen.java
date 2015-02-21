@@ -29,7 +29,7 @@ public class Quad2Screen extends GamifyScreen implements Screen {
     @Override
     public void show() {
         retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
-        retBox.addListener(game.getListenerHelper().goScreen(0));
+        retBox.addListener(new GoScreenClickListener(game.mainS, game));
         HashMap<Integer,Integer> testData = new HashMap<Integer,Integer>();
         testData.put(0,50);
         testData.put(1,22);

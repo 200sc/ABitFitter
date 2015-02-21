@@ -99,7 +99,7 @@ public class gamifyGame extends Game {
                     int baseIncrease=currentBuilding.getVitalityPerThreeSeconds();
                     for(Consumable currentConsumable: activeConsumables)
                     {
-                        if(currentConsumable.getCondition()==currentBuilding.getTriggerCondition())
+                        if(currentConsumable.getTriggerCondition()==currentBuilding.getTriggerCondition())
                         {
                             baseIncrease*=currentConsumable.getMultiplier();
                         }
@@ -126,7 +126,7 @@ public class gamifyGame extends Game {
         else if (challenge.equals("Try a new food!")){
             progress = 100*pref.getInteger("newFoodThisHour");
         }
-        pref.putInteger("challengeProgress",Math.min(progress,100));
+        pref.putInteger("challengeProgress", Math.min(progress, 100));
     }
 
 

@@ -2,32 +2,29 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by Andrew on 2/19/2015.
  */
-public class Consumable extends GamifyImage
+public class Consumable extends Buyable
 {
-    private int multiplier;
-    private TriggerCondition condition;
-    private int lifespan;
+    private float multiplier;
+    private float lifespan;
 
-    public Consumable(String path, int multiplier, TriggerCondition condition, int lifespan)
-    {
-        super(path);
+    public Consumable(String path, String name, int cost, TriggerCondition triggerCondition, String desc, float multiplier, float lifespan) {
+        super(path, name, cost, triggerCondition, desc);
         this.multiplier = multiplier;
-        this.condition = condition;
-        this.lifespan=lifespan;
+        this.lifespan = lifespan;
     }
 
-    public int getMultiplier() {
+    public float getMultiplier() {
         return multiplier;
     }
 
-    public TriggerCondition getCondition() {
-        return condition;
-    }
-
-    public int getLifespan() {
+    public float getLifespan() {
         return lifespan;
     }
 
@@ -43,6 +40,15 @@ public class Consumable extends GamifyImage
                 return false;
             }
         });
+    }
+
+    public static HashMap<String, Consumable> getAllConsumables()
+    {
+        HashMap<String, Consumable> defConsumables=new HashMap<String, Consumable>();
+        defConsumables.put("Consumable1", new Consumable("48Box.png", "Consumable1", 100, TriggerCondition.FOOD, "Desc to come", 1.5f, 60*60));
+        defConsumables.put("Consumable2", new Consumable("48Box.png", "Consumable2", 100, TriggerCondition.SLEEP, "Desc to come", 3f,  2*60*60));
+        defConsumables.put("Consumable3", new Consumable("48Box.png", "Consumable3", 100, TriggerCondition.RUNNING, "Desc to come", 2f,  4*60*60));
+        return  defConsumables;
     }
 
 
