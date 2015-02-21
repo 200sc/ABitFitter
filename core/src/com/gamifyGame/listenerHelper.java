@@ -18,28 +18,13 @@ import java.util.Queue;
 public class listenerHelper {
     private final gamifyGame game;
     private ClickListener challengeListener;
-    private ClickListener returnS, goS1, goS2, goS3, goS4, goS5, testYes, testNo, scanAction, servingsChosen;
+    private ClickListener testYes, testNo, scanAction, servingsChosen, goCons;
 
     public listenerHelper(gamifyGame gamify){
         this.game = gamify;
-        returnS = new ClickListener(){
+        goCons= new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {game.setScreen(game.mainS); return true;}};
-        goS1 = new ClickListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {game.setScreen(game.quad1S); return true;}};
-        goS2 = new ClickListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {game.setScreen(game.quad2S); return true;}};
-        goS3 = new ClickListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {game.setScreen(game.quad3S); return true;}};
-        goS4 = new ClickListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {game.setScreen(game.quad4S); return true;}};
-        goS5 = new ClickListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-            {game.setScreen(game.buyS); return true;}};
+            {game.setScreen(game.consumableScreen); return true;}};
         final Preferences pref=game.getPrefs();
         testYes = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -113,24 +98,6 @@ public class listenerHelper {
     public ClickListener scanningAction(){return scanAction;}
     public ClickListener getServingsChosen(){return servingsChosen;}
 
-    public ClickListener goScreen(int val) {
-        switch (val) {
-            case 0:
-                return returnS;
-            case 1:
-                return goS1;
-            case 2:
-                return goS2;
-            case 3:
-                return goS3;
-            case 4:
-                return goS4;
-            case 5:
-                return goS5;
-            default:
-                return null;
-        }
-    }
 
 
 

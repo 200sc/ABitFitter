@@ -21,13 +21,15 @@ public class ConsumableScreen extends GamifyScreen
 
     public void show()
     {
-        //Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
-        Image placeHold = renderHelper.getRenderHelper().imageSetup("longBox.png", renderHelper.getRenderHelper().getLayer(1), 26, 8);
-        placeHold.addListener(game.getListenerHelper().goScreen(0));
+
+        retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
+        retBox.addListener(new GoScreenClickListener(game.mainS, game));
     }
     @Override
     public void render(float delta)
     {
+        super.render(delta);
+        renderHelper.getRenderHelper().moveCorner(retBox, Corner.LOWER_RIGHT, 31);
         ArrayList<Consumable> toRemove= new ArrayList<Consumable>();
         for(Consumable currentConsumable: active)
         {
