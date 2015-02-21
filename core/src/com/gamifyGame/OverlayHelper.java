@@ -1,9 +1,12 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
 
 /**
  * Created by Folly on 2/20/2015.
@@ -15,6 +18,7 @@ public class OverlayHelper extends GamifyImage {
     private gamifyGame game;
     private static OverlayHelper overlay;
     private Array<Actor> toBeRestored;
+    private ArrayList<ShapeInfo> toDraw;
     boolean displayingFlag;
 
     public static OverlayHelper getOverlayHelper(String path, gamifyGame game){
@@ -48,6 +52,7 @@ public class OverlayHelper extends GamifyImage {
     ClickListener resumeListener = new ClickListener(){
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){ resumeGame(); return true;}};
     private void resumeGame(){ // Gets the user back to the main screen away from help overlay
+        toDraw = null;
         renderHelper.getRenderHelper().getLayer(3).clear();
         for(Actor actor: toBeRestored){
             renderHelper.getRenderHelper().getLayer(3).addActor(actor);
@@ -55,5 +60,52 @@ public class OverlayHelper extends GamifyImage {
         renderHelper.getRenderHelper().resetProcessor();
     }
 
+    public void draw(Batch b, float parentAlpha){
+        super.draw(b, parentAlpha);
+        renderHelper renderer = renderHelper.getRenderHelper();
+
+        b.end();
+        renderer.getShapeRenderer().begin();
+
+        if(toDraw != null){
+
+            for(ShapeInfo shape : toDraw){
+                renderer.makeBox(renderer.getShapeRenderer(), renderer.getLayer(3),
+                        shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+
+            }
+
+        }
+
+        renderer.getShapeRenderer().end();
+        b.begin();
+    }
+
+    public void addShape(int x, int y, int width, int height){
+        if(toDraw == null){ toDraw = new ArrayList<ShapeInfo>();}
+        toDraw.add(new ShapeInfo(x, y, width, height));
+        return;
+    }
+
+    private class ShapeInfo{
+        private int x, y, width, height;
+        public ShapeInfo(int x, int y, int width, int height){
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+        }
+
+        public int getX() { return x; }
+
+        public int getY() { return y; }
+
+        public int getWidth() { return width; }
+
+        public int getHeight() { return height; }
+
+
+
+    }
 
 }

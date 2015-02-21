@@ -1,5 +1,6 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,9 +34,16 @@ public class SleepOverlayListener extends ClickListener {
 
 
         TextDisplayBox resumeGame = new TextDisplayBox("popUpBoxBlue.png");
-        resumeGame.addAt(renderer.getLayer(3), renderer.RENDERED_SCREEN_WIDTH/2-renderer.textureHash.get("popUpBoxBlue.png").getWidth()/2, renderer.RENDERED_SCREEN_HEIGHT/2);
-        resumeGame.addText(new Point(0,0), "Resume Game");
+        resumeGame.addAt(renderer.getLayer(3), renderer.RENDERED_SCREEN_WIDTH/2-renderer.textureHash.get("popUpBoxBlue.png").getWidth()/2, renderer.RENDERED_SCREEN_HEIGHT/3-renderer.textureHash.get("popUpBoxBlue.png").getHeight()/2);
+        resumeGame.addText(new Point(0,0), "Resume Game", "large", "green");
         resumeGame.addListener(overlay.resumeListener);
+        resumeGame.setColor(Color.WHITE);
+
+        GamifyImage sleepingCap = new GamifyImage("stockingCap.png");
+        sleepingCap.setSize(renderer.textureHash.get("48Box.png").getWidth()/2, renderer.textureHash.get("48Box.png").getHeight()); //TODO: get actual resourceand take out this line
+        sleepingCap.addAt(renderer.getLayer(3), 2 + renderer.RENDERED_SCREEN_WIDTH/2-renderer.textureHash.get("48Box.png").getWidth()/2/2, renderer.RENDERED_SCREEN_HEIGHT*2/3);
+
+//        overlay.addShape(0,0, 100, 100);
 
         return true;
     }

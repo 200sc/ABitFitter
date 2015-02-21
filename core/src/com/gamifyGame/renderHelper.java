@@ -37,7 +37,7 @@ public class renderHelper {
     ScalingViewport view;
     Stage backgroundLayer, activeLayer, effectsLayer, overlayLayer;
     SpriteBatch batch;
-    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont  , medGreenFont;
+    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont  , medGreenFont, bigGreenFont;
 
     InputMultiplexer normalProcessor;
 
@@ -121,8 +121,9 @@ public class renderHelper {
         textureHash.put("48Box.png",imageLoad("48box.png"));
         textureHash.put("tophalfbox.png",imageLoad("tophalfbox.png"));
 
-
+        //TODO: replace these textures
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
+        textureHash.put("stockingCap.png", imageLoad("stockingCap.png"));
 
         textureHash.put("itemBar.png",imageLoad("ItemBar.png"));
         textureHash.put("longBox.png",imageLoad("longBox.png"));
@@ -169,12 +170,15 @@ public class renderHelper {
         smallBlackFont.setColor(Color.BLACK);
         parameter.size = 48;
         bigBlackFont = generator.generateFont(parameter);
-        bigBlackFont.setColor(0f, 0f, 0f, 0f);
+        bigBlackFont.setColor(Color.BLACK);
 
 
         parameter.size = 32;
         medGreenFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medGreenFont.setColor(Color.GREEN);
+        parameter.size = 48;
+        bigGreenFont = generator.generateFont(parameter);
+        bigGreenFont.setColor(Color.GREEN);
 
         generator.dispose();
 
@@ -215,6 +219,7 @@ public class renderHelper {
         }
         else if (size.equals("large")){
             if(color.equals("black")){return bigBlackFont; }
+            else if(color.equals("green")){return bigGreenFont;}
             return bigFont;
         }
         if(color.equals("black")){return medBlackFont; }
