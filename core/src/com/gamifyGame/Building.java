@@ -9,24 +9,17 @@ import java.util.HashMap;
 /**
  * Created by Andrew on 2/16/2015.
  */
-public class Building extends GamifyImage
+public class Building extends Buyable
 {
-    private String desc;
-    private String name;
-    private int cost;
     private int vitalityPerThreeSeconds;
     private int power;
-    private TriggerCondition triggerCondition;
+
     private boolean replaceable=true;
 
     public Building(String name, String desc, int cost, int vitalityPerThreeSeconds, int power, TriggerCondition triggerCondition, String key, boolean replaceable) {
-        super(key);
-        this.desc = desc;
-        this.name = name;
-        this.cost = cost;
+        super(key, name, cost, triggerCondition, desc);
         this.power=power;
         this.vitalityPerThreeSeconds=vitalityPerThreeSeconds;
-        this.triggerCondition=triggerCondition;
         this.replaceable=replaceable;
     }
 
@@ -71,34 +64,12 @@ public class Building extends GamifyImage
         return getDefaultBuildings().get(name);
     }
 
-    public String getDesc()
-    {
-        return desc;
-    }
-
-    public int getCost() {return cost;}
-
     public int getVitalityPerThreeSeconds()
     {
         return vitalityPerThreeSeconds;
     }
 
-    public String getBuildingName()
-    {
-        return name;
-    }
-
-    public String toString()
-    {
-       return this.getBuildingName()+"\n Cost: "+ this.getCost()+"\n"+ this.getDesc();
-    }
-
     public boolean isReplaceable() {
         return replaceable;
-    }
-
-    public TriggerCondition getTriggerCondition()
-    {
-        return triggerCondition;
     }
 }

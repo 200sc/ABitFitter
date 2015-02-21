@@ -85,7 +85,7 @@ public class ScrollBar
                     if(index !=null )
                     {
                         GamifyImage beingReplaced= undergroundBuildings.remove(index.intValue());
-                        undergroundBuildings.add(index,  Building.getDefaultBuildingByName(eventImage.getBuildingName()));
+                        undergroundBuildings.add(index,  Building.getDefaultBuildingByName(eventImage.getBuyableName()));
                         undergroundBuildings.get(index).addAt(beingReplaced.getStage(), beingReplaced.getX(), beingReplaced.getY());
                         undergroundBuildings.get(index).toBack();
                         beingReplaced.remove();
@@ -94,7 +94,7 @@ public class ScrollBar
                         Json json = new Json();
                         Preferences pref = game.getPrefs();
                         String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
-                        underground[index] = eventImage.getBuildingName();
+                        underground[index] = eventImage.getBuyableName();
                         pref.putString("undergroundBuildings", json.toJson(underground));
                         pref.flush();
                     }

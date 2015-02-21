@@ -76,7 +76,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         testData.put(System.currentTimeMillis()-50000,34);
         testData.put(System.currentTimeMillis()-40000,78);
         testGraph = new LineGraph(testData,"Test Data",GamifyColor.BLUE);
-        retBox.addListener(game.getListenerHelper().goScreen(0));
+        retBox.addListener(new GoScreenClickListener(game.mainS, game));
     }
 
 

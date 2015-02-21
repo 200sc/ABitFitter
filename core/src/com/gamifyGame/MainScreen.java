@@ -132,12 +132,12 @@ public class MainScreen extends GamifyScreen implements Screen
 
 
             // Assign items their listeners
-            quad1.addListener(game.getListenerHelper().goScreen(1));
+            quad1.addListener(new GoScreenClickListener(game.quad1S, game));
             //quad1.addListener(listenerH.setInt("toScreen",1));
-            quad2.addListener(game.getListenerHelper().goScreen(2));
-            quad3.addListener(game.getListenerHelper().goScreen(3));
-            quad4.addListener(game.getListenerHelper().goScreen(4));
-            midbox.addListener(game.getListenerHelper().goScreen(5));
+            quad2.addListener(new GoScreenClickListener(game.consumableScreen, game));
+            quad3.addListener(new GoScreenClickListener(game.quad3S, game));
+            quad4.addListener(new GoScreenClickListener(game.quad4S, game));
+            midbox.addListener(new GoScreenClickListener(game.buyS, game));
             frameCount = 0;
             deltaCount = 0;
 

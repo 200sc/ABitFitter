@@ -38,7 +38,7 @@ public class BuyScreen extends GamifyScreen implements Screen
         TextDisplayBox placeHold = new TextDisplayBox("longBox.png");
         float placeHoldX = (renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
         placeHold.addAt(renderHelper.getRenderHelper().getLayer(1), placeHoldX,12);
-        placeHold.addListener(game.getListenerHelper().goScreen(0));
+        placeHold.addListener(new GoScreenClickListener(game.mainS, game));
         placeHold.addText(new Point(0,0), "Return to Main Screen");
 
 
