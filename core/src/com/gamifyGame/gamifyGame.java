@@ -82,11 +82,11 @@ public class gamifyGame extends Game {
     public void updateVitality(float delta )
     {
         secondsSinceLastCall+=delta;
-        if(secondsSinceLastCall>3)
+        if(secondsSinceLastCall>30)
         {
             Json json = new Json();
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
-            secondsSinceLastCall-=3;
+            secondsSinceLastCall-=30;
 
             ArrayList<Consumable> activeConsumables=consumableScreen.getActiveConsumables();
 

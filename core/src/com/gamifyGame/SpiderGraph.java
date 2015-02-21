@@ -121,10 +121,12 @@ public class SpiderGraph extends GamifyGraph{
 
     public void textRender(){
 
+        int borderX = 38;
+        int borderY = 54;
+
         renderHelper renderer = renderHelper.getRenderHelper();
 
-        // Graph Title
-        renderer.textSet(type,borderX+1,borderY+graphHeight-2,"large");
+        renderer.textSet(type,borderX+1,borderY+graphHeight-2,"xLarge");
 
         // Data labels
         for (int i = 0; i < 6; i++) {

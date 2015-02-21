@@ -43,8 +43,8 @@ public class Quad1Screen extends GamifyScreen implements Screen {
     public void show() {
         renderHelper renderer = renderHelper.getRenderHelper();
         retBox = renderer.imageSetupCenter("stepBox.png", renderer.getLayer(1), 37, 50);
-        Image leftBox = renderer.imageSetup("arrowBoxLeft.png", renderer.getLayer(1),92,0);
-        Image rightBox = renderer.imageSetup("arrowBoxRight.png", renderer.getLayer(1),116,0);
+        Image leftBox = renderer.imageSetup("arrowBoxLeft.png", renderer.getLayer(1),132,0);
+        Image rightBox = renderer.imageSetup("arrowBoxRight.png", renderer.getLayer(1),156,0);
 
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
         leftBox.addListener(game.getListenerHelper().setInt("currentGraph","--"));
@@ -88,7 +88,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         testData.put(System.currentTimeMillis()-60000,104);
         testData.put(System.currentTimeMillis()-50000,34);
         testData.put(System.currentTimeMillis()-40000,78);
-        testGraphs[0] = new LineGraph(testData,"Test Data",GamifyColor.BLUE);
+        testGraphs[0] = new LineGraph(testData,"Test Data",GamifyColor.GREEN);
 
         HashMap<Integer,Integer> spiderData = new HashMap<Integer,Integer>();
         spiderData.put(0,50);
@@ -97,7 +97,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         spiderData.put(3,33);
         spiderData.put(4,46);
         spiderData.put(5,64);
-        String[] labels = {"% Time Active", "% Time Excercising", "Vitamin Intake", "% Daily Values Reached", "Unbroken Days Well-Slept", "Unbroken Challenges"};
+        String[] labels = {"Percent Time Active", "Percent Time Excercising", "Vitamin Intake", "Percent Daily Values Reached", "Unbroken Days Well-Slept", "Unbroken Challenges"};
         testGraphs[1] = new SpiderGraph(spiderData,labels,"Test Data",GamifyColor.YELLOW);
     }
 

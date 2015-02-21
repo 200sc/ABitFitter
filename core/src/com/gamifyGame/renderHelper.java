@@ -37,7 +37,7 @@ public class renderHelper {
     ScalingViewport view;
     Stage backgroundLayer, activeLayer, effectsLayer, overlayLayer;
     SpriteBatch batch;
-    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont  , medGreenFont, bigGreenFont;
+    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont  , medGreenFont, bigGreenFont, xtraBigFont, xtraBigBlackFont, xtraBigGreenFont;
 
     InputMultiplexer normalProcessor;
 
@@ -184,6 +184,14 @@ public class renderHelper {
         bigGreenFont = generator.generateFont(parameter);
         bigGreenFont.setColor(Color.GREEN);
 
+        parameter.size = Math.round(64*screenXRatio);
+        xtraBigFont = generator.generateFont(parameter);
+        bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        xtraBigBlackFont = generator.generateFont(parameter);
+        xtraBigBlackFont.setColor(Color.BLACK);
+        xtraBigGreenFont = generator.generateFont(parameter);
+        xtraBigGreenFont.setColor(Color.GREEN);
+
         generator.dispose();
 
         normalProcessor = new InputMultiplexer(activeLayer, overlayLayer);
@@ -225,6 +233,11 @@ public class renderHelper {
             if(color.equals("black")){return bigBlackFont; }
             else if(color.equals("green")){return bigGreenFont;}
             return bigFont;
+        }
+        else if (size.equals("xLarge")){
+            if(color.equals("black")){return xtraBigBlackFont; }
+            else if(color.equals("green")){return xtraBigGreenFont;}
+            return xtraBigFont;
         }
         if(color.equals("black")){return medBlackFont; }
         if(color.equals("green")){return medGreenFont;}

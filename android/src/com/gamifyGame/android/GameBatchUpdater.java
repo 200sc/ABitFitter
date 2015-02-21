@@ -1,5 +1,6 @@
 package com.gamifyGame.android;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.Preference;
 import android.widget.Toast;
@@ -46,6 +47,24 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
     @Override
     protected String doInBackground(JSONObject... jsonObjects) {
         System.out.println("GAMEBATCHUPDATER: Start");
+        SharedPreferences sharedPref = context.getSharedPreferences("bitPref", 0);
+        if(sharedPref.getBoolean("challengeAlarmTriggered",false)){
+            pref.putInteger("minutesWalked",sharedPref.getInt("minutesWalked",0));
+            pref.putInteger("minutesRan",sharedPref.getInt("minutesRan",0));
+            pref.putInteger("minutesDanced",sharedPref.getInt("minutesDanced",0));
+            pref.putInteger("minutesBiked",sharedPref.getInt("minutesBiked",0));
+
+            pref.putInteger("minutesWalkedThisHour",sharedPref.getInt("minutesWalkedThisHour",0));
+            pref.putInteger("minutesRanThisHour",sharedPref.getInt("minutesRanThisHour",0));
+            pref.putInteger("minutesDancedThisHour",sharedPref.getInt("minutesDancedThisHour",0));
+            pref.putInteger("minutesBikedThisHour",sharedPref.getInt("minutesBikedThisHour",0));
+            pref.putInteger("newFoodThisHour", sharedPref.getInt("newFoodThisHour",0));
+            pref.putBoolean("challengeHour", sharedPref.getBoolean("challengeHour",false));
+            pref.putBoolean("challengedToday", sharedPref.getBoolean("challengedToday",false));
+            pref.putString("challengeVariety", sharedPref.getString("challengeVariety","none"));
+            sharedPref.edit().putBoolean("challengeAlarmTriggered",false).apply();
+        }
+        pref.flush();
         try {
             game.setLoadingFlag(true);
             File toRead = new File(context.getFilesDir(), "updateFile");

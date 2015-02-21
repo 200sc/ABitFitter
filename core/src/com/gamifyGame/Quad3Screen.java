@@ -34,7 +34,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
 
         String showText;
         if (!showChallengeHours) {
-            showText = "Hours for\nChallenges";
+            showText = "Challenge\nHours";
             int challengeProgress = pref.getInteger("challengeProgress", 0);
 
             shapes.begin(ShapeRenderer.ShapeType.Filled);

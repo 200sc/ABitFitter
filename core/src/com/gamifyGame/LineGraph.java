@@ -20,17 +20,9 @@ import java.util.TimeZone;
  */
 public class LineGraph extends GamifyGraph {
 
-    ArrayList<Long> xPoints;
-    ArrayList<Integer> yPoints;
-    Color color1, color2, color3;
-    float yMax;
-    int dataPointCount;
-
-
     public LineGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor) {
         data = graphPref;
         type = dataType;
-        show();
         switch (inColor){
             case PINK:
             case BLUE:
@@ -50,6 +42,10 @@ public class LineGraph extends GamifyGraph {
                 break;
         }
         dataPointCount = 16;
+        keys = asSortedList(data.keySet());
+        xPoints = new ArrayList<Long>();
+        yPoints = new ArrayList<Integer>();
+        show();
         update();
     }
 
@@ -91,38 +87,7 @@ public class LineGraph extends GamifyGraph {
 
     }
 
-    public void textRender(){
-
-        int xIncrement = (xPoints.size()/dataPointCount);
-        int xPixelIncrement = (graphWidth/dataPointCount);
-
-        int x = 0;
-        int borderX = 38;
-        int borderY = 54;
-
-        renderHelper renderer = renderHelper.getRenderHelper();
-
-        renderer.textSet(type,borderX+1,borderY+graphHeight-2,"large");
-
-        for (int i = 0; i < botLabelCount; i++) {
-            Date date = new Date(xPoints.get(x));
-            DateFormat format = new SimpleDateFormat("MMM.dd\nHH:mm");
-            format.setTimeZone(TimeZone.getDefault());
-            String formatted = format.format(date);
-            renderer.textSet(formatted, (borderX+10 + (xPixelIncrement * i)*(dataPointCount/botLabelCount)), borderY,"small");
-            x += xIncrement;
-        }
-        x = 0;
-        for (int i = 0; i < graphHeight; i+= graphHeight / leftLabelCount){
-            renderer.textSet(String.valueOf((int)((yMax/leftLabelCount)*x)),borderX,borderY+i+7,"small");
-            x++;
-        }
-    }
-
     public void show(){
-        keys = asSortedList(data.keySet());
-        xPoints = new ArrayList<Long>();
-        yPoints = new ArrayList<Integer>();
         yMax = 0;
         for (Iterator i = keys.iterator(); i.hasNext();) {
             Object xData =  i.next();
