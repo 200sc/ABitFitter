@@ -62,8 +62,8 @@ public class AndroidLauncher extends AndroidApplication {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x;
-        int height = size.y;
+        float width = size.x;
+        float height = size.y;
         System.out.println("AndroidLauncher: Screen Width: "+ width + " Height: " + height );
         pref.putFloat("screenWidth",  width);
         pref.putFloat("screenHeight", height);

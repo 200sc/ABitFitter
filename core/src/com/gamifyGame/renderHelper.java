@@ -74,8 +74,8 @@ public class renderHelper {
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
 
-        int screenXRatio = (int) width/1200;
-        int screenYRatio = (int) width/1824;
+        float screenXRatio =  width/1200f;
+        float screenYRatio =  width/1824f;
 
         shapes = new ShapeRenderer();
         shapes.scale(Float.valueOf(scrWidth)/180,Float.valueOf(scrHeight)/296,1);
@@ -159,7 +159,7 @@ public class renderHelper {
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 32 / screenXRatio;
+        parameter.size = Math.round(32* screenXRatio);
         medFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         medBlackFont = generator.generateFont(parameter); // smallFont size 12 pixels
@@ -168,13 +168,13 @@ public class renderHelper {
         medGreenFont.setColor(Color.GREEN);
 
 
-        parameter.size = 24/ screenXRatio;
+        parameter.size = Math.round(24* screenXRatio);
         smallFont = generator.generateFont(parameter);
         smallFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         smallBlackFont = generator.generateFont(parameter);
         smallBlackFont.setColor(Color.BLACK);
 
-        parameter.size = 48 /screenXRatio;
+        parameter.size = Math.round(48*screenXRatio);
         bigFont = generator.generateFont(parameter);
         bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         bigBlackFont = generator.generateFont(parameter);
