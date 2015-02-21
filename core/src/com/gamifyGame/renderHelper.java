@@ -59,18 +59,24 @@ public class renderHelper {
     public static renderHelper getRenderHelper()
     {
         if(renderer==null)
-           renderer=new renderHelper();
+           renderer=new renderHelper(1200, 1824);
         return renderer;
     }
-    public static void forceRemake()
+
+
+    public static void forceRemake(float width, float height)
     {
-        renderer=new renderHelper();
+        renderer=new renderHelper(width, height);
     }
 
 
-    private renderHelper(){
+    private renderHelper(float width, float height){
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
+
+        int screenXRatio = (int) width/1200;
+        int screenYRatio = (int) width/1824;
+
         shapes = new ShapeRenderer();
         shapes.scale(Float.valueOf(scrWidth)/180,Float.valueOf(scrHeight)/296,1);
         view = new ScalingViewport(Scaling.stretch, 180, 296);
@@ -151,32 +157,26 @@ public class renderHelper {
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 32;
+        parameter.size = 32 / screenXRatio;
         medFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        parameter.size = 24;
-        smallFont = generator.generateFont(parameter);
-        smallFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        parameter.size = 48;
-        bigFont = generator.generateFont(parameter);
-        bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-
-        parameter.size = 32;
         medBlackFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medBlackFont.setColor(Color.BLACK);
-        parameter.size = 24;
-        smallBlackFont = generator.generateFont(parameter);
-        smallBlackFont.setColor(Color.BLACK);
-        parameter.size = 48;
-        bigBlackFont = generator.generateFont(parameter);
-        bigBlackFont.setColor(Color.BLACK);
-
-
-        parameter.size = 32;
         medGreenFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medGreenFont.setColor(Color.GREEN);
-        parameter.size = 48;
+
+
+        parameter.size = 24/ screenXRatio;
+        smallFont = generator.generateFont(parameter);
+        smallFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        smallBlackFont = generator.generateFont(parameter);
+        smallBlackFont.setColor(Color.BLACK);
+
+        parameter.size = 48 /screenXRatio;
+        bigFont = generator.generateFont(parameter);
+        bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        bigBlackFont = generator.generateFont(parameter);
+        bigBlackFont.setColor(Color.BLACK);
         bigGreenFont = generator.generateFont(parameter);
         bigGreenFont.setColor(Color.GREEN);
 
