@@ -46,7 +46,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         } else showText = "Close \nWindow";
 
         batch.begin();
-        renderHelper.getRenderHelper().textSet(showText, 2, 16);
+        renderHelper.getRenderHelper().textSet(showText, 2, 16, "large");
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
                 String text = Week[i][j].getString("time");
@@ -59,15 +59,15 @@ public class Quad3Screen extends GamifyScreen implements Screen {
                 } else if (showTextInt == 12) {
                     showText = "12PM";
                 } else showText = String.valueOf(showTextInt % 12) + "PM";
-                renderHelper.getRenderHelper().textSet(showText, (int) Week[i][j].getX(), (int) Week[i][j].getY() + 10, "small");
+                renderHelper.getRenderHelper().textSet(showText, (int) Week[i][j].getX(), (int) Week[i][j].getY() + 10);
                 if (j + i == 0) {
-                    renderHelper.getRenderHelper().textSet("SUN", (int) Week[i][j].getX(), (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("MON", (int) Week[i][j].getX() + 20, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("TUE", (int) Week[i][j].getX() + 40, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("WED", (int) Week[i][j].getX() + 60, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("THU", (int) Week[i][j].getX() + 80, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("FRI", (int) Week[i][j].getX() + 100, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("SAT", (int) Week[i][j].getX() + 120, (int) Week[i][j].getY() + 20, "small");
+                    renderHelper.getRenderHelper().textSet("SUN", (int) Week[i][j].getX(), (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("MON", (int) Week[i][j].getX() + 20, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("TUE", (int) Week[i][j].getX() + 40, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("WED", (int) Week[i][j].getX() + 60, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("THU", (int) Week[i][j].getX() + 80, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("FRI", (int) Week[i][j].getX() + 100, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("SAT", (int) Week[i][j].getX() + 120, (int) Week[i][j].getY() + 20);
                 }
             }
         }

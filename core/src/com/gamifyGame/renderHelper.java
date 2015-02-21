@@ -140,6 +140,8 @@ public class renderHelper {
         textureHash.put("placeholder64x64.png",imageLoad("placeholder64x64.png"));
         textureHash.put("largeScreenBox.png",imageLoad("LargeScreenBox.png"));
         textureHash.put("buyBar.png", imageLoad("buyBar.png"));
+        textureHash.put("buildingBackground.png", imageLoad("buildingBackground.png"));
+        textureHash.put("overlay.png", imageLoad("overlay.png"));
 
         textureHash.put("Armory1.png",imageLoad("Armory1.png"));
         textureHash.put("Computer1.png",imageLoad("Computer1.png"));
@@ -157,7 +159,7 @@ public class renderHelper {
         textureHash.put("smallPopUpBoxBlue.png",imageLoad("smallPopUpBoxBlue.png"));
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lastStory.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = Math.round(32* screenXRatio);
         medFont = generator.generateFont(parameter); // smallFont size 12 pixels
@@ -449,11 +451,11 @@ public class renderHelper {
         ArrayList<GamifyImage> toReturn=new ArrayList<GamifyImage>(buildings.length);
         //ChangingImage[] imageList = new ChangingImage[buildings.length];
         // Figure out the width and height from the HQ1
-        int bridgelen = 8; //TODO: change this
+        int bridgelen = 6; //TODO: change this
 
         int width = textureHash.get("HQ1.png").getWidth() + bridgelen;
         int height = textureHash.get("HQ1.png").getHeight() + 2;
-        int wOffset = 4; //TODO: Find the optimal lengths
+        int wOffset = 6; //TODO: Find the optimal lengths
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;
@@ -485,9 +487,8 @@ public class renderHelper {
         }
 
 
-        Image basicBox = renderer.imageSetup("tophalfbox.png", renderHelper.getRenderHelper().getLayer(0), wOffset/2, hOffset-(row)*height - 2);
-        basicBox.setSize( width*3-bridgelen, height* (row+1));
-        basicBox.setColor(Color.DARK_GRAY);
+        Image basicBox = renderer.imageSetup("buildingBackground.png", renderHelper.getRenderHelper().getLayer(0), 2+wOffset/2, hOffset-(row)*height);
+        basicBox.setSize( width*3-bridgelen, height* (row+1)-2);
         basicBox.setZIndex(firstZIndex);
 
 
@@ -510,11 +511,11 @@ public class renderHelper {
 
     public void makeBridges(Stage stage, Integer[] bridges){
         // Figure out the width and height from the HQ1
-        int bridgelen = 8; //TODO: change this
+        int bridgelen = 6; //TODO: change this
         int hqWidth = textureHash.get("HQ1.png").getWidth();
         int width = textureHash.get("HQ1.png").getWidth()+bridgelen;
         int height = textureHash.get("HQ1.png").getHeight() + 2;
-        int wOffset = 4; //TODO: Find the optimal lengths
+        int wOffset = 6; //TODO: Find the optimal lengths
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;
@@ -524,8 +525,8 @@ public class renderHelper {
 
 //            if(bridges[i] == 1){imageSetup("Bridge1.png", stage, (int)(wOffset + hqWidth+(column)*width), hOffset - row*height);}
 //            if(bridges[i] == 2){imageSetup("Elevator1.png", stage, (int)(wOffset+hqWidth+(column)*width), hOffset - row*height);}
-            if(bridges[i] == 1){new ChangingImage("Bridge1.png", "Elevator1.png", stage, (int)((wOffset + hqWidth+(column)*width)-1), hOffset - row*height);}
-            if(bridges[i] == 2){new ChangingImage("Elevator1.png","Bridge1.png", stage, (int)((wOffset+hqWidth+(column)*width)-1), hOffset - row*height);}
+            if(bridges[i] == 1){new ChangingImage("Bridge1.png", "Elevator1.png", stage, (int)((wOffset + hqWidth+(column)*width)-3), hOffset - row*height);}
+            if(bridges[i] == 2){new ChangingImage("Elevator1.png","Bridge1.png", stage, (int)((wOffset+hqWidth+(column)*width)-3), hOffset - row*height);}
         }
     }
 
