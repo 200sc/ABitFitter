@@ -18,6 +18,11 @@ public class GamifyImage extends Image
         this.setName(path);
     }
 
+    public void addAtCenter(Stage stage, float hOffset, float vOffset){
+        renderHelper.setPositionCenter(stage,this,hOffset,vOffset);
+        stage.addActor(this);
+    }
+
 
     public void addAt(Stage stage, float hOrigin, float vOrigin)
     {

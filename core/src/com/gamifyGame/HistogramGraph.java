@@ -20,26 +20,12 @@ import java.util.TimeZone;
 /**
  * Created by Stephen on 2/16/2015.
  */
-public class HistogramGraph {
+public class HistogramGraph extends GamifyGraph {
 
-    List<Long> keys;
-    String type;
     ArrayList<Long> xPoints;
     ArrayList<Integer> yPoints;
-    Color color1, color2, color3;
     float yMax;
     int dataPointCount;
-    public HashMap<Long,Integer> data;
-    public Image background;
-    public boolean dumped;
-    public final int botLabelCount = 5;
-    public final int leftLabelCount = 10;
-
-    public long end;
-    public long start;
-
-    public final int graphHeight = 240;
-    public final int graphWidth = 130;
 
     public HistogramGraph(HashMap<Long,Integer> graphPref, String dataType) {
          new HistogramGraph(graphPref,dataType,GamifyColor.BLUE,"medium");
@@ -152,11 +138,6 @@ public class HistogramGraph {
     }
 
     public void show(){
-        renderHelper renderer = renderHelper.getRenderHelper();
-        Stage layer1 = renderer.getLayer(1);
-        int borderX = 36;
-        int borderY = 42;
-        background = renderer.imageSetup("largeScreenBox.png", layer1, borderX, borderY);
         keys = asSortedList(data.keySet());
         xPoints = new ArrayList<Long>();
         yPoints = new ArrayList<Integer>();

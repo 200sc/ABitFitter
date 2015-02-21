@@ -120,7 +120,8 @@ public class renderHelper {
         textureHash.put("midBox.png",imageLoad("Midbox.png"));
         textureHash.put("48Box.png",imageLoad("48box.png"));
         textureHash.put("tophalfbox.png",imageLoad("tophalfbox.png"));
-
+        textureHash.put("arrowBoxLeft.png",imageLoad("arrowBoxLeft.png"));
+        textureHash.put("arrowBoxRight.png",imageLoad("arrowBoxRight.png"));
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
 
@@ -189,7 +190,7 @@ public class renderHelper {
     /*
      **********Image Setup functions***********
                                               */
-    public Image imageSetupCenter(String key, Stage stage, int hOffset, int vOffset){
+    public Image imageSetupCenter(String key, Stage stage, float hOffset, float vOffset){
         Texture texture = textureHash.get(key);
         Image image = new Image(texture);
         setPositionCenter(stage,image,hOffset,vOffset);
@@ -246,7 +247,6 @@ public class renderHelper {
 
     public void textSetCenter(String text, float offsetx, float offsety)
     {
-        BitmapFont.TextBounds bounds = medFont.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
@@ -326,7 +326,7 @@ public class renderHelper {
 
     // This acts like the inherent Image.setPosition, but at center to pair with
     // ImageSetupCenter
-    public static void setPositionCenter(Stage stage,Image image,int hOffset,int vOffset){
+    public static void setPositionCenter(Stage stage,Image image,float hOffset,float vOffset){
         image.setPosition((stage.getWidth() / 2) - (image.getWidth() / 2) + hOffset,
                 ((stage.getHeight() / 2) - (image.getHeight() / 2)) + vOffset);
     }

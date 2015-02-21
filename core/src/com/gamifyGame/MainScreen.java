@@ -104,7 +104,13 @@ public class MainScreen extends GamifyScreen implements Screen
 
             // These five do.
             Image quad1 = renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", layer1, 37, 50);
-            Image quad2 = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
+            //Image quad2 = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
+            TextDisplayBox quad2 = new TextDisplayBox("streakBox.png");
+            quad2.addAtCenter(layer1,-37,50);
+            quad2.addText(new Point(-12,-8),String.valueOf(game.getPrefs().getInteger("challengeStreak",0)),"medium","black");
+
+
+
             quad3 = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
             Image quad4 = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 37, -25);
             Image midbox = renderHelper.getRenderHelper().imageSetupCenter("midBox.png", layer1, 0, 12);
