@@ -134,7 +134,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
             day++;
         }
 
-        retBox.addListener(new GoScreenClickListener(game.quad1S, game));
+        retBox.addListener(new GoScreenClickListener(game.mainS, game));
         showBox.addListener(game.getListenerHelper().setBoolean("showChallengeHours", 'a'));
 
     }
@@ -147,6 +147,8 @@ public class Quad3Screen extends GamifyScreen implements Screen {
                 Week[i][j].moveBy(300, 0);
             }
         }
+        shown = false;
+        game.getPrefs().putBoolean("showChallengeHours",false);
         super.hide();
     }
 

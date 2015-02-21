@@ -3,9 +3,11 @@ package com.gamifyGame.android;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.IntegerRes;
+import android.view.Display;
 import android.view.View;
 import android.widget.Toast;
 
@@ -54,33 +56,17 @@ public class AndroidLauncher extends AndroidApplication {
         double ID = Math.random()*(Math.pow(10d,15d))%Math.pow(10d,15d)+Math.pow(10d,16d);
         String fakeID = pref.getString("userID",String.valueOf(ID));
 
-//        //TODO: move to GameBatchUpdater
-//        try {
-//            updatePref.clear();
-//            File toRead = new File(this.getApplicationContext().getFilesDir(), "updateFile");
-//            BufferedReader reader = new BufferedReader(new FileReader((toRead)));
-//            String line = null;
-//            String[] lineParts;
-//            HashMap<String,String> updateFile = new HashMap<String,String>();
-//            int i = 0;
-//            while ((line = reader.readLine()) != null){
-//                lineParts = line.split(",");
-//                updateFile.put(lineParts[0],lineParts[1]);
-//                System.out.println("KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
-//            }
-//            updatePref.put(updateFile);
-//            System.out.print("This updatefile" + updateFile);
-//            updatePref.flush();
-//            // Replace fakeID with userID when userID is implemented
-//            reader.close();
-//
-//            // Reset toRead
-//            toRead.delete();
-//        }
-//        catch (Exception e){
-//            assert (1 == 0);
-//        }
 
+
+        // Set screen size of this device in pixels
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        float width = size.x;
+        float height = size.y;
+        System.out.println("AndroidLauncher: Screen Width: "+ width + " Height: " + height );
+        pref.putFloat("screenWidth",  width);
+        pref.putFloat("screenHeight", height);
 
 
         pref.putString("userID", fakeID);
@@ -155,6 +141,8 @@ public class AndroidLauncher extends AndroidApplication {
 
         //ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(this, true);
         //gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
+
+
 
 
         System.out.println("AndroidLauncher: Android Launcher onResume!");

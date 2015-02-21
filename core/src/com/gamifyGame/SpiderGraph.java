@@ -20,21 +20,14 @@ import java.util.TimeZone;
 /**
  * Created by Stephen on 2/16/2015.
  */
-public class SpiderGraph {
+public class SpiderGraph extends GamifyGraph{
 
-    List<Integer> keys;
-    String type;
     String[] labels;
-    Color color1, color2, color3;
+    List<Integer> keys;
     public HashMap<Integer,Integer> data;
-    public Image background;
-    public boolean dumped;
-    private int borderX, centerX;
-    private int borderY, centerY;
-    private long min = 0;
+    private int centerX;
+    private int centerY;
     private final long max = 70;
-
-    public final int graphHeight = 240;
 
     float hex1X = 1;
     float hex1Y = 0;
@@ -145,13 +138,8 @@ public class SpiderGraph {
     }
 
     public void show(){
-        renderHelper renderer = renderHelper.getRenderHelper();
-        Stage layer1 = renderer.getLayer(1);
-        borderX = 0;
-        borderY = 42;
         centerX = borderX + 72;
         centerY = borderY + 125;
-        background = renderer.imageSetup("largeScreenBox.png", layer1, borderX, borderY);
         keys = asSortedList(data.keySet());
         dumped = false;
     }

@@ -99,7 +99,16 @@ public class listenerHelper {
     public ClickListener getServingsChosen(){return servingsChosen;}
 
 
-
+    public ClickListener setInt(final String key,final String str){
+        return new ClickListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                int val;
+                if (str.equals("++")) val = game.getPrefs().getInteger(key,0) + 1;
+                else val = game.getPrefs().getInteger(key,0) - 1;
+                game.getPrefs().putInteger(key,val);
+                game.getPrefs().flush(); return true;}};
+    }
 
     public ClickListener setInt(final String key,final int val){
         return new ClickListener(){

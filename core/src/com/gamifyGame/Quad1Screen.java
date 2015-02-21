@@ -21,7 +21,7 @@ import java.util.HashMap;
  */
 public class Quad1Screen extends GamifyScreen implements Screen {
 
-    LineGraph testGraph;
+    GamifyGraph[] testGraphs;
 
     public Quad1Screen(gamifyGame game) {
         super(game);
@@ -31,15 +31,28 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         super.render(delta);
         renderHelper.getRenderHelper().moveCorner(this.retBox, Corner.LOWER_LEFT, 30);
 
+        int i = game.getPrefs().getInteger("currentGraph",0) % 2;
+        if (i == -1){i = 1; game.getPrefs().putInteger("currentGraph",1);}
 
-        testGraph.shapeRender();
+        testGraphs[i].shapeRender();
         renderHelper.getRenderHelper().getBatch().begin();
-        testGraph.textRender();
+        testGraphs[i].textRender();
         renderHelper.getRenderHelper().getBatch().end();
     }
 
     public void show() {
-        retBox = renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", renderHelper.getRenderHelper().getLayer(1), 37, 50);
+        renderHelper renderer = renderHelper.getRenderHelper();
+        retBox = renderer.imageSetupCenter("stepBox.png", renderer.getLayer(1), 37, 50);
+        Image leftBox = renderer.imageSetup("arrowBoxLeft.png", renderer.getLayer(1),92,0);
+        Image rightBox = renderer.imageSetup("arrowBoxRight.png", renderer.getLayer(1),116,0);
+
+        retBox.addListener(new GoScreenClickListener(game.mainS, game));
+        leftBox.addListener(game.getListenerHelper().setInt("currentGraph","--"));
+        rightBox.addListener(game.getListenerHelper().setInt("currentGraph","++"));
+
+        testGraphs = new GamifyGraph[2];
+        renderer.imageSetup("largeScreenBox.png", renderer.getLayer(1), 36, 42);
+
         HashMap<Long,Integer> testData = new HashMap<Long,Integer>();
         testData.put(System.currentTimeMillis()-110000000,40);
         testData.put(System.currentTimeMillis()-19000000,45);
@@ -75,8 +88,17 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         testData.put(System.currentTimeMillis()-60000,104);
         testData.put(System.currentTimeMillis()-50000,34);
         testData.put(System.currentTimeMillis()-40000,78);
-        testGraph = new LineGraph(testData,"Test Data",GamifyColor.BLUE);
-        retBox.addListener(new GoScreenClickListener(game.mainS, game));
+        testGraphs[0] = new LineGraph(testData,"Test Data",GamifyColor.BLUE);
+
+        HashMap<Integer,Integer> spiderData = new HashMap<Integer,Integer>();
+        spiderData.put(0,50);
+        spiderData.put(1,22);
+        spiderData.put(2,0);
+        spiderData.put(3,33);
+        spiderData.put(4,46);
+        spiderData.put(5,64);
+        String[] labels = {"% Time Active", "% Time Excercising", "Vitamin Intake", "% Daily Values Reached", "Unbroken Days Well-Slept", "Unbroken Challenges"};
+        testGraphs[1] = new SpiderGraph(spiderData,labels,"Test Data",GamifyColor.YELLOW);
     }
 
 

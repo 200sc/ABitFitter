@@ -37,7 +37,7 @@ public class renderHelper {
     ScalingViewport view;
     Stage backgroundLayer, activeLayer, effectsLayer, overlayLayer;
     SpriteBatch batch;
-    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont;
+    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont  , medGreenFont, bigGreenFont;
 
     InputMultiplexer normalProcessor;
 
@@ -59,18 +59,24 @@ public class renderHelper {
     public static renderHelper getRenderHelper()
     {
         if(renderer==null)
-           renderer=new renderHelper();
+           renderer=new renderHelper(1200, 1824);
         return renderer;
     }
-    public static void forceRemake()
+
+
+    public static void forceRemake(float width, float height)
     {
-        renderer=new renderHelper();
+        renderer=new renderHelper(width, height);
     }
 
 
-    private renderHelper(){
+    private renderHelper(float width, float height){
         scrWidth = Gdx.graphics.getWidth();
         scrHeight = Gdx.graphics.getHeight();
+
+        float screenXRatio =  width/1200f;
+        float screenYRatio =  width/1824f;
+
         shapes = new ShapeRenderer();
         shapes.scale(Float.valueOf(scrWidth)/180,Float.valueOf(scrHeight)/296,1);
         view = new ScalingViewport(Scaling.stretch, 180, 296);
@@ -120,9 +126,12 @@ public class renderHelper {
         textureHash.put("midBox.png",imageLoad("Midbox.png"));
         textureHash.put("48Box.png",imageLoad("48box.png"));
         textureHash.put("tophalfbox.png",imageLoad("tophalfbox.png"));
+        textureHash.put("arrowBoxLeft.png",imageLoad("arrowBoxLeft.png"));
+        textureHash.put("arrowBoxRight.png",imageLoad("arrowBoxRight.png"));
 
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
+        textureHash.put("stockingCap.png", imageLoad("stockingCap.png"));
 
         textureHash.put("itemBar.png",imageLoad("ItemBar.png"));
         textureHash.put("longBox.png",imageLoad("longBox.png"));
@@ -150,26 +159,28 @@ public class renderHelper {
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 32;
+        parameter.size = Math.round(32* screenXRatio);
         medFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        parameter.size = 24;
-        smallFont = generator.generateFont(parameter);
-        smallFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        parameter.size = 48;
-        bigFont = generator.generateFont(parameter);
-        bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-
-        parameter.size = 32;
         medBlackFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medBlackFont.setColor(Color.BLACK);
-        parameter.size = 24;
+        medGreenFont = generator.generateFont(parameter); // smallFont size 12 pixels
+        medGreenFont.setColor(Color.GREEN);
+
+
+        parameter.size = Math.round(24* screenXRatio);
+        smallFont = generator.generateFont(parameter);
+        smallFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         smallBlackFont = generator.generateFont(parameter);
         smallBlackFont.setColor(Color.BLACK);
-        parameter.size = 48;
+
+        parameter.size = Math.round(48*screenXRatio);
+        bigFont = generator.generateFont(parameter);
+        bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         bigBlackFont = generator.generateFont(parameter);
-        bigBlackFont.setColor(0f, 0f, 0f, 0f);
+        bigBlackFont.setColor(Color.BLACK);
+        bigGreenFont = generator.generateFont(parameter);
+        bigGreenFont.setColor(Color.GREEN);
 
         generator.dispose();
 
@@ -189,7 +200,7 @@ public class renderHelper {
     /*
      **********Image Setup functions***********
                                               */
-    public Image imageSetupCenter(String key, Stage stage, int hOffset, int vOffset){
+    public Image imageSetupCenter(String key, Stage stage, float hOffset, float vOffset){
         Texture texture = textureHash.get(key);
         Image image = new Image(texture);
         setPositionCenter(stage,image,hOffset,vOffset);
@@ -210,9 +221,11 @@ public class renderHelper {
         }
         else if (size.equals("large")){
             if(color.equals("black")){return bigBlackFont; }
+            else if(color.equals("green")){return bigGreenFont;}
             return bigFont;
         }
         if(color.equals("black")){return medBlackFont; }
+        if(color.equals("green")){return medGreenFont;}
         return medFont;
     }
 
@@ -246,7 +259,6 @@ public class renderHelper {
 
     public void textSetCenter(String text, float offsetx, float offsety)
     {
-        BitmapFont.TextBounds bounds = medFont.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         medFont.draw(batch, text, (textLoc.x),
                 (textLoc.y));
@@ -326,7 +338,7 @@ public class renderHelper {
 
     // This acts like the inherent Image.setPosition, but at center to pair with
     // ImageSetupCenter
-    public static void setPositionCenter(Stage stage,Image image,int hOffset,int vOffset){
+    public static void setPositionCenter(Stage stage,Image image,float hOffset,float vOffset){
         image.setPosition((stage.getWidth() / 2) - (image.getWidth() / 2) + hOffset,
                 ((stage.getHeight() / 2) - (image.getHeight() / 2)) + vOffset);
     }

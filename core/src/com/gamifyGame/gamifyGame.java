@@ -64,7 +64,7 @@ public class gamifyGame extends Game {
         paused = false;
 
 
-        renderHelper.forceRemake();
+        renderHelper.forceRemake(pref.getFloat("screenWidth", 1200f), pref.getFloat("screenHeight", 1824f));
 
         helper = new listenerHelper(this);
         mainS = new MainScreen(this);

@@ -55,7 +55,7 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
             HashMap<String, String> updateFile = new HashMap<String, String>();
             int i = 0;
             while ((line = reader.readLine()) != null) {
-                lineParts = line.split(",");
+                    lineParts = line.split(",");
                 updateFile.put(lineParts[0], lineParts[1]);
                 System.out.println("\"GAMEBATCHUPDATER: KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
             }
@@ -66,10 +66,14 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
             reader.close();
 
             // Reset toRead
-            if(!toRead.delete())
-
+            if(!toRead.delete()){System.out.println("GAMEBATCHUPDATER: Failed to delete file");}
+            if (toRead.exists()){System.out.println("GAMEBATCHUPDATER: Failed to delete file correctly");}
             game.storeUpdatePrefs(updatePref);
+
+            updatePref.get();
+
         }catch(Exception e){
+            System.out.println("GAMEBATCHUPDATER:" + e.getMessage());
             System.out.println("GAMEBATCHUPDATER: crash in background");
         }
         game.setLoadingFlag(false);
