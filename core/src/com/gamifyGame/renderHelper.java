@@ -37,7 +37,7 @@ public class renderHelper {
     ScalingViewport view;
     Stage backgroundLayer, activeLayer, effectsLayer, overlayLayer;
     SpriteBatch batch;
-    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont;
+    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont  , medGreenFont;
 
     InputMultiplexer normalProcessor;
 
@@ -171,6 +171,11 @@ public class renderHelper {
         bigBlackFont = generator.generateFont(parameter);
         bigBlackFont.setColor(0f, 0f, 0f, 0f);
 
+
+        parameter.size = 32;
+        medGreenFont = generator.generateFont(parameter); // smallFont size 12 pixels
+        medGreenFont.setColor(Color.GREEN);
+
         generator.dispose();
 
         normalProcessor = new InputMultiplexer(activeLayer, overlayLayer);
@@ -213,6 +218,7 @@ public class renderHelper {
             return bigFont;
         }
         if(color.equals("black")){return medBlackFont; }
+        if(color.equals("green")){return medGreenFont;}
         return medFont;
     }
 
