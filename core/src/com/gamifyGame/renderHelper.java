@@ -37,7 +37,7 @@ public class renderHelper {
     ScalingViewport view;
     Stage backgroundLayer, activeLayer, effectsLayer, overlayLayer;
     SpriteBatch batch;
-    BitmapFont smallFont, medFont, bigFont;
+    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont;
 
     InputMultiplexer normalProcessor;
 
@@ -159,6 +159,18 @@ public class renderHelper {
         parameter.size = 48;
         bigFont = generator.generateFont(parameter);
         bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+
+        parameter.size = 32;
+        medBlackFont = generator.generateFont(parameter); // smallFont size 12 pixels
+        medBlackFont.setColor(Color.BLACK);
+        parameter.size = 24;
+        smallBlackFont = generator.generateFont(parameter);
+        smallBlackFont.setColor(Color.BLACK);
+        parameter.size = 48;
+        bigBlackFont = generator.generateFont(parameter);
+        bigBlackFont.setColor(0f, 0f, 0f, 0f);
+
         generator.dispose();
 
         normalProcessor = new InputMultiplexer(activeLayer, overlayLayer);
@@ -187,13 +199,20 @@ public class renderHelper {
         return image;
     }
 
-    private BitmapFont getFontSize(String size){
+    private BitmapFont getFont(String size){
+        return getFont(size, "white");
+    }
+
+    private BitmapFont getFont(String size, String color){
         if (size.equals("small")){
+            if(color.equals("black")){return smallBlackFont; }
             return smallFont;
         }
         else if (size.equals("large")){
+            if(color.equals("black")){return bigBlackFont; }
             return bigFont;
         }
+        if(color.equals("black")){return medBlackFont; }
         return medFont;
     }
 
@@ -202,30 +221,27 @@ public class renderHelper {
     }
 
     public void textSet(String text, float x, float y, String size, String align, float lineWidth){
-        BitmapFont curFont = getFontSize(size);
+        BitmapFont curFont = getFont(size);
         if (align.equals("right")) x -= (180*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
         else if (align.equals("center")) x-= (90*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
         textSet(text,x,y,size,lineWidth);
     }
 
-    public void textSet(String text, float x, float y, float lineWidth){
-        textSet(text,x,y,"medium",lineWidth);
-    }
+    public void textSet(String text, float x, float y, float lineWidth){ textSet(text,x,y,"medium",lineWidth);}
 
-    public void textSet(String text, float x, float y, String size, float lineWidth){
-        BitmapFont curFont = getFontSize(size);
+    public void textSet(String text, float x, float y, String size, float lineWidth){textSet(text,"white",x,y,size,lineWidth);}
+    public void textSet(String text, String color, float x, float y, String size, float lineWidth){
+        BitmapFont curFont = getFont(size,color);
         curFont.drawWrapped(batch,text,(x * scrWidth) / 180,(y * scrHeight) / 296, (lineWidth * scrWidth) / 180);
     }
 
-    public void textSet(String text, float x, float y, String size){
-        BitmapFont curFont = getFontSize(size);
+    public void textSet(String text, String color, float x, float y, String size){
+        BitmapFont curFont = getFont(size, color);
         curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);
     }
 
-    public void textSet(String text, float x, float y){
-        textSet(text,x,y,"normal");
-    }
-
+    public void textSet(String text, float x, float y){textSet(text,"white", x,y,"normal");}
+    public void textSet(String text, float x, float y, String size){textSet(text,"white", x,y,size);}
 
 
     public void textSetCenter(String text, float offsetx, float offsety)
@@ -237,7 +253,7 @@ public class renderHelper {
     }
     public void textSetCenter(String text, float offsetx, float offsety, String size)
     {
-        BitmapFont curFont = getFontSize(size);
+        BitmapFont curFont = getFont(size);
         BitmapFont.TextBounds bounds = curFont.getBounds(text); //TODO: Use text boundaries to center text
         Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
         curFont.draw(batch, text, (textLoc.x),
@@ -248,8 +264,10 @@ public class renderHelper {
         textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth()/2);
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
-    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size) {
-        BitmapFont curFont = getFontSize(size);
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size) {drawTextOnImageNicely(text,image,offsetx,offsety,size,"white");}
+
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size, String color) {
+        BitmapFont curFont = getFont(size, color);
         BitmapFont.TextBounds curBounds = curFont.getBounds(text);
         Point convertedDimensions=new Point(curBounds.width, curBounds.height);
         convertedDimensions=convertTextCoorsToImageCoors(convertedDimensions);
@@ -259,7 +277,7 @@ public class renderHelper {
 
         Point textCoorsLoc=new Point(offsetx+image.getX()+(image.getImageWidth()+4)/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
 
-        textSet(text, (int) textCoorsLoc.x , (int) textCoorsLoc.y, size,  image.getWidth());
+        textSet(text, color,  (int) textCoorsLoc.x , (int) textCoorsLoc.y, size,  image.getWidth());
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 

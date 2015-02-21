@@ -34,8 +34,12 @@ public class BuyScreen extends GamifyScreen implements Screen
     @Override
     public void show() {
         //Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
-        Image placeHold = renderHelper.getRenderHelper().imageSetup("longBox.png", renderHelper.getRenderHelper().getLayer(1), 26, 12);
+
+        TextDisplayBox placeHold = new TextDisplayBox("longBox.png");
+        float placeHoldX = (renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
+        placeHold.addAt(renderHelper.getRenderHelper().getLayer(1), placeHoldX,12);
         placeHold.addListener(new GoScreenClickListener(game.mainS, game));
+        placeHold.addText(new Point(0,0), "Return to Main Screen");
 
 
         textDisplayBox=new MovingTextDisplayBox("midBox.png");

@@ -25,13 +25,17 @@ public class TextDisplayBox extends GamifyImage
 
     public void addText(Point location, String text)
     {
-        locationToText.put(location, new TextInfo(text, "medium"));
+        addText(location, text, "medium");
     }
 
     public void addText(Point location, String text, String fontSize)
     {
-        locationToText.put(location, new TextInfo(text, fontSize));
+        addText(location, text, fontSize, "white");
     }
+    public void addText(Point location, String text, String fontSize, String color){
+        locationToText.put(location, new TextInfo(text, fontSize, color));
+    }
+
 
     public void draw(Batch b, float parentAlpha)
     {
@@ -40,7 +44,7 @@ public class TextDisplayBox extends GamifyImage
         renderHelper.getRenderHelper().getBatch().begin();
         for(Point curLoc: locationToText.keySet())
         {
-            renderHelper.getRenderHelper().drawTextOnImageNicely(locationToText.get(curLoc).getTextToWrite(), this, curLoc.x, curLoc.y,locationToText.get(curLoc).getSizeOfFont() );
+            renderHelper.getRenderHelper().drawTextOnImageNicely(locationToText.get(curLoc).getTextToWrite(), this, curLoc.x, curLoc.y,locationToText.get(curLoc).getSizeOfFont(), locationToText.get(curLoc).getColorOfFont() );
         }
         renderHelper.getRenderHelper().getBatch().end();
         b.begin();
@@ -52,14 +56,20 @@ public class TextDisplayBox extends GamifyImage
     }
 
     private class TextInfo extends Object{
-        String textToWrite;String sizeOfFont;
+        String textToWrite;String sizeOfFont; String colorOfFont;
         public TextInfo(String text, String size){
             textToWrite = text;
             sizeOfFont = size;
+            colorOfFont = "white";
+        }
+        public TextInfo(String text, String size, String color){
+            textToWrite = text;
+            sizeOfFont = size;
+            colorOfFont = color;
         }
         public String getTextToWrite(){return textToWrite;}
         public String getSizeOfFont(){return sizeOfFont;}
-
+        public String getColorOfFont(){return colorOfFont;}
     }
 
 }
