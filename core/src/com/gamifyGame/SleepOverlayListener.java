@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.Array;
  * This Class pulls up the sleep overlay and does the needed background work to make the app know the user wants to sleep.
  */
 public class SleepOverlayListener extends ClickListener {
-    final String helpBoxResource = "placeholder140x140.png";
 
     boolean displayingFlag;
     Array<Actor> toBeRestored;
@@ -31,7 +30,7 @@ public class SleepOverlayListener extends ClickListener {
 
         //TODO: Set stuff in background to know that sleeping is happening
 
-        OverlayHelper overlay = new OverlayHelper(helpBoxResource, game);
+        OverlayHelper overlay = new OverlayHelper("overlay.png", game);
         if(!overlay.setup()){return true;}
 
 

@@ -54,6 +54,7 @@ public class OverlayHelper extends GamifyImage {
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){ resumeGame(); return true;}};
     private void resumeGame(){ // Gets the user back to the main screen away from help overlay
         toDraw = null;
+        game.getActionResolver().putSharedPrefs("isSleeping", "false");
         renderHelper.getRenderHelper().getLayer(3).clear();
         for(Actor actor: toBeRestored){
             renderHelper.getRenderHelper().getLayer(3).addActor(actor);

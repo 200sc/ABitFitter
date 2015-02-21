@@ -127,7 +127,7 @@ public class MainScreen extends GamifyScreen implements Screen
             //TODO: Decide if this is the right place for help
             //Sets up the button for triggering help
             HelpDisplay helpBox =new HelpDisplay("inactiveHour.png", game);
-            helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), 85, 1);
+            helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH/2 - renderHelper.getRenderHelper().textureHash.get("inactiveHour.png").getWidth()/2, 1);
             helpBox.setColor(Color.WHITE);
 
             //Set up the sleep bar

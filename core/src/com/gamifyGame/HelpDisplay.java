@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
  * Makes the help button which will on click overlay with a contextual help interface for screens.
  */
 public class HelpDisplay extends TextDisplayBox {
-    final String helpBoxResource = "placeholder140x140.png";
+
     float imgWidth, imgHeight;
     boolean displayingFlag;
     Array<Actor> toBeRestored;
@@ -22,10 +22,10 @@ public class HelpDisplay extends TextDisplayBox {
     public HelpDisplay(String path, gamifyGame curGame) {
         super(path);
         this.game = curGame;
-        this.addText(new Point(-2, 2), "Help", "m");
+        this.addText(new Point(-1, 2), "Help", "m");
         this.addHelpListener();
-        this.imgWidth = renderHelper.getRenderHelper().textureHash.get(helpBoxResource).getWidth();
-        this.imgHeight = renderHelper.getRenderHelper().textureHash.get(helpBoxResource).getHeight();
+        this.imgWidth = renderHelper.getRenderHelper().textureHash.get("overlay.png").getWidth();
+        this.imgHeight = renderHelper.getRenderHelper().textureHash.get("overlay.png").getHeight();
 
         this.displayingFlag = false;
     }
@@ -33,16 +33,17 @@ public class HelpDisplay extends TextDisplayBox {
     private void displayHelpContext(){
 
 
-        float xLoc = renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH/2 - imgWidth/2;
+        float xLoc = renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH/2;
         float yLoc = renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT/3;
 
         //Construct the overlay
-        OverlayHelper overlay = new OverlayHelper(helpBoxResource, game);
+        OverlayHelper overlay = new OverlayHelper("overlay.png", game);
         if(!overlay.setup()){return;} // Part of the promise otherwise bad things could happen
+        overlay.setColor(Color.GRAY);
+        overlay.getColor().a = 0.4f;
 
-
-        TextDisplayBox resumeGame = new TextDisplayBox("longBox.png");
-        resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc + 5, yLoc-renderHelper.getRenderHelper().textureHash.get("longBox.png").getHeight()/2);
+        TextDisplayBox resumeGame = new TextDisplayBox("smallPopUpBoxBlue.png");
+        resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth()/2, 12);
         resumeGame.addText(new Point(0,0), "Resume Game");
         resumeGame.addListener(overlay.resumeListener);
 
@@ -80,13 +81,12 @@ public class HelpDisplay extends TextDisplayBox {
     }
     private void buyScreenDisplay(){
         renderHelper renderer = renderHelper.getRenderHelper();
-        Texture t48 = renderer.textureHash.get("48Box.png");
-        HelpInfoBox scrollDesc = new HelpInfoBox("48Box.png", 15, renderer.RENDERED_SCREEN_HEIGHT -t48.getHeight(), "\n\n Top bar is a scrollbar of buildings.\n" , "green");
-        HelpInfoBox scrollBoxDesc = new HelpInfoBox("48Box.png", 120, renderer.RENDERED_SCREEN_HEIGHT - t48.getHeight()-60, "\n\n Pull a building down to see its description and cost." , "green");
-        HelpInfoBox buildingSpaceDesc = new HelpInfoBox("48Box.png", renderer.RENDERED_SCREEN_WIDTH/2-t48.getWidth()
-                        , renderer.RENDERED_SCREEN_HEIGHT/2 - t48.getHeight()/2, " \n\nDrag Buildings from scrollbar. If there are valid spaces they will appear green.\n" , "green");
-
-        HelpInfoBox expandDesc = new HelpInfoBox("48Box.png", renderer.RENDERED_SCREEN_WIDTH/2, renderer.RENDERED_SCREEN_HEIGHT/6 , "\n\n Buy a level extender to be able to build up to 3 levels deep!.\n" , "green");
+        Texture t48 = renderer.textureHash.get("smallPopUpBoxBlue.png");
+        HelpInfoBox scrollDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 15, renderer.RENDERED_SCREEN_HEIGHT -t48.getHeight(), "Top bar is a scrollbar of buildings" , "green");
+        HelpInfoBox scrollBoxDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 100, renderer.RENDERED_SCREEN_HEIGHT - t48.getHeight()-60, "Pull a building down to see description and cost" , "green");
+        HelpInfoBox buildingSpaceDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderer.RENDERED_SCREEN_WIDTH/2-t48.getWidth()
+                        , renderer.RENDERED_SCREEN_HEIGHT/2 - t48.getHeight()/2, " Valid building spaces will appear green" , "green");
+        HelpInfoBox expandDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderer.RENDERED_SCREEN_WIDTH/2, renderer.RENDERED_SCREEN_HEIGHT/6 , "Buy a level extender to build up to 3 levels deep!" , "green");
 
         return ;
     }

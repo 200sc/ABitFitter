@@ -118,12 +118,6 @@ public class AndroidLauncher extends AndroidApplication {
             edit.apply();
 
         }
-        String sleeping = sharedPref.getString("isSleeping", null);
-        if(sleeping != null){
-            pref.putString("isSleeping",sleeping);
-            if(sleeping.equals("false"))System.out.println("AndroidLauncher: SLEEP FALSEEEEE");
-        }else{System.out.println("AndroidLauncher: NULLL SLEEP NULL");}
-
         // Force clearing for testing
         //sharedPref.edit().clear().commit();
 
