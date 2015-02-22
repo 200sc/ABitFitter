@@ -141,6 +141,8 @@ public class renderHelper {
 
         textureHash.put("star.png", imageLoad("star.png"));
 
+        textureHash.put("scrollBarKnub.png", imageLoad("scrollBarKnub.png"));
+
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
         textureHash.put("stockingCap.png", imageLoad("stockingCap.png"));
         textureHash.put("nightCap.png", imageLoad("nightCap.png"));
