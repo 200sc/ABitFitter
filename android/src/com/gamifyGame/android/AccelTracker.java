@@ -102,6 +102,10 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         float yAverage = 0;
         float zAverage = 0;
 
+        long xPeakAvg = 0;
+        long yPeakAvg = 0;
+        long zPeakAvg = 0;
+
         double resultantAccel = 0;
 
         String line;
@@ -143,20 +147,22 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         List<Long> xPeakList = new ArrayList<Long>();
         List<Long> yPeakList = new ArrayList<Long>();
         List<Long> zPeakList = new ArrayList<Long>();
+        List<Long> avgPeakList = new ArrayList<Long>();
 
         xPeakList = peakLists.get(0);
         yPeakList = peakLists.get(1);
         zPeakList = peakLists.get(2);
+        avgPeakList = peakLists.get(3);
 
         xAvgPeakTimeDiff = getAvgPeakDiff(xPeakList);
         yAvgPeakTimeDiff = getAvgPeakDiff(yPeakList);
         zAvgPeakTimeDiff = getAvgPeakDiff(zPeakList);
 
-        System.out.println(xAvgPeakTimeDiff);
-        System.out.println(yAvgPeakTimeDiff);
-        System.out.println(zAvgPeakTimeDiff);
+        xPeakAvg = avgPeakList.get(0);
+        yPeakAvg = avgPeakList.get(1);
+        zPeakAvg = avgPeakList.get(2);
 
-        return activityAnalysis(/*xRandPeak, yRandPeak, zRandPeak,*/resultantAccel, xAverage, yAverage, zAverage, xAvgPeakTimeDiff, yAvgPeakTimeDiff, zAvgPeakTimeDiff);
+        return activityAnalysis(xPeakAvg, yPeakAvg, zPeakAvg, resultantAccel, xAverage, yAverage, zAverage, xAvgPeakTimeDiff, yAvgPeakTimeDiff, zAvgPeakTimeDiff);
     }
 
 
@@ -164,6 +170,12 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         int xCounter = 0;
         int yCounter = 0;
         int zCounter = 0;
+
+        float xPeakSum = 0;
+        float yPeakSum = 0;
+        float zPeakSum = 0;
+
+        List<Long> peakAvgs = new ArrayList<Long>();
 
         List<String> currentPeak;
         List<String> tempNode;
@@ -213,7 +225,8 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             if ((xTempCurrent > xTempPreNeigh) && (xTempCurrent > xTempNextNeigh)) {
                 currentPeak = tempNode;
                 xPeaks.add(Long.parseLong(currentPeak.get(3)));
-                System.out.println("adding x peak");
+                xPeakSum = xPeakSum + Float.parseFloat(currentPeak.get(0));
+                //System.out.println("adding x peak");
                 i++;
             } else {
                 i++;
@@ -222,7 +235,8 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             if ((yTempCurrent > yTempPreNeigh) && (yTempCurrent > yTempNextNeigh)) {
                 currentPeak = tempNode;
                 yPeaks.add(Long.parseLong(currentPeak.get(3)));
-                System.out.println("adding y peak");
+                yPeakSum = yPeakSum + Float.parseFloat(currentPeak.get(1));
+                //System.out.println("adding y peak");
                 i++;
             } else {
                 i++;
@@ -231,16 +245,22 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             if ((zTempCurrent > zTempPreNeigh) && (zTempCurrent > zTempNextNeigh)) {
                 currentPeak = tempNode;
                 zPeaks.add(Long.parseLong(currentPeak.get(3)));
-                System.out.println("adding z peak");
+                zPeakSum = zPeakSum + Float.parseFloat(currentPeak.get(2));
+                //System.out.println("adding z peak");
                 i++;
             } else {
                 i++;
             }
         }
 
+            peakAvgs.add((long)(xPeakSum/xPeaks.size()));
+            peakAvgs.add((long)(yPeakSum/yPeaks.size()));
+            peakAvgs.add((long)(zPeakSum/zPeaks.size()));
+
             peakLists.add(xPeaks);
             peakLists.add(yPeaks);
             peakLists.add(zPeaks);
+            peakLists.add(peakAvgs);
 
             return peakLists;
 
@@ -257,24 +277,30 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         return sum/listSize;
     }
 
-    protected int activityAnalysis(/*float xPeak, float yPeak, float zPeak, */double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
-        sendNotification("xAvg:" + Float.toString(xAvgPTD) + "yAvg" + Float.toString(yAvgPTD) + "zAvg:" + Float.toString(zAvgPTD));
-        if ((zAvg < 10 && zAvg > -10) && (xAvg < 10 && xAvg > -3) && (yAvg < 5 && yAvg > -3)){
-                sendNotification("Sitting" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
-                return 6;
-        }
-
-        if ((yAvgPTD > 0 && yAvgPTD < 400) && (yAvg < 20 && yAvg > -10)){
-            sendNotification("running" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+    protected int activityAnalysis(long xAvgPeak, long yAvgPeak, long zAvgPeak, double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
+        //sendNotification(xAvgPeak + " " + yAvgPeak + " " + zAvgPeak);
+        if(((xAvgPeak < 10) && (xAvgPeak > -5)) && ((yAvgPeak > -10) && (yAvgPeak < 20)) && ((zAvgPeak < 15) && (zAvgPeak > -10))){
+            if ((yAvgPTD > 0 && yAvgPTD < 400) && (yAvg < 20 && yAvg > -10) && (xAvg < 10 && xAvg > 0) && (zAvg < 5 && zAvg > -10)){
+                sendNotification("sitting" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
                 return 2;
             }
-
-        if ((yAvgPTD > 400) && (yAvg < 30 && yAvg > -5)){
-            sendNotification("walking" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
-            return 5;
         }
 
-        //sendNotification("inactive" + Float.toString(yAvg) + " " + Double.toString(yAvgPTD));
+        if((xAvg < 10 && xAvg < -10) && (yAvg < 20 && yAvg > -10) && (zAvg > -5 && zAvg < 10 )){
+            if ((yAvgPTD > 300)){
+                sendNotification("walking" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+                return 5;
+            }
+        }
+
+        if((xAvg < 10 && xAvg < -10) && (yAvg < 20 && yAvg > -10) && (zAvg > -5 && zAvg < 10 )){
+            if ((yAvgPTD <= 300)){
+                sendNotification("jogging" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+                return 2;
+            }
+        }
+
+        sendNotification("inactive" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
         return 0;
 
         }
