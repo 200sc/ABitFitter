@@ -10,10 +10,11 @@ import java.util.Calendar;
  */
 public class SkyImage extends GamifyImage {
 
-    double deltaSum;
     final private int increment = 291892;
     final private int day = 86400000;
     static SkyImage sky;
+    private Image time;
+    private String dayTime;
 
     public static SkyImage getSkyImage (String path){
         if (sky == null) {sky = new SkyImage(path);}
@@ -22,12 +23,18 @@ public class SkyImage extends GamifyImage {
 
     private SkyImage(String path){
         super(path);
-        renderHelper.getRenderHelper().imageSetup( timeOfDay(), renderHelper.getRenderHelper().getLayer(0), 0, 0);
+        dayTime = timeOfDay();
+        time = renderHelper.getRenderHelper().imageSetup( dayTime, renderHelper.getRenderHelper().getLayer(0), 0, 0);
         this.addAt(renderHelper.getRenderHelper().getLayer(0),0,-296);
         renderHelper.getRenderHelper().imageSetup("background.png", renderHelper.getRenderHelper().getLayer(0), 0, 0);
         this.addAction(new Action(){
             public boolean act(float delta){
                 setPosition(0,(float)Math.floor((System.currentTimeMillis() % day)/increment)-296);
+                if(dayTime != timeOfDay()) {
+                    dayTime = timeOfDay();
+                    time.remove();
+                    time = renderHelper.getRenderHelper().imageSetup( dayTime, renderHelper.getRenderHelper().getLayer(0), 0, 0);
+                }
                 return false;
             }
         });

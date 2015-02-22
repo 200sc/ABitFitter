@@ -11,9 +11,12 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import com.badlogic.gdx.Preferences;
 import com.gamifyGame.gamifyGame;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -22,151 +25,144 @@ import java.util.Random;
 public class challengeAlarm extends WakefulBroadcastReceiver {
 
     gamifyGame game;
+    private HashMap<String,String> input;
+    private HashMap<String,String> daily;
     private final String[] CHALLENGE_PROMPTS = {"Try a new food!","Be active this hour!"};
 
     public void onReceive(Context context, Intent intent) {
-        // This stuff happens every day at midnight!
-        /*
-        if (pref != null) {
-            if (Calendar.HOUR_OF_DAY == 0) {
-                pref.putBoolean("challengedToday", false);
-                // Data to update!
-                int challengeProgress = pref.getInteger("challengeProgress", 0);
-                pref.putInteger("challengeProgress", 0);
 
-                String todaysChallenge = pref.getString("todaysChallenge", "none");
-                pref.putString("todaysChallenge", "none");
+        //**********************************************\\
+        //
+        // Initialize maps and files
+        input = new HashMap<String,String>();
+        daily = new HashMap<String,String>();
+        System.out.println(String.valueOf(context));
+        File toRead = new File(context.getApplicationContext().getFilesDir(), "inChallenge");
+        File toWrite = new File(context.getApplicationContext().getFilesDir(), "outChallenge");
+        File dailyFile = new File(context.getApplicationContext().getFilesDir(), "dailyData");
 
-                int stepsTaken = pref.getInteger("stepsTaken", 0);
-                pref.putInteger("stepsTaken", 0);
 
-                int minutesSlept = pref.getInteger("minutesSlept", 0);
-                pref.putInteger("minutesSlept", 0);
+        try {
 
-                int minutesWalked = pref.getInteger("minutesWalked", 0);
-                pref.putInteger("minutesWalked", 0);
+            //**********************************************\\
+            //
+            // Read the contents of the input files
+            BufferedReader reader = new BufferedReader(new FileReader((toRead)));
+            String line = null;
+            String[] lineParts;
+            while ((line = reader.readLine()) != null) {
+                lineParts = line.split(",");
+                input.put(lineParts[0], lineParts[1]);
+                System.out.println("\"ChallengeAlarm: INPUT KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+            }
+            reader.close();
 
-                int minutesRan = pref.getInteger("minutesRan", 0);
-                pref.putInteger("minutesRan", 0);
+            reader = new BufferedReader(new FileReader((dailyFile)));
+            line = null;
+            while ((line = reader.readLine()) != null) {
+                lineParts = line.split(",");
+                daily.put(lineParts[0], lineParts[1]);
+                System.out.println("\"ChallengeAlarm: DAILY KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+            }
+            reader.close();
 
-                int minutesBiked = pref.getInteger("minutesBiked", 0);
-                pref.putInteger("minutesBiked", 0);
+            //**********************************************\\
 
-                int minutesDanced = pref.getInteger("minutesDanced", 0);
-                pref.putInteger("minutesDanced", 0);
+            FileOutputStream hourWriter = new FileOutputStream(toWrite);
+            FileOutputStream dailyWriter = new FileOutputStream(dailyFile);
+            if (hourWriter == null || dailyWriter == null) {
+                System.out.println("ChallengeAlarm: Writer is null");
+            }
 
-                //TODO: Write more data!
 
-                String today = String.valueOf(Calendar.DAY_OF_YEAR);
+            //**********************************************\\
+            //
+            // Write to output for the day
+            dailyWriter.write(("minutesWalked,"+String.valueOf(
+                    getInteger(daily,"minutesWalked")+
+                    getInteger(input,"minutesWalkedThisHour"))).getBytes());
+            dailyWriter.write(("minutesRan,"+String.valueOf(
+                    getInteger(daily,"minutesRan")+
+                    getInteger(input,"minutesRanThisHour"))).getBytes());
+            dailyWriter.write(("minutesDanced,"+String.valueOf(
+                    getInteger(daily,"minutesDanced")+
+                    getInteger(input,"minutesDancedThisHour"))).getBytes());
+            dailyWriter.write(("minutesBiked,"+String.valueOf(
+                    getInteger(daily,"minutesBiked"))+
+                    getInteger(input,"minutesBikedThisHour")).getBytes());
+            dailyWriter.write(("stepsTaken,"+String.valueOf(
+                    getInteger(daily,"stepsTaken"))+
+                    getInteger(input,"stepsTakenThisHour")).getBytes());
+            dailyWriter.write(("newFood,"+String.valueOf(
+                    getInteger(daily,"newFood"))+
+                    getInteger(input,"newFoodThisHour")).getBytes());
 
-                // This math might suck, i.e. leap years
+
+            // And the output for GDX
+            hourWriter.write(("minutesWalkedThisHour,0\n").getBytes());
+            hourWriter.write(("minutesRanThisHour,0\n").getBytes());
+            hourWriter.write(("minutesDancedThisHour,0\n").getBytes());
+            hourWriter.write(("minutesBikedThisHour,0\n").getBytes());
+            hourWriter.write(("stepsTakenThisHour,0\n").getBytes());
+            hourWriter.write(("newFoodThisHour,0\n").getBytes());
+
+
+
+            //**********************************************\\
+            //
+            // Store a bunch of things once a day
+            if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 1){
+                String today = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+                File weeklyFile = new File(context.getApplicationContext().getFilesDir(), "day"+today);
+
                 int toDelete = 0;
-                if (Calendar.DAY_OF_YEAR > 8) {
-                    toDelete = Calendar.DAY_OF_YEAR - 8;
+                if (Calendar.getInstance().get(Calendar.DAY_OF_YEAR) > 8) {
+                    toDelete = Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - 8;
                 } else {
-                    toDelete = Calendar.DAY_OF_YEAR - 8 + 365;
+                    toDelete = Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - 8 + 365;
                 }
                 String lastWeek = String.valueOf(toDelete);
+                File deleteFile = new File(context.getFilesDir(), "day"+lastWeek);
 
-                File toWrite = new File(context.getFilesDir(), today);
-                try {
-                    FileOutputStream writer = new FileOutputStream(toWrite);
-                    writer.write(Byte.valueOf("challengeProgress," + challengeProgress + "\n"));
-                    writer.write(Byte.valueOf("todaysChallenge," + todaysChallenge + "\n"));
-                    writer.write(Byte.valueOf("stepsTaken," + stepsTaken + "\n"));
-                    writer.write(Byte.valueOf("minutesSlept," + minutesSlept + "\n"));
-                    writer.write(Byte.valueOf("minutesWalked," + minutesWalked + "\n"));
-                    writer.write(Byte.valueOf("minutesRan," + minutesRan + "\n"));
-                    writer.write(Byte.valueOf("minutesBiked," + minutesBiked + "\n"));
-                    writer.write(Byte.valueOf("minutesDanced," + minutesDanced + "\n"));
-                    writer.close();
-                } catch (Exception e) {
-                    // This should never happen
-                    assert (1 == 0);
-                }
-                File deleteFile = new File(context.getFilesDir(), lastWeek);
-                deleteFile.delete();
+                FileOutputStream weekWriter = new FileOutputStream(weeklyFile, true);
+                hourWriter.write(Byte.valueOf("challengeProgress," + getInteger(daily, "challengeProgress") + "\n"));
+                hourWriter.write(Byte.valueOf("todaysChallenge," + getString(daily, "todaysChallenge") + "\n"));
+                hourWriter.write(Byte.valueOf("stepsTaken," + getInteger(daily, "stepsTaken") + "\n"));
+                hourWriter.write(Byte.valueOf("minutesSlept," + getInteger(daily, "minutesSlept") + "\n"));
+                hourWriter.write(Byte.valueOf("minutesWalked," + getInteger(daily, "minutesWalked") + "\n"));
+                hourWriter.write(Byte.valueOf("minutesRan," + getInteger(daily, "minutesRan") + "\n"));
+                hourWriter.write(Byte.valueOf("minutesBiked," + getInteger(daily, "minutesBiked") + "\n"));
+                hourWriter.write(Byte.valueOf("minutesDanced," + getInteger(daily, "minutesDanced") + "\n"));
 
-                pref.flush();
+                weekWriter.close();
+
             }
 
-            // If the user has been challenged today already, it is at least an hour later,
-            // so assign waitingChallenge to be false.
-            if (pref.getBoolean("challengedToday", false)) {
-                pref.putBoolean("waitingChallenge", false);
-                pref.flush();
-                return;
-            }
-            }
-            */
-        if(LifeListener.getLifeListener().getStatus()) {
-            ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(context, false);
-            game = gamifyGame.getGamifyGame(actionResolverAndroid);
-            Preferences pref = game.getPrefs();
 
-            // Daily reset
-            if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 0) {
-                pref.putInteger("challengeProgress",0);
-            }
+            //**********************************************\\
+            //
+            // If challenged this hour, write the challenge data to output.
+            boolean availableThisHour = Boolean.valueOf(input.get(challengeTime()));
+            float challengeChancesToday = getChallengeChances(input);
 
-            // Hourly reset
-            pref.putInteger("minutesWalked",pref.getInteger("minutesWalked",0)
-                            + pref.getInteger("minutesWalkedThisHour",0));
-            pref.putInteger("minutesRan",pref.getInteger("minutesRan",0)
-                            + pref.getInteger("minutesRanThisHour",0));
-            pref.putInteger("minutesDanced",pref.getInteger("minutesDanced",0)
-                            + pref.getInteger("minutesDancedThisHour",0));
-            pref.putInteger("minutesBiked",pref.getInteger("minutesBiked",0)
-                            + pref.getInteger("minutesBikedThisHour",0));
+            if (availableThisHour && Math.random() < 1f / challengeChancesToday && !getBoolean(daily,"challengedToday")) {
+                hourWriter.write(("challengeHour,true").getBytes());
+                hourWriter.write(("challengedToday,true").getBytes());
 
-            pref.putInteger("minutesWalkedThisHour",0);
-            pref.putInteger("minutesRanThisHour",0);
-            pref.putInteger("minutesDancedThisHour",0);
-            pref.putInteger("minutesBikedThisHour",0);
-            pref.putInteger("newFoodThisHour", 0);
-
-
-            boolean availableThisHour = pref.getBoolean(challengeTime(), false);
-            float challengeChancesToday = getChallengeChances();
-            if (availableThisHour && Math.random() <= 1f / challengeChancesToday && !pref.getBoolean("challengedToday", false)) {
-                pref.putBoolean("challengeHour", true);
-                pref.putBoolean("challengedToday", true);
                 String challengePrompt = generateChallenge();
-                pref.putString("challengeVariety", challengePrompt);
+                hourWriter.write(("challengeVariety," + challengePrompt).getBytes());
+
+
                 sendChallengeNotification(context, challengePrompt);
             }
-            pref.flush();
-        }
-        else{
-            SharedPreferences sPref = context.getApplicationContext().getSharedPreferences("bitFitpref", 0);
-            SharedPreferences.Editor editor = sPref.edit();
-            editor.putBoolean("challengeAlarmTriggered",true);
 
-            editor.putInt("minutesWalked",sPref.getInt("minutesWalked",0)
-                    + sPref.getInt("minutesWalkedThisHour",0));
-            editor.putInt("minutesRan",sPref.getInt("minutesRan",0)
-                    + sPref.getInt("minutesRanThisHour",0));
-            editor.putInt("minutesDanced",sPref.getInt("minutesDanced",0)
-                    + sPref.getInt("minutesDancedThisHour",0));
-            editor.putInt("minutesBiked",sPref.getInt("minutesBiked",0)
-                    + sPref.getInt("minutesBikedThisHour",0));
-
-            editor.putInt("minutesWalkedThisHour",0);
-            editor.putInt("minutesRanThisHour",0);
-            editor.putInt("minutesDancedThisHour",0);
-            editor.putInt("minutesBikedThisHour",0);
-            editor.putInt("newFoodThisHour", 0);
-
-            boolean availableThisHour = sPref.getBoolean(challengeTime(), false);
-            float challengeChancesToday = getSharedChallengeChances(sPref);
-            if (availableThisHour && Math.random() < 1f / challengeChancesToday && !sPref.getBoolean("challengedToday", false)) {
-                editor.putBoolean("challengeHour", true);
-                editor.putBoolean("challengedToday", true);
-                String challengePrompt = generateChallenge();
-                editor.putString("challengeVariety", challengePrompt);
-                sendChallengeNotification(context, challengePrompt);
-            }
-            editor.apply();
+            hourWriter.close();
+            dailyWriter.close();
+        } catch (Exception e) {
+            // This should never happen
+            System.out.println("ChallengeAlarm: crash");
+            System.out.println("ChallengeAlarm: " + e.getMessage());
+            assert (1 == 0);
         }
     }
 
@@ -210,25 +206,31 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
         return String.valueOf(day-1) + ',' + String.valueOf(hour);
     }
 
-    private float getChallengeChances(){
+
+    private float getChallengeChances(HashMap<String,String> input){
         float total = 1;
         String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
         for (int i = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+1; i < 24; i++) {
-            if (game.getPrefs().getBoolean(day + ',' + String.valueOf(i),false)){
+            if (getBoolean(input, day + ',' + String.valueOf(i))){
                 total++;
             }
         }
         return total;
     }
 
-    private float getSharedChallengeChances(SharedPreferences pref){
-        float total = 1;
-        String day = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
-        for (int i = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+1; i < 24; i++) {
-            if (pref.getBoolean(day + ',' + String.valueOf(i), false)){
-                total++;
-            }
-        }
-        return total;
+    private Boolean getBoolean(HashMap<String,String> map, String key){
+        if (input.containsKey(key)) return Boolean.valueOf(input.get(key));
+        return false;
     }
+
+    private Integer getInteger(HashMap<String,String> map, String key){
+        if (input.containsKey(key)) return Integer.valueOf(input.get(key));
+        return 0;
+    }
+
+    private String getString(HashMap<String,String> map, String key){
+        if (input.containsKey(key)) return input.get(key);
+        return "none";
+    }
+
 }
