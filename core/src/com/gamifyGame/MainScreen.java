@@ -95,7 +95,7 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", layer1, 37, 50);
             quad1.addAtCenter(layer1,37,50);
 
-            quad1.addText(new Point(20,16),String.valueOf(game.getPrefs().getInteger("stepsTakenToday",0)),GamifyTextSize.BIG,GamifyColor.WHITE, "right");
+            quad1.addText(new Point(22,18),String.valueOf(game.getPrefs().getInteger("stepsTakenToday",0)),GamifyTextSize.BIG,GamifyColor.WHITE, "right");
             //Image quad2 = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
             TextDisplayBox quad2 = new TextDisplayBox("streakBox.png");
             quad2.addAtCenter(layer1,-37,50);
