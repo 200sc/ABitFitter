@@ -9,8 +9,6 @@ public class HelpInfoBox extends TextDisplayBox {
 
         super(path);
         this.addAt(renderHelper.getRenderHelper().getLayer(3), xOrigin, yOrigin);
-        this.setColor(renderHelper.getRenderHelper().yellowOutline);
-        this.getColor().a = 0.45f;
         this.addText(new Point(0,20), description, GamifyTextSize.MEDIUM, color);
 
     }

@@ -99,7 +99,6 @@ public class AndroidLauncher extends AndroidApplication {
             edit.apply();
 
         }
-
         // Force clearing for testing
         //sharedPref.edit().clear().commit();
 

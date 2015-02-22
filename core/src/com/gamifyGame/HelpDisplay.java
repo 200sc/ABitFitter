@@ -23,8 +23,8 @@ public class HelpDisplay extends TextDisplayBox {
         this.game = curGame;
         this.addText(new Point(-2, 2), "Help", GamifyTextSize.MEDIUM);
         this.addHelpListener();
-        this.imgWidth = renderHelper.getRenderHelper().textureHash.get(helpBoxResource).getWidth();
-        this.imgHeight = renderHelper.getRenderHelper().textureHash.get(helpBoxResource).getHeight();
+        this.imgWidth = renderHelper.getRenderHelper().textureHash.get("overlay.png").getWidth();
+        this.imgHeight = renderHelper.getRenderHelper().textureHash.get("overlay.png").getHeight();
 
         this.displayingFlag = false;
     }
@@ -36,12 +36,13 @@ public class HelpDisplay extends TextDisplayBox {
         float yLoc = renderHelper.getRenderHelper().RENDER_HEIGHT /3;
 
         //Construct the overlay
-        OverlayHelper overlay = new OverlayHelper(helpBoxResource, game);
+        OverlayHelper overlay = new OverlayHelper("overlay.png", game);
         if(!overlay.setup()){return;} // Part of the promise otherwise bad things could happen
+        overlay.setColor(Color.GRAY);
+        overlay.getColor().a = 0.4f;
 
-
-        TextDisplayBox resumeGame = new TextDisplayBox("longBox.png");
-        resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc + 5, yLoc-renderHelper.getRenderHelper().textureHash.get("longBox.png").getHeight()/2);
+        TextDisplayBox resumeGame = new TextDisplayBox("smallPopUpBoxBlue.png");
+        resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth()/2, 12);
         resumeGame.addText(new Point(0,0), "Resume Game");
         resumeGame.addListener(overlay.resumeListener);
 

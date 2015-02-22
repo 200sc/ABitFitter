@@ -32,13 +32,14 @@ public class ActionResolverAndroid implements ActionResolver {
     private void setContext(Context context){this.context = context;}
 
     public void putSharedPrefs(final String key, final String val) {
+        System.out.println("ActionResolverAndroid: Key:"+ key + " Val: " + val);
         handler.post(new Runnable() {
             @Override
             public void run() {
                 SharedPreferences pref = context.getSharedPreferences("bitPref", 0);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString(key,val);
-                editor.apply();
+                editor.commit();
             }
         });
     }
@@ -72,5 +73,11 @@ public class ActionResolverAndroid implements ActionResolver {
 
     }
 
+    public void setSleepState(final boolean isSleeping){
+        if(isSleeping)       System.out.println("ACTIONRESOLVER: GO TO SLEEP");
+        else System.out.println("ACTIONRESOLVER: Wake up!!!!");
+
+
+    }
 }
 

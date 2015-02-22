@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Array;
  * This Class pulls up the sleep overlay and does the needed background work to make the app know the user wants to sleep.
  */
 public class SleepOverlayListener extends ClickListener {
-    final String helpBoxResource = "placeholder140x140.png";
 
     boolean displayingFlag;
     Array<Actor> toBeRestored;
@@ -22,12 +21,15 @@ public class SleepOverlayListener extends ClickListener {
         this.game = game;
     }
 
-    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        return setSleepOverlay();
+    }
+    public boolean setSleepOverlay(){
         renderHelper renderer =  renderHelper.getRenderHelper();
 
         //TODO: Set stuff in background to know that sleeping is happening
 
-        OverlayHelper overlay = new OverlayHelper(helpBoxResource, game);
+        OverlayHelper overlay = new OverlayHelper("overlay.png", game);
         if(!overlay.setup()){return true;}
 
 
@@ -41,6 +43,8 @@ public class SleepOverlayListener extends ClickListener {
         GamifyImage sleepingCap = new GamifyImage("stockingCap.png");
         sleepingCap.setSize(renderer.textureHash.get("48Box.png").getWidth()/2, renderer.textureHash.get("48Box.png").getHeight()); //TODO: get actual resourceand take out this line
         sleepingCap.addAt(renderer.getLayer(3), 2 + renderer.RENDER_WIDTH /2-renderer.textureHash.get("48Box.png").getWidth()/2/2, renderer.RENDER_HEIGHT *2/3);
+
+        game.getActionResolver().putSharedPrefs("isSleeping", "true");
 
 //        overlay.addShape(0,0, 100, 100);
 
