@@ -56,5 +56,23 @@ public class Consumable extends Buyable
         return  defConsumables;
     }
 
+    @Override
+    public boolean equals(Object other){
+        if(other instanceof Consumable)
+        {
+            return (this.getBuyableName().equals(((Consumable) other).getBuyableName()));
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return this.getBuyableName().hashCode();
+    }
+
 
 }

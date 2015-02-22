@@ -7,19 +7,24 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Created by Andrew on 2/19/2015.
  */
 public class ConsumableScreen extends BuyScreen
 {
-    private ArrayList<Consumable> inventory;
+    private HashMap<Consumable, Integer> inventory;
     private ArrayList<Consumable> active;
 
     public ConsumableScreen(gamifyGame game)
     {
         super(game);
-        inventory =new ArrayList<Consumable>();
+        inventory =new HashMap<Consumable, Integer>();
+        for(Consumable current: Consumable.getAllConsumables().values())
+        {
+            inventory.put(current, 0);
+        }
         active= new ArrayList<Consumable>();
     }
 
@@ -56,15 +61,32 @@ public class ConsumableScreen extends BuyScreen
 
 
         this.drawConsumables(inventory, 10, 130);
-        for(Consumable current: inventory)
+        for(Consumable current: inventory.keySet())
         {
-            current.clearListeners();
-            addActivateListener(current);
-            current.addListener(this.textBoxControlListener());
+            if(inventory.get(current)>0)
+            {
+                current.clearListeners();
+                addActivateListener(current);
+                current.addListener(this.textBoxControlListener());
+            }
         }
         for(Consumable current: active)
         {
             current.clearListeners();
+        }
+    }
+
+    private void drawConsumables(HashMap<Consumable, Integer> toDraw, int xPadding, int yLoc)
+    {
+        float currentX=xPadding;
+
+        for(Consumable currentConsumable: toDraw.keySet())
+        {
+            if(toDraw.get(currentConsumable)>0)
+            {
+                currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1),currentX, yLoc);
+                currentX+=currentConsumable.getWidth()+xPadding;
+            }
         }
     }
 
@@ -74,8 +96,8 @@ public class ConsumableScreen extends BuyScreen
 
         for(Consumable currentConsumable: toDraw)
         {
-            currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1),currentX, yLoc);
-            currentX+=currentConsumable.getWidth()+xPadding;
+                currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1),currentX, yLoc);
+                currentX+=currentConsumable.getWidth()+xPadding;
         }
     }
 
@@ -105,10 +127,13 @@ public class ConsumableScreen extends BuyScreen
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Consumable consumable = (Consumable) event.getListenerActor();
-                inventory.remove(consumable);
-                consumable.remove();
-                active.add(consumable);
-                consumable.run();
+                if(inventory.get(consumable)>0)
+                {
+                    active.add(consumable);
+                    consumable.run();
+                    inventory.put(consumable, inventory.get(consumable)-1);
+                }
+                //consumable.remove();
                 return true;
             }
         });
@@ -125,8 +150,7 @@ public class ConsumableScreen extends BuyScreen
                 if(game.getVitality()>consumable.getCost())
                 {
                     Consumable newInventory=consumable.copy();
-                    inventory.add(newInventory);
-                    addActivateListener(newInventory);
+                    inventory.put(newInventory, inventory.get(newInventory)+1);
                     game.addToVitality((long) -consumable.getCost());
                 }
                 return true;
