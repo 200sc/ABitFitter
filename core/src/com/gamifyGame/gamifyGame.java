@@ -97,7 +97,14 @@ public class gamifyGame extends Game {
                 if (!name.equals("Empty")) {
                     Building currentBuilding = Building.getDefaultBuildings().get(name);
 
-                    TriggerCondition curActivity = TriggerCondition.valueOf(this.getPrefs().getString("curActivity").toUpperCase());
+                    TriggerCondition curActivity=null;
+                    try {
+                        curActivity = TriggerCondition.valueOf(this.getPrefs().getString("curActivity").toUpperCase());
+                    }
+                    catch (IllegalArgumentException e)
+                    {
+
+                    }
                     /*
                       case 0: return "inactive";
                       case 1: return "active";
