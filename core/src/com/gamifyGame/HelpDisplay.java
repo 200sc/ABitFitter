@@ -33,7 +33,7 @@ public class HelpDisplay extends TextDisplayBox {
     private void displayHelpContext(){
 
 
-        float xLoc = renderHelper.getRenderHelper().RENDER_WIDTH /2 - imgWidth/2;
+        float xLoc = renderHelper.getRenderHelper().RENDER_WIDTH /2;
         float yLoc = renderHelper.getRenderHelper().RENDER_HEIGHT /3;
 
         //Construct the overlay
@@ -64,7 +64,10 @@ public class HelpDisplay extends TextDisplayBox {
     }
 
     private void mainScreenDisplay(){
-        HelpInfoBox midBoxDesc = new HelpInfoBox("48Box.png", 85, renderHelper.getRenderHelper().RENDER_HEIGHT /2 + 10, "The middle box displays your vitality which is the main resource of the game. \n If clicked on this will bring up the screen used to buy new buildings" , GamifyColor.GREEN);
+        HelpInfoBox vitalityDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 90, renderHelper.getRenderHelper().RENDER_HEIGHT /2 + 18, "Vitality is the main resource of the game" , GamifyColor.GREEN);
+        HelpInfoBox midBoxDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 75, renderHelper.getRenderHelper().RENDER_HEIGHT /2- 10, "Redirects to building screen" , GamifyColor.GREEN);
+
+
     }
     private void quadScreen1Display(){
     }
@@ -76,13 +79,15 @@ public class HelpDisplay extends TextDisplayBox {
     }
     private void buyScreenDisplay(){
         renderHelper renderer = renderHelper.getRenderHelper();
-        Texture t48 = renderer.textureHash.get("48Box.png");
-        HelpInfoBox scrollDesc = new HelpInfoBox("48Box.png", 15, renderer.RENDER_HEIGHT -t48.getHeight(), "\n\n Top bar is a scrollbar of buildings.\n" , GamifyColor.GREEN);
-        HelpInfoBox scrollBoxDesc = new HelpInfoBox("48Box.png", 120, renderer.RENDER_HEIGHT - t48.getHeight()-60, "\n\n Pull a building down to see its description and cost." , GamifyColor.GREEN);
-        HelpInfoBox buildingSpaceDesc = new HelpInfoBox("48Box.png", renderer.RENDER_WIDTH /2-t48.getWidth()
-                        , renderer.RENDER_HEIGHT /2 - t48.getHeight()/2, " \n\nDrag Buildings from scrollbar. If there are valid spaces they will appear green.\n" , GamifyColor.GREEN);
+        Texture t48 = renderer.textureHash.get("smallPopUpBoxBlue.png");
+        HelpInfoBox scrollDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 15, renderer.RENDER_HEIGHT -t48.getHeight(), "Top bar is a scrollbar of buildings\n" , GamifyColor.GREEN);
+        HelpInfoBox scrollBoxDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 100, renderer.RENDER_HEIGHT - t48.getHeight()-60, "Pull a building down to see description and cost" , GamifyColor.GREEN);
+        HelpInfoBox buildingSpaceDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderer.RENDER_WIDTH /2-t48.getWidth()
+                        , renderer.RENDER_HEIGHT /2 - t48.getHeight()/2, "If there are valid spaces they will appear green" , GamifyColor.GREEN);
 
-        HelpInfoBox expandDesc = new HelpInfoBox("48Box.png", renderer.RENDER_WIDTH /2, renderer.RENDER_HEIGHT /6 , "\n\n Buy a level extender to be able to build up to 3 levels deep!.\n" , GamifyColor.GREEN);
+        HelpInfoBox expandDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderer.RENDER_WIDTH /2, renderer.RENDER_HEIGHT /6 , "Buy a new levels to build up to 3 levels deep!" , GamifyColor.GREEN);
+
+
 
         return ;
     }
