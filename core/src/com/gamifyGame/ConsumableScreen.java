@@ -3,6 +3,7 @@ package com.gamifyGame;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +11,7 @@ import java.util.Collection;
 /**
  * Created by Andrew on 2/19/2015.
  */
-public class ConsumableScreen extends GamifyScreen
+public class ConsumableScreen extends BuyScreen
 {
     private ArrayList<Consumable> inventory;
     private ArrayList<Consumable> active;
@@ -24,6 +25,7 @@ public class ConsumableScreen extends GamifyScreen
 
     public void show()
     {
+        super.show();
         retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
 
@@ -32,6 +34,7 @@ public class ConsumableScreen extends GamifyScreen
         for(Consumable currentConsumable: possibleToBuy) {
             //currentConsumable.clearListeners();
             addBuyListener(currentConsumable);
+            currentConsumable.addListener(this.textBoxControlListener());
         }
     }
     @Override
@@ -57,6 +60,7 @@ public class ConsumableScreen extends GamifyScreen
         {
             current.clearListeners();
             addActivateListener(current);
+            current.addListener(this.textBoxControlListener());
         }
         for(Consumable current: active)
         {
@@ -75,6 +79,25 @@ public class ConsumableScreen extends GamifyScreen
         }
     }
 
+    private DragListener textBoxControlListener()
+    {
+        return new DragListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                getMovingTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
+                setSelectedBuyable((Buyable) event.getListenerActor());
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                getMovingTextDisplayBox().waitThenGradualMoveToPosition(180, 175, 1.5f, 5);
+            }
+        };
+    }
+
 
     private void addActivateListener(Consumable consumable)
     {
@@ -86,9 +109,6 @@ public class ConsumableScreen extends GamifyScreen
                 consumable.remove();
                 active.add(consumable);
                 consumable.run();
-
-                //inventory.remove(event.getListenerActor());
-                //active.add((Consumable) (event.getListenerActor()));
                 return true;
             }
         });
