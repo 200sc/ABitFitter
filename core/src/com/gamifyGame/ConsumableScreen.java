@@ -3,32 +3,43 @@ package com.gamifyGame;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Created by Andrew on 2/19/2015.
  */
-public class ConsumableScreen extends GamifyScreen
+public class ConsumableScreen extends BuyScreen
 {
-    private ArrayList<Consumable> inventory;
+    private HashMap<Consumable, Integer> inventory;
     private ArrayList<Consumable> active;
 
     public ConsumableScreen(gamifyGame game)
     {
         super(game);
-        inventory =new ArrayList<Consumable>();
+        inventory =new HashMap<Consumable, Integer>();
+        for(Consumable current: Consumable.getAllConsumables().values())
+        {
+            inventory.put(current, 0);
+        }
         active= new ArrayList<Consumable>();
     }
 
     public void show()
     {
+        super.show();
         retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
-        this.drawConsumables(Consumable.getAllConsumables().values(), 10, 90);
-        for(Consumable currentConsumable: inventory) {
+
+        Collection<Consumable> possibleToBuy=Consumable.getAllConsumables().values();
+        this.drawConsumables(possibleToBuy, 10, 90);
+        for(Consumable currentConsumable: possibleToBuy) {
+            //currentConsumable.clearListeners();
             addBuyListener(currentConsumable);
+            currentConsumable.addListener(this.textBoxControlListener());
         }
     }
     @Override
@@ -45,6 +56,38 @@ public class ConsumableScreen extends GamifyScreen
             }
         }
         active.removeAll(toRemove);
+
+
+
+
+        this.drawConsumables(inventory, 10, 130);
+        for(Consumable current: inventory.keySet())
+        {
+            if(inventory.get(current)>0)
+            {
+                current.clearListeners();
+                addActivateListener(current);
+                current.addListener(this.textBoxControlListener());
+            }
+        }
+        for(Consumable current: active)
+        {
+            current.clearListeners();
+        }
+    }
+
+    private void drawConsumables(HashMap<Consumable, Integer> toDraw, int xPadding, int yLoc)
+    {
+        float currentX=xPadding;
+
+        for(Consumable currentConsumable: toDraw.keySet())
+        {
+            if(toDraw.get(currentConsumable)>0)
+            {
+                currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1),currentX, yLoc);
+                currentX+=currentConsumable.getWidth()+xPadding;
+            }
+        }
     }
 
     private void drawConsumables(Collection<Consumable> toDraw, int xPadding, int yLoc)
@@ -53,26 +96,44 @@ public class ConsumableScreen extends GamifyScreen
 
         for(Consumable currentConsumable: toDraw)
         {
-            currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1),currentX, yLoc);
-            currentX+=currentConsumable.getWidth()+xPadding;
+                currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1),currentX, yLoc);
+                currentX+=currentConsumable.getWidth()+xPadding;
         }
+    }
+
+    private DragListener textBoxControlListener()
+    {
+        return new DragListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                getMovingTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
+                setSelectedBuyable((Buyable) event.getListenerActor());
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                getMovingTextDisplayBox().waitThenGradualMoveToPosition(180, 175, 1.5f, 5);
+            }
+        };
     }
 
 
     private void addActivateListener(Consumable consumable)
     {
-        consumable.clearListeners();
         consumable.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Consumable consumable = (Consumable) event.getListenerActor();
-                inventory.remove(consumable);
-                active.add(consumable);
-                consumable.run();
-                consumable.clearListeners();
-
-                //inventory.remove(event.getListenerActor());
-                //active.add((Consumable) (event.getListenerActor()));
+                if(inventory.get(consumable)>0)
+                {
+                    active.add(consumable);
+                    consumable.run();
+                    inventory.put(consumable, inventory.get(consumable)-1);
+                }
+                //consumable.remove();
                 return true;
             }
         });
@@ -86,9 +147,10 @@ public class ConsumableScreen extends GamifyScreen
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
                 Consumable consumable=(Consumable) event.getListenerActor();
-                if(game.getVitality()>consumable.getCost()) {
-                    inventory.add(consumable);
-                    addActivateListener(consumable);
+                if(game.getVitality()>consumable.getCost())
+                {
+                    Consumable newInventory=consumable.copy();
+                    inventory.put(newInventory, inventory.get(newInventory)+1);
                     game.addToVitality((long) -consumable.getCost());
                 }
                 return true;

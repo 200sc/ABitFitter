@@ -25,7 +25,7 @@ public class gamifyGame extends Game {
     public Quad3Screen quad3S;
     public Quad4Screen quad4S;
     public ConsumableScreen consumableScreen;
-    public BuyScreen buyS;
+    public BuildingScreen buyS;
     private listenerHelper helper;
     boolean paused;
 
@@ -74,7 +74,7 @@ public class gamifyGame extends Game {
         quad1S = new Quad1Screen(this);
         quad3S = new Quad3Screen(this);
         quad4S = new Quad4Screen(this);
-        buyS = new BuyScreen(this);
+        buyS = new BuildingScreen(this);
         consumableScreen=new ConsumableScreen(this);
         challengeText = "";
         vitality=this.getPrefs().getLong("vitality", 0);

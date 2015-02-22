@@ -75,6 +75,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         }
         bringChallengeScreen();
         batch.end();
+        renderHelper.getRenderHelper().endRender();
     }
 
     private void bringChallengeScreen() {

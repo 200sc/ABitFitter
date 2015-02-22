@@ -142,8 +142,10 @@ public class renderHelper {
 
         textureHash.put("star.png", imageLoad("star.png"));
 
+        textureHash.put("scrollBarKnub.png", imageLoad("scrollBarKnub.png"));
+
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
-        textureHash.put("stockingCap.png", imageLoad("stockingCap.png"));
+
         textureHash.put("nightCap.png", imageLoad("nightCap.png"));
         textureHash.put("rightZs.png", imageLoad("rightZs.png"));
         textureHash.put("leftZs.png", imageLoad("leftZs.png"));
@@ -172,6 +174,10 @@ public class renderHelper {
         textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));
         textureHash.put("popUpBoxBlue.png",imageLoad("popUpBoxBlue.png"));
         textureHash.put("smallPopUpBoxBlue.png",imageLoad("smallPopUpBoxBlue.png"));
+
+        textureHash.put("battery.png",imageLoad("battery.png"));
+        textureHash.put("dollar.png",imageLoad("dollar.png"));
+        textureHash.put("feather.png",imageLoad("feather.png"));
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lastStory.ttf"));
