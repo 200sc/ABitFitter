@@ -46,10 +46,10 @@ public class MainScreen extends GamifyScreen implements Screen
             else{
                 loadingBox.addText(new Point(0, 0), "Loaded   ", GamifyTextSize.SMALL);
             }
+            renderHelper.getRenderHelper().textSet(game.challengeText,15,50);
             renderHelper.getRenderHelper().textSetCenter("Vitality", GamifyColor.GREEN, -28 , 35, GamifyTextSize.BIG,"left",0);
             renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), GamifyColor.GREEN, -28 , 25, GamifyTextSize.XTRABIG,"left",0);
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp", "null")), 15, 30);
-            //renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour", 0)), "black", 5, 30, "medium");
             renderHelper.getRenderHelper().getBatch().end();
 
             deltaCount = (deltaCount+1) % 32;
@@ -101,7 +101,6 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().makeBridges(layer0, bridges);
 
 
-            // These five do.
             Image quad1 = renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", layer1, 37, 50);
             //Image quad2 = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
             TextDisplayBox quad2 = new TextDisplayBox("streakBox.png");
@@ -145,7 +144,6 @@ public class MainScreen extends GamifyScreen implements Screen
             quad3.addListener(new GoScreenClickListener(game.quad3S, game));
             quad4.addListener(new GoScreenClickListener(game.quad4S, game));
             midbox.addListener(new GoScreenClickListener(game.buyS, game));
-            frameCount = 0;
             deltaCount = 0;
 
         }

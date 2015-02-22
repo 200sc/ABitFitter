@@ -125,13 +125,27 @@ public class renderHelper {
         textureHash.put("trophyBox.png",imageLoad("Trophybox.png"));
         textureHash.put("midBox.png",imageLoad("Midbox.png"));
         textureHash.put("48Box.png",imageLoad("48box.png"));
-        textureHash.put("tophalfbox.png",imageLoad("tophalfbox.png"));
+        textureHash.put("topHalfBox.png",imageLoad("tophalfbox.png"));
+        textureHash.put("servingBox.png",imageLoad("servingBox.png"));
+        textureHash.put("scannerBox.png",imageLoad("scannerBox.png"));
+
+        textureHash.put("help.png", imageLoad("help.png"));
+        textureHash.put("loaded.png", imageLoad("loaded.png"));
+        textureHash.put("loading0.png",imageLoad("loading0.png"));
+        textureHash.put("loading1.png",imageLoad("loading1.png"));
+        textureHash.put("loading2.png",imageLoad("loading2.png"));
+        textureHash.put("loading3.png",imageLoad("loading3.png"));
+
         textureHash.put("arrowBoxLeft.png",imageLoad("arrowBoxLeft.png"));
         textureHash.put("arrowBoxRight.png",imageLoad("arrowBoxRight.png"));
 
+        textureHash.put("star.png", imageLoad("star.png"));
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
         textureHash.put("stockingCap.png", imageLoad("stockingCap.png"));
+        textureHash.put("nightCap.png", imageLoad("nightCap.png"));
+        textureHash.put("rightZs.png", imageLoad("rightZs.png"));
+        textureHash.put("leftZs.png", imageLoad("leftZs.png"));
 
         textureHash.put("itemBar.png",imageLoad("ItemBar.png"));
         textureHash.put("longBox.png",imageLoad("longBox.png"));
@@ -437,7 +451,7 @@ public class renderHelper {
         }
 
 
-        Image basicBox = renderer.imageSetup("buildingBackground.png", renderHelper.getRenderHelper().getLayer(0), 2+wOffset/2, hOffset-(row)*height);
+        Image basicBox = renderer.imageSetup("buildingBackground.png", renderHelper.getRenderHelper().getLayer(0), 3+wOffset/2, hOffset-(row)*height);
         basicBox.setSize( width*3-bridgelen, height* (row+1)-2);
         basicBox.setZIndex(firstZIndex);
 

@@ -112,7 +112,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         //scanImage.setColor(com.badlogic.gdx.graphics.Color.MAGENTA);
         scanImage.addListener(game.getListenerHelper().scanningAction());
 
-        Image basicBox = renderer.imageSetup("tophalfbox.png", renderer.getLayer(1), 0, 30);
+        Image basicBox = renderer.imageSetup("topHalfBox.png", renderer.getLayer(1), 0, 30);
 
         textDisplayBox=new TextDisplayBox("midBox.png");
         textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 120, 150);

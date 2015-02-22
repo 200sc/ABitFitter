@@ -24,7 +24,7 @@ public abstract class GamifyScreen implements Screen {
 
     public GamifyScreen(gamifyGame game)
     {
-        this.game = game;
+        this.game = game; frameCount = 1;
     }
 
 
@@ -48,19 +48,23 @@ public abstract class GamifyScreen implements Screen {
         layer1.draw();
         layer2.draw();
         layer3.draw();
-        if (frameCount % (60*30) == 0) {
-            game.updateChallenge();
+        if (frameCount % 60 * 10 == 0){
+            if (frameCount % (60*30) == 0) {
+                game.updateChallenge();
+            }
+            System.gc();
         }
         game.updateVitality(delta);
         renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());
 
-        //renderer.moveCorner(retBox,Corner.LOWER_LEFT,30);
+        renderHelper.getRenderHelper().getBatch().begin();
+        renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),15,60);
+        renderHelper.getRenderHelper().textSet(String.valueOf(delta),15,70);
+        renderHelper.getRenderHelper().getBatch().end();
 
-        //batch.begin();
-        //batch.end();
-
-        frameCount = (frameCount + 1) % 180;
+        frameCount = (frameCount + 1);
+        frameCount = frameCount % (60*30);
     }
 
     @Override
