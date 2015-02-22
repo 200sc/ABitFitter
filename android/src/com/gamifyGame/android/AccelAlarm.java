@@ -59,7 +59,7 @@ public class AccelAlarm extends WakefulBroadcastReceiver {
         long challengeTime = System.currentTimeMillis();
         challengeTime = challengeTime - (challengeTime % 3600000) + 3600000;
 
-        alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, challengeTime,
+        alrmMngr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()-1,
                 1000 * 20, challengeAlarmIntent);
 
     }

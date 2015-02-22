@@ -80,7 +80,7 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
 
         try {
             game.setLoadingFlag(true);
-            File toRead = new File(context.getFilesDir(), "updateFile");
+            File toRead = new File(context.getApplicationContext().getFilesDir(), "updateFile");
             BufferedReader reader = new BufferedReader(new FileReader((toRead)));
             String line = null;
             String[] lineParts;
