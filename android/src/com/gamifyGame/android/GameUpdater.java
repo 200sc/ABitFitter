@@ -25,7 +25,6 @@ public class GameUpdater extends IntentService {
         ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(this, false);
         gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
         String activity = intent.getStringExtra("curActivity");
-        System.out.println("GameUpdater: NO LIFE NO LIFE NO LIFE");
 
         File toWrite = new File(this.getApplicationContext().getFilesDir(), "updateFile");
         try {

@@ -36,7 +36,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
         // Initialize maps and files
         input = new HashMap<String,String>();
         daily = new HashMap<String,String>();
-        System.out.println(String.valueOf(context));
+
         File toRead = new File(context.getApplicationContext().getFilesDir(), "inChallenge");
         File toWrite = new File(context.getApplicationContext().getFilesDir(), "outChallenge");
         File dailyFile = new File(context.getApplicationContext().getFilesDir(), "dailyData");
@@ -47,24 +47,29 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
             //**********************************************\\
             //
             // Read the contents of the input files
-            BufferedReader reader = new BufferedReader(new FileReader((toRead)));
-            String line = null;
-            String[] lineParts;
-            while ((line = reader.readLine()) != null) {
-                lineParts = line.split(",");
-                input.put(lineParts[0], lineParts[1]);
-                System.out.println("\"ChallengeAlarm: INPUT KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+            if(toRead.exists()) {
+                BufferedReader reader = new BufferedReader(new FileReader((toRead)));
+                String line = null;
+                String[] lineParts;
+                while ((line = reader.readLine()) != null) {
+                    lineParts = line.split(",");
+                    input.put(lineParts[0], lineParts[1]);
+                    System.out.println("\"ChallengeAlarm: INPUT KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+                }
+                reader.close();
             }
-            reader.close();
 
-            reader = new BufferedReader(new FileReader((dailyFile)));
-            line = null;
-            while ((line = reader.readLine()) != null) {
-                lineParts = line.split(",");
-                daily.put(lineParts[0], lineParts[1]);
-                System.out.println("\"ChallengeAlarm: DAILY KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+            if (dailyFile.exists()) {
+                BufferedReader reader = new BufferedReader(new FileReader((dailyFile)));
+                String line = null;
+                String[] lineParts;
+                while ((line = reader.readLine()) != null) {
+                    lineParts = line.split(",");
+                    daily.put(lineParts[0], lineParts[1]);
+                    System.out.println("\"ChallengeAlarm: DAILY KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+                }
+                reader.close();
             }
-            reader.close();
 
             //**********************************************\\
 
@@ -80,22 +85,22 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
             // Write to output for the day
             dailyWriter.write(("minutesWalked,"+String.valueOf(
                     getInteger(daily,"minutesWalked")+
-                    getInteger(input,"minutesWalkedThisHour"))).getBytes());
+                    getInteger(input,"minutesWalkedThisHour"))+"\n").getBytes());
             dailyWriter.write(("minutesRan,"+String.valueOf(
                     getInteger(daily,"minutesRan")+
-                    getInteger(input,"minutesRanThisHour"))).getBytes());
+                    getInteger(input,"minutesRanThisHour"))+"\n").getBytes());
             dailyWriter.write(("minutesDanced,"+String.valueOf(
                     getInteger(daily,"minutesDanced")+
-                    getInteger(input,"minutesDancedThisHour"))).getBytes());
+                    getInteger(input,"minutesDancedThisHour"))+"\n").getBytes());
             dailyWriter.write(("minutesBiked,"+String.valueOf(
-                    getInteger(daily,"minutesBiked"))+
-                    getInteger(input,"minutesBikedThisHour")).getBytes());
+                    getInteger(daily,"minutesBiked")+
+                    getInteger(input,"minutesBikedThisHour"))+"\n").getBytes());
             dailyWriter.write(("stepsTaken,"+String.valueOf(
-                    getInteger(daily,"stepsTaken"))+
-                    getInteger(input,"stepsTakenThisHour")).getBytes());
+                    getInteger(daily,"stepsTaken")+
+                    getInteger(input,"stepsTakenThisHour"))+"\n").getBytes());
             dailyWriter.write(("newFood,"+String.valueOf(
-                    getInteger(daily,"newFood"))+
-                    getInteger(input,"newFoodThisHour")).getBytes());
+                    getInteger(daily,"newFood")+
+                    getInteger(input,"newFoodThisHour"))+"\n").getBytes());
 
 
             // And the output for GDX
