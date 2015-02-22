@@ -86,7 +86,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
                 renderer.getBatch().end();
             }
         }
-        showRecentFoods(textDisplayBox);
+
         renderHelper.getRenderHelper().endRender();
     }
 
@@ -98,25 +98,30 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         retBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 37, -25);
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
 
+
+
+        TextDisplayBox mainBox = new TextDisplayBox("largeScreenBox.png");
+        mainBox.addAt(renderer.getLayer(1), renderer.RENDER_WIDTH- renderer.textureHash.get("largeScreenBox.png").getWidth(), 0);
+
         // Set up scanning Image and its background
         TextDisplayBox scanBox = new TextDisplayBox("48Box.png");
         scanBox.addAt(renderer.getLayer(1), -30, 60);
 
-        Image dumbServingsBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 0,110);
-        dumbServingsBox.addListener(game.getListenerHelper().getServingsChosen());
+        //Image dumbServingsBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 0,110);
+        //dumbServingsBox.addListener(game.getListenerHelper().getServingsChosen());
 
         //Image graphBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 30, 60);
 
         // Silly scanning image with tongue
-        Image scanImage = renderer.imageSetup("print_scan.png", renderer.getLayer(1), 38, 185);
-        scanImage.setSize(scanImage.getWidth()/8, scanImage.getHeight()/8);
+        //Image scanImage = renderer.imageSetup("print_scan.png", renderer.getLayer(1), 38, 185);
+        //scanImage.setSize(scanImage.getWidth()/8, scanImage.getHeight()/8);
         //scanImage.setColor(com.badlogic.gdx.graphics.Color.MAGENTA);
-        scanImage.addListener(game.getListenerHelper().scanningAction());
+        //scanImage.addListener(game.getListenerHelper().scanningAction());
 
-        Image basicBox = renderer.imageSetup("topHalfBox.png", renderer.getLayer(1), 0, 30);
+        //Image basicBox = renderer.imageSetup("topHalfBox.png", renderer.getLayer(1), 0, 30);
 
-        textDisplayBox=new TextDisplayBox("midBox.png");
-        textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 120, 150);
+
+
     }
 
     private void showRecentFoods(TextDisplayBox displayBox){
