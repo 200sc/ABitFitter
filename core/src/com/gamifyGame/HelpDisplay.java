@@ -54,6 +54,7 @@ public class HelpDisplay extends TextDisplayBox {
         else if(curScreen instanceof Quad2Screen){quadScreen2Display();}
         else if(curScreen instanceof Quad3Screen){quadScreen3Display();}
         else if(curScreen instanceof Quad4Screen){quadScreen4Display();}
+        else if(curScreen instanceof ConsumableScreen){consumableDisplay();}
         else{buyScreenDisplay();}
 }
 
@@ -79,6 +80,10 @@ public class HelpDisplay extends TextDisplayBox {
     private void quadScreen1Display(){
     }
     private void quadScreen2Display(){
+        consumableDisplay();
+    }
+    private void consumableDisplay() {
+
     }
     private void quadScreen3Display(){
         HelpInfoBox showChallengeDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 4, 36, "Shows or hides challenge hour selection", GamifyColor.GREEN);
