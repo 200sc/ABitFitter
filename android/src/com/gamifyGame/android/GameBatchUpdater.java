@@ -1,6 +1,6 @@
 package com.gamifyGame.android;
 import android.content.Context;
-import android.content.SharedPreferences;
+
 import android.os.AsyncTask;
 import android.preference.Preference;
 import android.widget.Toast;
@@ -24,9 +24,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
@@ -44,30 +47,40 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
 
     }
     protected void onPostExecute(String output){}
+
+    public boolean challengeFileUpdater(){
+        try {
+            File sharedPref = new File(context.getApplicationContext().getFilesDir(), "outChallenge");
+
+            BufferedReader br = new BufferedReader(new FileReader(sharedPref));
+            String line;
+            String[] lineList;
+
+            List<String> booleanList = Arrays.asList("challengedToday", "challengeHour", "newFoodThisHour");
+            while((line = br.readLine()) != null){
+                // process
+                lineList = line.split(",");
+                if(booleanList.contains(lineList[0])){
+                    pref.putBoolean(lineList[0], Boolean.parseBoolean(lineList[1]));
+                }else{
+                    pref.putInteger(lineList[0], Integer.parseInt(lineList[1]));
+                }
+            }
+            sharedPref.delete();
+            pref.flush();
+        }catch(Exception e) {return false;
+        }return true;
+    }
+
     @Override
     protected String doInBackground(JSONObject... jsonObjects) {
         System.out.println("GAMEBATCHUPDATER: Start");
-        SharedPreferences sharedPref = context.getSharedPreferences("bitPref", 0);
-        if(sharedPref.getBoolean("challengeAlarmTriggered",false)){
-            pref.putInteger("minutesWalked",sharedPref.getInt("minutesWalked",0));
-            pref.putInteger("minutesRan",sharedPref.getInt("minutesRan",0));
-            pref.putInteger("minutesDanced",sharedPref.getInt("minutesDanced",0));
-            pref.putInteger("minutesBiked",sharedPref.getInt("minutesBiked",0));
 
-            pref.putInteger("minutesWalkedThisHour",sharedPref.getInt("minutesWalkedThisHour",0));
-            pref.putInteger("minutesRanThisHour",sharedPref.getInt("minutesRanThisHour",0));
-            pref.putInteger("minutesDancedThisHour",sharedPref.getInt("minutesDancedThisHour",0));
-            pref.putInteger("minutesBikedThisHour",sharedPref.getInt("minutesBikedThisHour",0));
-            pref.putInteger("newFoodThisHour", sharedPref.getInt("newFoodThisHour",0));
-            pref.putBoolean("challengeHour", sharedPref.getBoolean("challengeHour",false));
-            pref.putBoolean("challengedToday", sharedPref.getBoolean("challengedToday",false));
-            pref.putString("challengeVariety", sharedPref.getString("challengeVariety","none"));
-            sharedPref.edit().putBoolean("challengeAlarmTriggered",false).apply();
-        }
-        pref.flush();
+        challengeFileUpdater();
+
         try {
             game.setLoadingFlag(true);
-            File toRead = new File(context.getFilesDir(), "updateFile");
+            File toRead = new File(context.getApplicationContext().getFilesDir(), "updateFile");
             BufferedReader reader = new BufferedReader(new FileReader((toRead)));
             String line = null;
             String[] lineParts;

@@ -47,6 +47,18 @@ public class ChangingImage extends Image {
             }
         }
 
+        public void swapTexture(int i){
+            if (i == 2 ){
+                this.setName(name2);
+                this.setDrawable(textured2);
+            }
+            else {
+                this.setName(name1);
+                this.setDrawable(textured1);
+            }
+        }
+
+
         public void putExtra(String key, String val){
             Strings.put(key,val);
         }

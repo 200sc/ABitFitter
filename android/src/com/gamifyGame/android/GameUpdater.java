@@ -25,29 +25,23 @@ public class GameUpdater extends IntentService {
         ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(this, false);
         gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
         String activity = intent.getStringExtra("curActivity");
-        if (LifeListener.getLifeListener().getStatus()) {
-            //System.out.println("GameUpdater: ALL LIFE LIFE LIFE");
-            gameProcess.graphUpdate(String.valueOf(System.currentTimeMillis()), activity);
-        } else {
-            //System.out.println("GameUpdater: NO LIFE NO LIFE NO LIFE");
 
-            File toWrite = new File(this.getApplicationContext().getFilesDir(), "updateFile");
-            try {
-                FileOutputStream writer = new FileOutputStream(toWrite, true);
-                if (writer == null) {
-                    System.out.println("GameUpdater: Writer is null");
-                }
-
-                //System.out.println("GameUpdater: act is " + activity);
-
-                writer.write((String.valueOf(System.currentTimeMillis()) + ',' + activity + "\n").getBytes());
-                writer.close();
-            } catch (Exception e) {
-                // This should never happen
-                System.out.println("GameUpdater: crash");
-                System.out.println("GameUpdater: " + e.getMessage());
-                assert (1 == 0);
+        File toWrite = new File(this.getApplicationContext().getFilesDir(), "updateFile");
+        try {
+            FileOutputStream writer = new FileOutputStream(toWrite, true);
+            if (writer == null) {
+                System.out.println("GameUpdater: Writer is null");
             }
+
+            //System.out.println("GameUpdater: act is " + activity);
+
+            writer.write((String.valueOf(System.currentTimeMillis()) + ',' + activity + "\n").getBytes());
+            writer.close();
+        } catch (Exception e) {
+            // This should never happen
+            System.out.println("GameUpdater: crash");
+            System.out.println("GameUpdater: " + e.getMessage());
+            assert (1 == 0);
         }
     }
 }

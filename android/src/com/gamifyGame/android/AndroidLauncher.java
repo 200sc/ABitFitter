@@ -80,6 +80,8 @@ public class AndroidLauncher extends AndroidApplication {
         gameListener.setStatus(true);
         initialize(gameProcess, config);
 
+        // CREATE FILE LISTENERS AND ATTACH APPROPRIATE
+
 	}
 
     protected void onResume(){
