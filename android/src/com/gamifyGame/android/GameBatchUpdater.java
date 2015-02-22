@@ -21,7 +21,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -66,7 +68,8 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
                     pref.putInteger(lineList[0], Integer.parseInt(lineList[1]));
                 }
             }
-            sharedPref.delete();
+            FileWriter o = new FileWriter(sharedPref,false);
+            o.write("");
             pref.flush();
         }catch(Exception e) {return false;
         }return true;

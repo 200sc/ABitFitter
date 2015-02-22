@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.FileObserver;
 import android.view.Display;
 
 import com.badlogic.gdx.Preferences;
@@ -81,6 +82,11 @@ public class AndroidLauncher extends AndroidApplication {
         initialize(gameProcess, config);
 
         // CREATE FILE LISTENERS AND ATTACH APPROPRIATE
+        new FileObserver("hi"){
+            public void onEvent(int event, String file){
+
+            }
+        };
 
 	}
 
