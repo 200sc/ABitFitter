@@ -18,6 +18,7 @@ public class SleepOverlayListener extends ClickListener {
     Array<Actor> toBeRestored;
     gamifyGame game;
 
+
     public SleepOverlayListener(gamifyGame game){
         super();
         this.game = game;
@@ -34,7 +35,8 @@ public class SleepOverlayListener extends ClickListener {
         OverlayHelper overlay = new OverlayHelper("overlay.png", game);
         if(!overlay.setup()){return true;}
 
-
+        toBeRestored= new Array<Actor>( renderer.getLayer(1).getActors());
+        renderer.getLayer(1).clear();
 
         TextDisplayBox resumeGame = new TextDisplayBox("popUpBoxBlue.png");
         resumeGame.addAt(renderer.getLayer(3), renderer.RENDER_WIDTH /2-renderer.textureHash.get("popUpBoxBlue.png").getWidth()/2, renderer.RENDER_HEIGHT/3-renderer.textureHash.get("popUpBoxBlue.png").getHeight()/2);
@@ -42,12 +44,16 @@ public class SleepOverlayListener extends ClickListener {
         resumeGame.addListener(overlay.resumeListener);
         resumeGame.setColor(Color.WHITE);
 
-        GamifyImage sleepingCap = new GamifyImage("stockingCap.png");
-        sleepingCap.setSize(renderer.textureHash.get("48Box.png").getWidth()/2, renderer.textureHash.get("48Box.png").getHeight()); //TODO: get actual resourceand take out this line
-        sleepingCap.addAt(renderer.getLayer(3), 2 + renderer.RENDER_WIDTH/2-renderer.textureHash.get("48Box.png").getWidth()/2/2, renderer.RENDER_HEIGHT*2/3);
+        GamifyImage sleepingCap = new GamifyImage("nightCap.png");
+        //sleepingCap.setSize(renderer.textureHash.get("48Box.png").getWidth()/2, renderer.textureHash.get("48Box.png").getHeight()); //TODO: get actual resourceand take out this line
+        sleepingCap.addAt(renderer.getLayer(3), 3 + renderer.RENDER_WIDTH/2-renderer.textureHash.get("48Box.png").getWidth()/2/2, renderer.RENDER_HEIGHT*2/3 + 12);
+        sleepingCap.getColor().a = .8f;
 
-        final GamifyImage z = new GamifyImage("arrowBoxLeft.png");
-        z.addAt(renderer.getLayer(3), renderHelper.RENDER_WIDTH*2/3, sleepingCap.getY() + 10);
+        final GamifyImage z = new GamifyImage("leftZs.png");
+
+        float xLocOfZ = renderHelper.RENDER_WIDTH*2/3 - renderer.textureHash.get("leftZs.png").getWidth();
+        float yLocOfZ = sleepingCap.getY() + 20;
+        z.addAt(renderer.getLayer(3), xLocOfZ, yLocOfZ);
         z.addAction(new Action() {
             float deltaCount = 0;
             @Override
@@ -88,13 +94,17 @@ public class SleepOverlayListener extends ClickListener {
 
     ClickListener resumeListener = new ClickListener(){
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){ resumeGame(); return true;}};
+
+
+
+
     private void resumeGame(){ // Gets the user back to the main screen away from help overlay
         renderHelper.getRenderHelper().getLayer(3).clear();
         for(Actor actor: toBeRestored){
-            renderHelper.getRenderHelper().getLayer(3).addActor(actor);
+            renderHelper.getRenderHelper().getLayer(1).addActor(actor);
         }
-        renderHelper.getRenderHelper().resetProcessor();
-        displayingFlag = false;
+        OverlayHelper overlay = new OverlayHelper("overlay.png", game);
+        overlay.resumeGame();
     }
 
 }

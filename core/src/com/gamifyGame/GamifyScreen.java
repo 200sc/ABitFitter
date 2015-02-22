@@ -47,7 +47,7 @@ public abstract class GamifyScreen implements Screen {
         layer0.draw();
         layer1.draw();
         layer2.draw();
-        layer3.draw();
+
         if (frameCount % 60 * 10 == 0){
             if (frameCount % (60*30) == 0) {
                 game.updateChallenge();
@@ -57,6 +57,7 @@ public abstract class GamifyScreen implements Screen {
         game.updateVitality(delta);
         renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());
+        renderHelper.getRenderHelper().getLayer(3).act(Gdx.graphics.getDeltaTime());
 
         renderHelper.getRenderHelper().getBatch().begin();
         renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),15,60);
