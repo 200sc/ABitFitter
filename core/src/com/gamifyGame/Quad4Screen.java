@@ -1,25 +1,11 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import com.gamifyGame.Corner;
-import com.gamifyGame.GamifyScreen;
-import com.gamifyGame.gamifyGame;
-import com.gamifyGame.renderHelper;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.Renderer;
 
 
 /**
@@ -51,7 +37,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         renderer.getBatch().end();
 
         //Set up the data from the last food seen
-        String latestFood = "No Food recorded";
+        String latestFood;
         if(game.getPrefs().getString("latestFood") != null) {
             latestFood = game.getPrefs().getString("latestFood");
 
@@ -87,7 +73,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
                 String[] foodDescriptor = {"", "", "Calcium : ", "Calories : ", "Carbs: ", "Protein: ", "Sugar: ", "Fiber: ", "Serving Size: "};
                 renderer.getBatch().begin();
-                renderer.textSet("Your last eaten food information:", 45, 150, "largeiiu");
+                renderer.textSet("Your last eaten food information:", 45, 150, GamifyTextSize.BIG);
                 for (int i = 0; i < 9; i++) {
                     if (foodInfo[i] != null) {
                         renderer.textSet(foodDescriptor[i] + foodInfo[i], 45, 130 - 10 * i);
@@ -96,7 +82,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
                 renderer.getBatch().end();
             } else {
                 renderer.getBatch().begin();
-                renderer.textSet("Your last eaten food information:", 45, 150, "large");
+                renderer.textSet("Your last eaten food information:", 45, 150, GamifyTextSize.BIG);
                 renderer.textSet("Scan food to see data here:", 45, 130);
                 renderer.getBatch().end();
             }

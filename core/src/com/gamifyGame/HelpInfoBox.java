@@ -5,13 +5,13 @@ package com.gamifyGame;
  */
 public class HelpInfoBox extends TextDisplayBox {
 
-    public HelpInfoBox(String path, float xOrigin, float yOrigin, String description, String color){
+    public HelpInfoBox(String path, float xOrigin, float yOrigin, String description, GamifyColor color){
 
         super(path);
         this.addAt(renderHelper.getRenderHelper().getLayer(3), xOrigin, yOrigin);
         this.setColor(renderHelper.getRenderHelper().yellowOutline);
         this.getColor().a = 0.45f;
-        this.addText(new Point(0,20), description, "medium", color);
+        this.addText(new Point(0,20), description, GamifyTextSize.MEDIUM, color);
 
     }
 

@@ -1,6 +1,5 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -17,7 +16,7 @@ import java.util.Calendar;
 public class MainScreen extends GamifyScreen implements Screen
 {
     private Image quad3;
-    private float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z, deltaCount;
+    private float deltaCount;
     private TextDisplayBox loadingBox;
 
     public MainScreen(gamifyGame game) {
@@ -39,19 +38,18 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().getBatch().begin();
 
             if(game.getLoadingFlag()){
-                if(deltaCount/8 % 4 == 0){   loadingBox.addText(new Point(0, 0), "Loading   ", "small");}
-                if(deltaCount/8 % 4 == 1){   loadingBox.addText(new Point(0, 0), "Loading.  ", "small");}
-                if(deltaCount/8 % 4 == 2){   loadingBox.addText(new Point(0, 0), "Loading.. ", "small");}
-                if(deltaCount/8 % 4 == 3){   loadingBox.addText(new Point(0, 0), "Loading...", "small");}
+                if(deltaCount/8 % 4 == 0){   loadingBox.addText(new Point(0, 0), "Loading   ", GamifyTextSize.SMALL);}
+                if(deltaCount/8 % 4 == 1){   loadingBox.addText(new Point(0, 0), "Loading.  ", GamifyTextSize.SMALL);}
+                if(deltaCount/8 % 4 == 2){   loadingBox.addText(new Point(0, 0), "Loading.. ", GamifyTextSize.SMALL);}
+                if(deltaCount/8 % 4 == 3){   loadingBox.addText(new Point(0, 0), "Loading...", GamifyTextSize.SMALL);}
             }
             else{
-                loadingBox.addText(new Point(0, 0), "Loaded   ", "small");
+                loadingBox.addText(new Point(0, 0), "Loaded   ", GamifyTextSize.SMALL);
             }
-
-            renderHelper.getRenderHelper().textSetCenter("Your Vitality:", -25 , 25, "large");
-            renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), -20 , 0, "large");
+            renderHelper.getRenderHelper().textSetCenter("Vitality", GamifyColor.GREEN, -28 , 35, GamifyTextSize.BIG,"left",0);
+            renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), GamifyColor.GREEN, -28 , 25, GamifyTextSize.XTRABIG,"left",0);
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp", "null")), 15, 30);
-            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour", 0)), "black", 5, 30, "medium");
+            //renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getInteger("minutesWalkedThisHour", 0)), "black", 5, 30, "medium");
             renderHelper.getRenderHelper().getBatch().end();
             deltaCount = (deltaCount+1) % 32;
         }
@@ -62,7 +60,6 @@ public class MainScreen extends GamifyScreen implements Screen
             Preferences pref=game.getPrefs();
             Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
             Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
-            Stage layer2 = renderHelper.getRenderHelper().getLayer(2);
 
             // Only items that need listeners should be maintained as Images I.E
             // These two don't need listeners--
@@ -107,7 +104,7 @@ public class MainScreen extends GamifyScreen implements Screen
             //Image quad2 = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
             TextDisplayBox quad2 = new TextDisplayBox("streakBox.png");
             quad2.addAtCenter(layer1,-37,50);
-            quad2.addText(new Point(-12,-8),String.valueOf(game.getPrefs().getInteger("challengeStreak",0)),"medium","black");
+            quad2.addText(new Point(-12,-14),String.valueOf(game.getPrefs().getInteger("challengeStreak",0)),GamifyTextSize.BIG,GamifyColor.BLACK);
 
 
 
@@ -130,7 +127,7 @@ public class MainScreen extends GamifyScreen implements Screen
 
             //Set up the sleep bar
             TextDisplayBox sleepBox = new TextDisplayBox("longBox.png");
-            float sleepX = (renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
+            float sleepX = (renderHelper.getRenderHelper().RENDER_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
             sleepBox.addAt(renderHelper.getRenderHelper().getLayer(1), sleepX,12);
             sleepBox.addText(new Point(0,0), "Click to Start Sleep Logging");
             sleepBox.addListener(new SleepOverlayListener(game));

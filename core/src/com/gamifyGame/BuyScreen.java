@@ -3,7 +3,6 @@ package com.gamifyGame;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
 
@@ -36,7 +35,7 @@ public class BuyScreen extends GamifyScreen implements Screen
         //Image itemBar = renderer.imageSetup("ItemBar.png", layer1, 0, 254);
 
         TextDisplayBox placeHold = new TextDisplayBox("longBox.png");
-        float placeHoldX = (renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
+        float placeHoldX = (renderHelper.getRenderHelper().RENDER_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;
         placeHold.addAt(renderHelper.getRenderHelper().getLayer(1), placeHoldX,12);
         placeHold.addListener(new GoScreenClickListener(game.mainS, game));
         placeHold.addText(new Point(0,0), "Return to Main Screen");

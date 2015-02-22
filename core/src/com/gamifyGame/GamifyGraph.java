@@ -1,9 +1,6 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.text.DateFormat;
@@ -12,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -59,7 +55,7 @@ public abstract class GamifyGraph {
 
         renderHelper renderer = renderHelper.getRenderHelper();
 
-        renderer.textSet(type,borderX+1,borderY+graphHeight-2,"xLarge");
+        renderer.textSet(type,borderX+1,borderY+graphHeight-2,GamifyTextSize.XTRABIG);
 
         for (int i = 0; i < botLabelCount; i++) {
             Date date = new Date(xPoints.get(x));
@@ -71,7 +67,7 @@ public abstract class GamifyGraph {
         }
         x = 0;
         for (int i = 0; i < graphHeight; i+= graphHeight / leftLabelCount){
-            renderer.textSet(String.valueOf((int)((yMax/leftLabelCount)*x)),borderX,borderY+i+7,"small");
+            renderer.textSet(String.valueOf((int)((yMax/leftLabelCount)*x)),borderX,borderY+i+7,GamifyTextSize.SMALL);
             x++;
         }
     }

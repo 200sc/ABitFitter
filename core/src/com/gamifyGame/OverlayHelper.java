@@ -41,7 +41,7 @@ public class OverlayHelper extends GamifyImage {
         toBeRestored= new Array<Actor>( renderer.getLayer(3).getActors());
         //Make it so the other layers are not interactable
         renderer.setProcessor(3);
-        setSize(renderer.RENDERED_SCREEN_WIDTH, renderer.RENDERED_SCREEN_HEIGHT);
+        setSize(renderer.RENDER_WIDTH, renderer.RENDER_HEIGHT);
         addAt(renderer.getLayer(3), 0, 0);
         getColor().a = 0.4f;
 
@@ -68,12 +68,6 @@ public class OverlayHelper extends GamifyImage {
         renderer.getShapeRenderer().begin();
 
         if(toDraw != null){
-
-            for(ShapeInfo shape : toDraw){
-                renderer.makeBox(renderer.getShapeRenderer(), renderer.getLayer(3),
-                        shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
-
-            }
 
         }
 

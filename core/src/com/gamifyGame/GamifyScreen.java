@@ -2,17 +2,11 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-import javax.xml.soap.Text;
 
 /**
  * Created by Andrew on 2/9/2015.
@@ -54,7 +48,7 @@ public abstract class GamifyScreen implements Screen {
         layer1.draw();
         layer2.draw();
         layer3.draw();
-        if (frameCount % 180 == 0) {
+        if (frameCount % (60*30) == 0) {
             game.updateChallenge();
         }
         game.updateVitality(delta);

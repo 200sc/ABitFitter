@@ -46,7 +46,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         } else showText = "Close \nWindow";
 
         batch.begin();
-        renderHelper.getRenderHelper().textSet(showText, 2, 16, "large");
+        renderHelper.getRenderHelper().textSet(showText, 2, 16, GamifyTextSize.BIG);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
                 String text = Week[i][j].getString("time");

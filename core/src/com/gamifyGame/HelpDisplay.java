@@ -1,7 +1,6 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,7 +21,7 @@ public class HelpDisplay extends TextDisplayBox {
     public HelpDisplay(String path, gamifyGame curGame) {
         super(path);
         this.game = curGame;
-        this.addText(new Point(-2, 2), "Help", "m");
+        this.addText(new Point(-2, 2), "Help", GamifyTextSize.MEDIUM);
         this.addHelpListener();
         this.imgWidth = renderHelper.getRenderHelper().textureHash.get(helpBoxResource).getWidth();
         this.imgHeight = renderHelper.getRenderHelper().textureHash.get(helpBoxResource).getHeight();
@@ -33,8 +32,8 @@ public class HelpDisplay extends TextDisplayBox {
     private void displayHelpContext(){
 
 
-        float xLoc = renderHelper.getRenderHelper().RENDERED_SCREEN_WIDTH/2 - imgWidth/2;
-        float yLoc = renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT/3;
+        float xLoc = renderHelper.getRenderHelper().RENDER_WIDTH /2 - imgWidth/2;
+        float yLoc = renderHelper.getRenderHelper().RENDER_HEIGHT /3;
 
         //Construct the overlay
         OverlayHelper overlay = new OverlayHelper(helpBoxResource, game);
@@ -63,30 +62,25 @@ public class HelpDisplay extends TextDisplayBox {
     }
 
     private void mainScreenDisplay(){
-        HelpInfoBox midBoxDesc = new HelpInfoBox("48Box.png", 85, renderHelper.getRenderHelper().RENDERED_SCREEN_HEIGHT/2 + 10, "The middle box displays your vitality which is the main resource of the game. \n If clicked on this will bring up the screen used to buy new buildings" , "green");
-        return ;
+        HelpInfoBox midBoxDesc = new HelpInfoBox("48Box.png", 85, renderHelper.getRenderHelper().RENDER_HEIGHT /2 + 10, "The middle box displays your vitality which is the main resource of the game. \n If clicked on this will bring up the screen used to buy new buildings" , GamifyColor.GREEN);
     }
     private void quadScreen1Display(){
-        return ;
     }
     private void quadScreen2Display(){
-        return ;
     }
     private void quadScreen3Display(){
-        return ;
     }
     private void quadScreen4Display(){
-        return ;
     }
     private void buyScreenDisplay(){
         renderHelper renderer = renderHelper.getRenderHelper();
         Texture t48 = renderer.textureHash.get("48Box.png");
-        HelpInfoBox scrollDesc = new HelpInfoBox("48Box.png", 15, renderer.RENDERED_SCREEN_HEIGHT -t48.getHeight(), "\n\n Top bar is a scrollbar of buildings.\n" , "green");
-        HelpInfoBox scrollBoxDesc = new HelpInfoBox("48Box.png", 120, renderer.RENDERED_SCREEN_HEIGHT - t48.getHeight()-60, "\n\n Pull a building down to see its description and cost." , "green");
-        HelpInfoBox buildingSpaceDesc = new HelpInfoBox("48Box.png", renderer.RENDERED_SCREEN_WIDTH/2-t48.getWidth()
-                        , renderer.RENDERED_SCREEN_HEIGHT/2 - t48.getHeight()/2, " \n\nDrag Buildings from scrollbar. If there are valid spaces they will appear green.\n" , "green");
+        HelpInfoBox scrollDesc = new HelpInfoBox("48Box.png", 15, renderer.RENDER_HEIGHT -t48.getHeight(), "\n\n Top bar is a scrollbar of buildings.\n" , GamifyColor.GREEN);
+        HelpInfoBox scrollBoxDesc = new HelpInfoBox("48Box.png", 120, renderer.RENDER_HEIGHT - t48.getHeight()-60, "\n\n Pull a building down to see its description and cost." , GamifyColor.GREEN);
+        HelpInfoBox buildingSpaceDesc = new HelpInfoBox("48Box.png", renderer.RENDER_WIDTH /2-t48.getWidth()
+                        , renderer.RENDER_HEIGHT /2 - t48.getHeight()/2, " \n\nDrag Buildings from scrollbar. If there are valid spaces they will appear green.\n" , GamifyColor.GREEN);
 
-        HelpInfoBox expandDesc = new HelpInfoBox("48Box.png", renderer.RENDERED_SCREEN_WIDTH/2, renderer.RENDERED_SCREEN_HEIGHT/6 , "\n\n Buy a level extender to be able to build up to 3 levels deep!.\n" , "green");
+        HelpInfoBox expandDesc = new HelpInfoBox("48Box.png", renderer.RENDER_WIDTH /2, renderer.RENDER_HEIGHT /6 , "\n\n Buy a level extender to be able to build up to 3 levels deep!.\n" , GamifyColor.GREEN);
 
         return ;
     }
