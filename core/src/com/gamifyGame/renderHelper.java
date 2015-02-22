@@ -248,10 +248,10 @@ public class renderHelper {
     }
 
     public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety) {
-        drawTextOnImageNicely(text,image,offsetx,offsety,GamifyTextSize.MEDIUM,GamifyColor.WHITE);
+        drawTextOnImageNicely(text,image,offsetx,offsety,GamifyTextSize.MEDIUM,GamifyColor.WHITE, "left");
     }
 
-    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, GamifyTextSize size, GamifyColor color) {
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, GamifyTextSize size, GamifyColor color, String align) {
         BitmapFont curFont = getFont(color, size);
         BitmapFont.TextBounds curBounds = curFont.getBounds(text);
         Point convertedDimensions=new Point(curBounds.width, curBounds.height);
@@ -262,7 +262,7 @@ public class renderHelper {
 
         Point textCoorsLoc=new Point(offsetx+image.getX()+(image.getImageWidth()+4)/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
 
-        textSet(text, color,  (int) textCoorsLoc.x , (int) textCoorsLoc.y, size, "left",  image.getWidth());
+        textSet(text, color,  (int) textCoorsLoc.x , (int) textCoorsLoc.y, size, align,  image.getWidth());
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
