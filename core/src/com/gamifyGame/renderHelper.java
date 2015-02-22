@@ -117,6 +117,7 @@ public class renderHelper {
         textureHash.put("night.png",imageLoad("night.png"));
         textureHash.put("midnight.png",imageLoad("midnight.png"));
         textureHash.put("sunrise.png",imageLoad("sunrise.png"));
+        textureHash.put("nightSky.png",imageLoad("nightSky.png"));
         textureHash.put("background.png",imageLoad("background.png"));
         textureHash.put("activeHour.png",imageLoad("ActiveHour.png"));
         textureHash.put("inactiveHour.png",imageLoad("InactiveHour.png"));
@@ -144,7 +145,7 @@ public class renderHelper {
         textureHash.put("scrollBarKnub.png", imageLoad("scrollBarKnub.png"));
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
-        textureHash.put("stockingCap.png", imageLoad("stockingCap.png"));
+
         textureHash.put("nightCap.png", imageLoad("nightCap.png"));
         textureHash.put("rightZs.png", imageLoad("rightZs.png"));
         textureHash.put("leftZs.png", imageLoad("leftZs.png"));
@@ -246,7 +247,7 @@ public class renderHelper {
         return image;
     }
 
-    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size) {
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety) {
         drawTextOnImageNicely(text,image,offsetx,offsety,GamifyTextSize.MEDIUM,GamifyColor.WHITE);
     }
 

@@ -8,6 +8,9 @@ import android.widget.Toast;
 
 import com.gamifyGame.ActionResolver;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 
 public class ActionResolverAndroid implements ActionResolver {
     Handler handler;
@@ -74,9 +77,16 @@ public class ActionResolverAndroid implements ActionResolver {
     }
 
     public void setSleepState(final boolean isSleeping){
-        if(isSleeping)       System.out.println("ACTIONRESOLVER: GO TO SLEEP");
-        else System.out.println("ACTIONRESOLVER: Wake up!!!!");
 
+        System.out.println("ACTIONRESOLVER: GO TO SLEEP");
+        File toWrite = new File(context.getApplicationContext().getFilesDir(), "sleepFile");
+        try{
+            FileOutputStream sleep = new FileOutputStream(toWrite);
+
+            if(isSleeping)sleep.write(1);
+            else sleep.write(0);
+            sleep.close();
+        }catch (Exception e) {}
 
     }
 }

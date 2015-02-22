@@ -48,19 +48,20 @@
         </activity>
         <service
             android:name=".AccelTracker"
+            android:process=":second"
             android:exported="false"/>
         <service
             android:name=".AccelSender"
+            android:process=":second"
             android:exported="false"/>
         <service
             android:name=".GameUpdater"
+            android:process=":second"
             android:exported="false"/>
         <receiver
             android:name=".AccelAlarm"/>
         <receiver
             android:name=".challengeAlarm"/>
-        <activity android:name="ZXingTestActivity"
-            android:label="Scanner"></activity>
         <activity android:name="Zxing"
             android:label="Scanner"></activity>
 

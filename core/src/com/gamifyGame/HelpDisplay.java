@@ -22,7 +22,7 @@ public class HelpDisplay extends TextDisplayBox {
     public HelpDisplay(String path, gamifyGame curGame) {
         super(path);
         this.game = curGame;
-        this.addText(new Point(-2, 2), "Help", GamifyTextSize.MEDIUM);
+        //this.addText(new Point(-2, 2), "Help", GamifyTextSize.MEDIUM);
         this.addHelpListener();
         this.imgWidth = renderHelper.getRenderHelper().textureHash.get("overlay.png").getWidth();
         this.imgHeight = renderHelper.getRenderHelper().textureHash.get("overlay.png").getHeight();
@@ -44,7 +44,7 @@ public class HelpDisplay extends TextDisplayBox {
 
         TextDisplayBox resumeGame = new TextDisplayBox("smallPopUpBoxBlue.png");
         resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth()/2, 12);
-        resumeGame.addText(new Point(0,0), "Resume Game");
+        resumeGame.addText(new Point(0, 0), "Resume Game");
         resumeGame.addListener(overlay.resumeListener);
 
 
@@ -54,6 +54,7 @@ public class HelpDisplay extends TextDisplayBox {
         else if(curScreen instanceof Quad2Screen){quadScreen2Display();}
         else if(curScreen instanceof Quad3Screen){quadScreen3Display();}
         else if(curScreen instanceof Quad4Screen){quadScreen4Display();}
+        else if(curScreen instanceof ConsumableScreen){consumableDisplay();}
         else{buyScreenDisplay();}
 }
 
@@ -64,16 +65,32 @@ public class HelpDisplay extends TextDisplayBox {
     }
 
     private void mainScreenDisplay(){
-        HelpInfoBox vitalityDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 90, renderHelper.getRenderHelper().RENDER_HEIGHT /2 + 18, "Vitality is the main resource of the game" , GamifyColor.GREEN);
-        HelpInfoBox midBoxDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 75, renderHelper.getRenderHelper().RENDER_HEIGHT /2- 10, "Redirects to building screen" , GamifyColor.GREEN);
+        HelpInfoBox vitalityDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 95, renderHelper.RENDER_HEIGHT /2 + 18, "Vitality is the main resource of the game" , GamifyColor.GREEN);
+        HelpInfoBox midBoxDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 80, renderHelper.RENDER_HEIGHT /2- 10, "Redirects to screen for building screen" , GamifyColor.GREEN);
+        HelpInfoBox dataDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH-4-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth(), renderHelper.RENDER_HEIGHT*2/3, "Redirects to a screen with graphs about your fitness", GamifyColor.GREEN);
+        HelpInfoBox consumableDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 4, renderHelper.RENDER_HEIGHT*2/3, "Redirects to screen for buying consumable boosts", GamifyColor.GREEN);
 
+        HelpInfoBox foodDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 4, renderHelper.RENDER_HEIGHT * 2/7, "Redirects to screen to enter food information", GamifyColor.GREEN);
+        HelpInfoBox challengeDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH-4-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth(), renderHelper.RENDER_HEIGHT * 2/7, "Redirects to a screen for setting challenge hours", GamifyColor.GREEN);
+
+
+        HelpInfoBox sleepScreen = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH * 2/3, 4, "Click to start logging sleep, stops logging everything else", GamifyColor.GREEN);
 
     }
     private void quadScreen1Display(){
     }
     private void quadScreen2Display(){
+        consumableDisplay();
+    }
+    private void consumableDisplay() {
+
     }
     private void quadScreen3Display(){
+        HelpInfoBox showChallengeDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 4, 36, "Shows or hides challenge hour selection", GamifyColor.GREEN);
+        HelpInfoBox blueDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH-4-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth(), renderHelper.RENDER_HEIGHT*2/3, "Hours in blue are open for challeneges", GamifyColor.GREEN);
+
+        HelpInfoBox challengeSelectorDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH/2, renderHelper.RENDER_HEIGHT/3, "Select hours for which challenges can happen", GamifyColor.GREEN);
+
     }
     private void quadScreen4Display(){
     }

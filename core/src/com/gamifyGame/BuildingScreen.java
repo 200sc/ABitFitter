@@ -51,7 +51,7 @@ public class BuildingScreen extends BuyScreen
     @Override
     public void hide()
     {
-        renderHelper.getRenderHelper().getLayer(0).clear();
+        //renderHelper.getRenderHelper().getLayer(0).clear();
         super.hide();
     }
 

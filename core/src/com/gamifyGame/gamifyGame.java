@@ -34,8 +34,9 @@ public class gamifyGame extends Game {
 
     private static gamifyGame gamifyGame;
     private long vitality;
-    private float secondsSinceLastCall=0;
+    private float secondsSinceLastCall = 0;
     private boolean isLoadingSomething;
+    SkyImage sky;
 
     public String challengeText;
     //READ THIS
@@ -55,6 +56,7 @@ public class gamifyGame extends Game {
     public void setActionResolver(ActionResolver actionResolver) {
         this.actionResolver = actionResolver;
     }
+
     private gamifyGame(ActionResolver actionResolver) {
         this.actionResolver = actionResolver;
     }
@@ -74,38 +76,46 @@ public class gamifyGame extends Game {
         quad3S = new Quad3Screen(this);
         quad4S = new Quad4Screen(this);
         buyS = new BuildingScreen(this);
-        consumableScreen=new ConsumableScreen(this);
+        consumableScreen = new ConsumableScreen(this);
         challengeText = "";
-        vitality=this.getPrefs().getLong("vitality", 0);
+        vitality = this.getPrefs().getLong("vitality", 0);
 
         setScreen(mainS);
     }
-    public void updateVitality(float delta )
-    {
-        secondsSinceLastCall+=delta;
-        if(secondsSinceLastCall>30)
-        {
+
+    public void updateVitality(float delta) {
+        secondsSinceLastCall += delta;
+        if (secondsSinceLastCall > 30) {
             Json json = new Json();
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
-            secondsSinceLastCall-=30;
+            secondsSinceLastCall -= 30;
 
-            ArrayList<Consumable> activeConsumables=consumableScreen.getActiveConsumables();
+            ArrayList<Consumable> activeConsumables = consumableScreen.getActiveConsumables();
 
-            for(String name: underground)
-            {
-                //TODO: Make buildings care about their trigger conditions
-                if(!name.equals("Empty"))
-                {
-                    Building currentBuilding=Building.getDefaultBuildings().get(name);
-                    int baseIncrease=currentBuilding.getVitalityPerThreeSeconds();
-                    for(Consumable currentConsumable: activeConsumables)
-                    {
-                        if(currentConsumable.getTriggerCondition()==currentBuilding.getTriggerCondition())
-                        {
-                            baseIncrease*=currentConsumable.getMultiplier();
-                        }
+            for (String name : underground) {
+                if (!name.equals("Empty")) {
+                    Building currentBuilding = Building.getDefaultBuildings().get(name);
+
+                    TriggerCondition curActivity=null;
+                    try {
+                        curActivity = TriggerCondition.valueOf(this.getPrefs().getString("curActivity").toUpperCase());
                     }
-                    vitality+=baseIncrease;
+                    catch (IllegalArgumentException e)
+                    {
+
+                    }
+                    /*
+                      case 0: return "inactive";
+                      case 1: return "active";
+                      case 2: return "running";
+                      case 3: return "cycling";
+                      case 4: return "dancing";
+                      default: return "nothing";
+                     */
+                    if (currentBuilding.getTriggerCondition()== TriggerCondition.ALL || curActivity == currentBuilding.getTriggerCondition()) {
+                        vitality += currentBuilding.getVitalityPer30Seconds();
+                    }
+
                 }
             }
         }
@@ -113,16 +123,16 @@ public class gamifyGame extends Game {
         this.getPrefs().flush();
     }
 
-    public void challengeComplete(){
+    public void challengeComplete() {
         // do some big thing with vitality
         addToVitality(10000l);
     }
 
-    public void updateChallenge(){
+    public void updateChallenge() {
         challengeText = "Starting!";
-        if(isLoadingSomething || pref.getInteger("challengeProgress") == 100){
-            if (pref.getBoolean("challengeComplete",false)){
-                pref.putBoolean("challengeComplete",true);
+        if (isLoadingSomething || pref.getInteger("challengeProgress") == 100) {
+            if (pref.getBoolean("challengeComplete", false)) {
+                pref.putBoolean("challengeComplete", true);
                 challengeText = "Yay!";
                 challengeComplete();
             }
@@ -130,15 +140,14 @@ public class gamifyGame extends Game {
             return;
         }
         challengeText = "Step 2";
-        String challenge = pref.getString("challengeVariety","none");
+        String challenge = pref.getString("challengeVariety", "none");
         int progress = 0;
-        if(challenge.equals("Be active this hour!")){
-            progress = 5 * (pref.getInteger("minutesWalkedThisHour",0) + pref.getInteger("minutesRanThisHour",0)
-                      + pref.getInteger("minutesDancedThisHour",0) + pref.getInteger("minutesBikedThisHour",0));
+        if (challenge.equals("Be active this hour!")) {
+            progress = 5 * (pref.getInteger("minutesWalkedThisHour", 0) + pref.getInteger("minutesRanThisHour", 0)
+                    + pref.getInteger("minutesDancedThisHour", 0) + pref.getInteger("minutesBikedThisHour", 0));
 
-        }
-        else if (challenge.equals("Try a new food!")){
-            progress = 100*pref.getInteger("newFoodThisHour");
+        } else if (challenge.equals("Try a new food!")) {
+            progress = 100 * pref.getInteger("newFoodThisHour");
         }
         challengeText = "Step 3";
         pref.putInteger("challengeProgress", Math.min(progress, 100));
@@ -146,63 +155,71 @@ public class gamifyGame extends Game {
     }
 
 
-    public void pause(){
+    public void pause() {
         paused = true;
         serverHelper.sendBuidlings(pref.getString("userID"), pref.getString("undergroundBuildings"));
         serverHelper.sendVitality(pref.getString("userID"), getVitality());
     }
 
-    public void resume(){
+    public void resume() {
         paused = false;
     }
 
-    public void storeUpdatePrefs(Preferences updatePref){
-        Map<String,?> kvPairs = updatePref.get();
+    public void storeUpdatePrefs(Preferences updatePref) {
+        Map<String, ?> kvPairs = updatePref.get();
         updatePref.clear();
         Set<String> keySet = kvPairs.keySet();
-        for(Iterator i = keySet.iterator(); i.hasNext();){
+        for (Iterator i = keySet.iterator(); i.hasNext(); ) {
             String key = String.valueOf(i.next());
             String val = String.valueOf(kvPairs.get(key));
-            graphUpdate(key,val);
+            graphUpdate(key, val);
             System.out.println("GAMIFYGAME: " + key + " " + String.valueOf(val));
         }
         updatePref.flush();
     }
 
-    public void setLoadingFlag(boolean value){
+    public void setLoadingFlag(boolean value) {
         isLoadingSomething = value;
     }
-    public boolean getLoadingFlag(){
+
+    public boolean getLoadingFlag() {
         return isLoadingSomething;
     }
 
-    public void graphUpdate(String inKey, String val){
+    public void graphUpdate(String inKey, String val) {
         Date date = new Date(Long.valueOf(inKey));
-        DateFormat format = new SimpleDateFormat("HH:mm", Locale.US);
+        DateFormat format = new SimpleDateFormat("HH,mm", Locale.US);
         format.setTimeZone(TimeZone.getDefault());
         String key = format.format(date);
         pref.putString("graphTmp", "I got " + val + " at time " + key);
 
-        graphPref.putString("activity"+key,val);
-        if (val.equals("running")){
-            pref.putInteger("minutesRanThisHour",pref.getInteger("minutesRanThisHour",0)+1);
-        } else if (val.equals("active")){
+        graphPref.putString("activity" + key, val);
+        if (val.equals("running")) {
+            pref.putInteger("minutesRanThisHour", pref.getInteger("minutesRanThisHour", 0) + 1);
+        } else if (val.equals("active")) {
             System.out.println("GAMIFYGAME: gonna increse it");
-            pref.putInteger("minutesWalkedThisHour",pref.getInteger("minutesWalkedThisHour",0)+1);
-        } else if (val.equals("dancing")){
-            pref.putInteger("minutesDancedThisHour",pref.getInteger("minutesDancedThisHour",0)+1);
-        } else if (val.equals("cycling")){
-            pref.putInteger("minutesBikedThisHour",pref.getInteger("minutesBikedThisHour",0)+1);
+            pref.putInteger("minutesWalkedThisHour", pref.getInteger("minutesWalkedThisHour", 0) + 1);
+        } else if (val.equals("dancing")) {
+            pref.putInteger("minutesDancedThisHour", pref.getInteger("minutesDancedThisHour", 0) + 1);
+        } else if (val.equals("cycling")) {
+            pref.putInteger("minutesBikedThisHour", pref.getInteger("minutesBikedThisHour", 0) + 1);
         }
         pref.flush();
         graphPref.flush();
     }
 
-    public boolean isActive(){return !paused;}
+    public boolean isActive() {
+        return !paused;
+    }
+
     public Preferences getPrefs() {
         return pref;
     }
-    public ActionResolver getActionResolver() { return actionResolver;}
+
+    public ActionResolver getActionResolver() {
+        return actionResolver;
+    }
+
     public listenerHelper getListenerHelper() {
         return helper;
     }
@@ -216,15 +233,17 @@ public class gamifyGame extends Game {
     public void setPref(Preferences preferences) {
         pref = preferences;
     }
-    public void setGraphPref(Preferences preferences) { graphPref = preferences;}
 
-    public Long getVitality()
-    {
+    public void setGraphPref(Preferences preferences) {
+        graphPref = preferences;
+    }
+
+    public Long getVitality() {
         return vitality;
     }
-    public void addToVitality(Long toAdd)
-    {
-        vitality+=toAdd;
+
+    public void addToVitality(Long toAdd) {
+        vitality += toAdd;
     }
 
 

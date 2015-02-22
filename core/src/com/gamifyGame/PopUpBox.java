@@ -36,7 +36,7 @@ public class PopUpBox extends GamifyImage
         super.draw(b, parentAlpha);
         b.end();
         renderHelper.getRenderHelper().getBatch().begin();
-        renderHelper.getRenderHelper().drawTextOnImageNicely(myString, this, 0, 0, "");
+        renderHelper.getRenderHelper().drawTextOnImageNicely(myString, this, 0, 0);
         renderHelper.getRenderHelper().getBatch().end();
         b.begin();
     }

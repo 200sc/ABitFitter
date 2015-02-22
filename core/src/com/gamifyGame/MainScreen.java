@@ -15,8 +15,9 @@ import java.util.Calendar;
  */
 public class MainScreen extends GamifyScreen implements Screen
 {
-    private Image quad3;
+    private Image quad3, theSky;
     private float deltaCount;
+    private double deltaSum;
     private TextDisplayBox loadingBox;
 
     public MainScreen(gamifyGame game) {
@@ -53,7 +54,6 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().getBatch().end();
 
             deltaCount = (deltaCount+1) % 32;
-
             renderHelper.getRenderHelper().endRender();
         }
 
@@ -64,10 +64,9 @@ public class MainScreen extends GamifyScreen implements Screen
             Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
             Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
 
-            // Only items that need listeners should be maintained as Images I.E
-            // These two don't need listeners--
-            renderHelper.getRenderHelper().imageSetup(timeOfDay(), layer0, 0, 0);
-            renderHelper.getRenderHelper().imageSetup("background.png", layer0, 0, 0);
+            // Only items that need listeners should be maintained as Images
+
+            SkyImage.getSkyImage("nightSky.png");
 
             // Create now for put/get
             Json json = new Json();
@@ -122,8 +121,8 @@ public class MainScreen extends GamifyScreen implements Screen
 
             //TODO: Decide if this is the right place for help
             //Sets up the button for triggering help
-            HelpDisplay helpBox =new HelpDisplay("inactiveHour.png", game);
-            helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), renderHelper.getRenderHelper().RENDER_WIDTH/2 - renderHelper.getRenderHelper().textureHash.get("inactiveHour.png").getWidth()/2, 1);
+            HelpDisplay helpBox =new HelpDisplay("help.png", game);
+            helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), renderHelper.getRenderHelper().RENDER_WIDTH/2 - renderHelper.getRenderHelper().textureHash.get("help.png").getWidth()/2, 1);
             helpBox.setColor(Color.WHITE);
 
             //Set up the sleep bar
@@ -145,15 +144,5 @@ public class MainScreen extends GamifyScreen implements Screen
             quad4.addListener(new GoScreenClickListener(game.quad4S, game));
             midbox.addListener(new GoScreenClickListener(game.buyS, game));
             deltaCount = 0;
-
-        }
-
-        private String timeOfDay(){
-            Calendar cal = Calendar.getInstance();
-            int hour = cal.get(Calendar.HOUR_OF_DAY);
-            if (hour < 5){ return "midnight.png";}
-            else if (hour < 9){ return "sunrise.png";}
-            else if (hour < 17){ return "day.png";}
-            else return "night.png";
         }
     }

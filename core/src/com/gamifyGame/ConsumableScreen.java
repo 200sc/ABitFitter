@@ -1,7 +1,6 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
@@ -15,17 +14,21 @@ import java.util.HashMap;
 public class ConsumableScreen extends BuyScreen
 {
     private HashMap<Consumable, Integer> inventory;
+    private HashMap<Consumable, Integer> capacity;
     private ArrayList<Consumable> active;
 
     public ConsumableScreen(gamifyGame game)
     {
         super(game);
         inventory =new HashMap<Consumable, Integer>();
+        capacity=new HashMap<Consumable, Integer>();
         for(Consumable current: Consumable.getAllConsumables().values())
         {
             inventory.put(current, 0);
+            capacity.put(current, 1);
         }
         active= new ArrayList<Consumable>();
+
     }
 
     public void show()
@@ -35,9 +38,9 @@ public class ConsumableScreen extends BuyScreen
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
 
         Collection<Consumable> possibleToBuy=Consumable.getAllConsumables().values();
-        this.drawConsumables(possibleToBuy, 10, 90);
-        for(Consumable currentConsumable: possibleToBuy) {
-            //currentConsumable.clearListeners();
+        this.drawPossibleToBuy(possibleToBuy, 50, 10, 260);
+        for(Consumable currentConsumable: possibleToBuy)
+        {
             addBuyListener(currentConsumable);
             currentConsumable.addListener(this.textBoxControlListener());
         }
@@ -59,8 +62,7 @@ public class ConsumableScreen extends BuyScreen
 
 
 
-
-        this.drawConsumables(inventory, 10, 130);
+        drawInventory(inventory, 10, 200, 10);
         for(Consumable current: inventory.keySet())
         {
             if(inventory.get(current)>0)
@@ -76,23 +78,22 @@ public class ConsumableScreen extends BuyScreen
         }
     }
 
-    private void drawConsumables(HashMap<Consumable, Integer> toDraw, int xPadding, int yLoc)
-    {
-        float currentX=xPadding;
 
-        for(Consumable currentConsumable: toDraw.keySet())
-        {
-            if(toDraw.get(currentConsumable)>0)
-            {
-                currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1),currentX, yLoc);
-                currentX+=currentConsumable.getWidth()+xPadding;
-            }
+    private void drawInventory(HashMap<Consumable, Integer> toDraw, int xLoc, int yBaseLoc, int yPadding) {
+        float currentY = yBaseLoc;
+
+        for (Consumable currentConsumable : toDraw.keySet()) {
+            currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1), xLoc, currentY);
+            currentY += currentConsumable.getHeight() + yPadding;
+            renderHelper.getRenderHelper().batch.begin();
+            renderHelper.getRenderHelper().drawTextOnImageNicely(""+toDraw.get(currentConsumable),currentConsumable, 10, 0, GamifyTextSize.MEDIUM, GamifyColor.BLACK);
+            renderHelper.getRenderHelper().batch.end();
         }
     }
 
-    private void drawConsumables(Collection<Consumable> toDraw, int xPadding, int yLoc)
+    private void drawPossibleToBuy(Collection<Consumable> toDraw, int baseX, int xPadding, int yLoc)
     {
-        float currentX=xPadding;
+        float currentX=baseX;
 
         for(Consumable currentConsumable: toDraw)
         {
@@ -129,8 +130,9 @@ public class ConsumableScreen extends BuyScreen
                 Consumable consumable = (Consumable) event.getListenerActor();
                 if(inventory.get(consumable)>0)
                 {
-                    active.add(consumable);
-                    consumable.run();
+                    Consumable activated=consumable.copy();
+                    active.add(activated);
+                    //activated.run();
                     inventory.put(consumable, inventory.get(consumable)-1);
                 }
                 //consumable.remove();
@@ -163,4 +165,5 @@ public class ConsumableScreen extends BuyScreen
     {
         return active;
     }
+
 }
