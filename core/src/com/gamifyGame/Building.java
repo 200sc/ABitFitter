@@ -13,42 +13,36 @@ public class Building extends Buyable
 {
     private int vitalityPerThreeSeconds;
     private int power;
+    private TriggerCondition triggerCondition;
+    private float currentMultiplier;
 
     private boolean replaceable=true;
 
     public Building(String name, String desc, int cost, int vitalityPerThreeSeconds, int power, TriggerCondition triggerCondition, String key, boolean replaceable) {
-        super(key, name, cost, triggerCondition, desc);
+        super(key, name, cost, desc);
+        this.triggerCondition = triggerCondition;
         this.power=power;
         this.vitalityPerThreeSeconds=vitalityPerThreeSeconds;
         this.replaceable=replaceable;
+        currentMultiplier=1;
     }
 
+    public TriggerCondition getTriggerCondition() {
+        return triggerCondition;
+    }
 
     public static HashMap<String, Building> getDefaultBuildings()
     {
         HashMap<String, Building> defList=new HashMap<String, Building>();
-        defList.put("Armory", new Building("Armory", "The place where the weapons are", 100, 1, 2, TriggerCondition.FOOD, "Armory1.png", true));
+        defList.put("Armory", new Building("Armory", "The place where the weapons are", 100, 1, 2, TriggerCondition.RUNNING, "Armory1.png", true));
         defList.put("Computer Room", new Building("Computer Room", "The place where the computers are", 300, 2, 1, TriggerCondition.SLEEP, "Computer1.png", true));
         defList.put("Costume Closet", new Building("Costume Closet", "A vast wardrobe, filled with costumes.", 300, 3, 2, TriggerCondition.FOOD, "Costume1.png", true));
         defList.put("Forging Office", new Building("Forging Office", "An office filled with stacks of official seals, brief cases of fake documents and intricate utensils", 4, 16, 1, TriggerCondition.SLEEP, "Forgery1.png", true));
-        defList.put("Garage", new Building("Garage", "Where are the cars are", 500, 4, 3, TriggerCondition.RUNNING, "Garage1.png", true));
-        defList.put("Generator", new Building("Generator", "It makes power", 600, 0, 5, TriggerCondition.NONE, "Generator1.png", true));
-        defList.put("HQ", new Building("HQ", "You live here", 1000000000, 100, 3, TriggerCondition.NONE, "HQ1.png", false));
+        defList.put("Garage", new Building("Garage", "Where are the cars are", 500, 4, 3, TriggerCondition.CYCLING, "Garage1.png", true));
+        defList.put("Generator", new Building("Generator", "It makes power", 600, 0, 5, TriggerCondition.ACTIVE, "Generator1.png", true));
+        defList.put("HQ", new Building("HQ", "You live here", 1000000000, 100, 3, TriggerCondition.ALL, "HQ1.png", false));
         defList.put("Lab", new Building("Lab", "You live here", 600, 5, 3, TriggerCondition.RUNNING, "Lab1.png", true));
         defList.put("Smuggler's Cove", new Building("Smuggler's Cove", "You live here", 600, 6, 3, TriggerCondition.NONE, "Smuggler1.png", true));
-
-        /*textureHash.put("Armory1.png",imageLoad("Armory1.png"));
-        textureHash.put("Computer1.png",imageLoad("Computer1.png"));
-        textureHash.put("Costume1.png",imageLoad("Costume1.png"));
-        textureHash.put("Elevator1.png",imageLoad("Elevator1.png"));
-        textureHash.put("Bridge1.png",imageLoad("Bridge1.png"));
-        textureHash.put("Empty1.png",imageLoad("Empty1.png"));
-        textureHash.put("Forgery1.png",imageLoad("Forgery1.png"));
-        textureHash.put("Garage1.png",imageLoad("Garage1.png"));
-        textureHash.put("Generator1.png",imageLoad("Generator1.png"));
-        textureHash.put("HQ1.png",imageLoad("HQ1.png"));
-        textureHash.put("Lab1.png",imageLoad("Lab1.png"));
-        textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));*/
         return defList;
     }
 
@@ -64,12 +58,36 @@ public class Building extends Buyable
         return getDefaultBuildings().get(name);
     }
 
-    public int getVitalityPerThreeSeconds()
+    public float getVitalityPerThreeSeconds()
     {
-        return vitalityPerThreeSeconds;
+        return vitalityPerThreeSeconds*=currentMultiplier;
     }
 
     public boolean isReplaceable() {
         return replaceable;
+    }
+
+    public void setCurrentMultiplier(float multiplier)
+    {
+        this.currentMultiplier=multiplier;
+    }
+
+    public void increaseMultiplier(float factor)
+    {
+        this.currentMultiplier*=factor;
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if(! (other instanceof Building))
+        {
+            return false;
+        }
+        else
+        {
+            Building otherBuild=(Building) other;
+            return (this.getName().equals(((Building) other).getName()));
+        }
     }
 }

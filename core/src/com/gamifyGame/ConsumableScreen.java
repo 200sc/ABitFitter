@@ -14,17 +14,21 @@ import java.util.HashMap;
 public class ConsumableScreen extends BuyScreen
 {
     private HashMap<Consumable, Integer> inventory;
+    private HashMap<Consumable, Integer> capacity;
     private ArrayList<Consumable> active;
 
     public ConsumableScreen(gamifyGame game)
     {
         super(game);
         inventory =new HashMap<Consumable, Integer>();
+        capacity=new HashMap<Consumable, Integer>();
         for(Consumable current: Consumable.getAllConsumables().values())
         {
             inventory.put(current, 0);
+            capacity.put(current, 1);
         }
         active= new ArrayList<Consumable>();
+
     }
 
     public void show()
@@ -128,7 +132,7 @@ public class ConsumableScreen extends BuyScreen
                 {
                     Consumable activated=consumable.copy();
                     active.add(activated);
-                    activated.run();
+                    //activated.run();
                     inventory.put(consumable, inventory.get(consumable)-1);
                 }
                 //consumable.remove();
@@ -161,4 +165,5 @@ public class ConsumableScreen extends BuyScreen
     {
         return active;
     }
+
 }
