@@ -106,7 +106,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
 
             // Daily reset
             if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 0) {
-
+                pref.putInteger("challengeProgress",0);
             }
 
             // Hourly reset

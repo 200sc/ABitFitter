@@ -1,5 +1,13 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Json;
+
+import java.util.ArrayList;
+
 /**
  * Created by Andrew on 2/22/2015.
  */

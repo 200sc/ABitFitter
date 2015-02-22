@@ -117,6 +117,7 @@ public class renderHelper {
         textureHash.put("night.png",imageLoad("night.png"));
         textureHash.put("midnight.png",imageLoad("midnight.png"));
         textureHash.put("sunrise.png",imageLoad("sunrise.png"));
+        textureHash.put("nightSky.png",imageLoad("nightSky.png"));
         textureHash.put("background.png",imageLoad("background.png"));
         textureHash.put("activeHour.png",imageLoad("ActiveHour.png"));
         textureHash.put("inactiveHour.png",imageLoad("InactiveHour.png"));
