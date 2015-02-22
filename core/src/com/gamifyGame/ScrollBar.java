@@ -17,10 +17,15 @@ import java.util.ArrayList;
 public class ScrollBar
 {
     private gamifyGame game;
+    private GamifyImage scrollKnub;
     private ArrayList<GamifyImage> images;
     //private ArrayList<GamifyImage> undergroundBuildings;
     private BuyScreen myScreen;
     public static final long PADDING=2;
+    final private int width  = (int)(.75 *renderHelper.getRenderHelper().textureHash.get("HQ1.png").getWidth());
+    final private int height = (int) (.75* renderHelper.getRenderHelper().textureHash.get("HQ1.png").getHeight());
+    final private int buyBarHeight=renderHelper.getRenderHelper().textureHash.get("buyBar.png").getHeight();
+    private int hOrigin;
 
     public ScrollBar(ArrayList<GamifyImage> images, ArrayList<GamifyImage> undergroundBuildings, gamifyGame game, BuyScreen myScreen)
     {
@@ -32,6 +37,7 @@ public class ScrollBar
         Image buyBar = renderHelper.getRenderHelper().imageSetup("buyBar.png", renderHelper.getRenderHelper().getLayer(1), 0, 254);
 
         makeScroll(renderHelper.getRenderHelper().getLayer(1), 0, 254);
+        this.hOrigin = 0;
 
         //Make the getDefaultScrollBarListener bar actually getDefaultScrollBarListener
         DragListener dragHandle = getDefaultScrollBarListener( undergroundBuildings, true);
@@ -71,6 +77,7 @@ public class ScrollBar
                 //myScreen.getMovingTextDisplayBox().waitThenGradualMoveToPosition(120, 175, 1.5f, 10);
                 myScreen.getMovingTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
                 return true;
+
             }
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -144,9 +151,7 @@ public class ScrollBar
 
     private void makeScroll(Stage stage, int hOrigin, int vOrigin){
         // Gotta have some size so I will for now use the Basic size of the HQ1 but scaled down a teensy bit
-        int width  = (int)(.75 *renderHelper.getRenderHelper().textureHash.get("HQ1.png").getWidth());
-        int height = (int) (.75* renderHelper.getRenderHelper().textureHash.get("HQ1.png").getHeight());
-        int buyBarHeight=renderHelper.getRenderHelper().textureHash.get("buyBar.png").getHeight();
+
 
         //Image[] imgHandles = new Image[images.size()];
         for(int i=0; i<=images.size()-1; i++)
@@ -155,6 +160,10 @@ public class ScrollBar
             currentImage.setSize(width, height);
             currentImage.addAt(stage, (int) hOrigin+(i*(width+PADDING)-PADDING), (int) vOrigin + buyBarHeight-(height*16/15));
         }
+        // Start knub at left
+        scrollKnub = new GamifyImage("scrollBarKnub.png");
+        scrollKnub.addAt(stage, hOrigin + 8 , vOrigin + 3 );
+        scrollKnub.addListener(getDefaultScrollBarListener( images, true));
     }
     private void moveScroll(float xMove, float yMove)
     {
@@ -165,14 +174,19 @@ public class ScrollBar
         }
 
         // Does not scroll if already at the end of our things to be displayed
-        if(xMove > 0 && images.get(0).getX() > 0){return;}
-        if(xMove < 0 && images.get(images.size()-1).getX()+images.get(images.size()-1).getWidth() < 180 ){return;}
+        //if(xMove > 0 && images.get(0).getX() > 0){return;}
+        //if(xMove < 0 && images.get(images.size()-1).getX()+images.get(images.size()-1).getWidth() < 180 ){return;}
         //Moves the images
+        if(xMove > 0 && images.get(0).getX() + xMove > 0){ xMove = 0 - images.get(0).getX();}
+        if(xMove < 0 && images.get(images.size()-1).getX()+images.get(images.size()-1).getWidth() + xMove < renderHelper.RENDER_WIDTH){ xMove = (renderHelper.RENDER_WIDTH - (images.get(images.size()-1).getX()+images.get(images.size()-1).getWidth()) );}
 
         for(GamifyImage building: images)
         {
             building.moveBy(xMove, yMove);
         }
+
+        scrollKnub.moveBy(-xMove / ( (0 +( (images.size())*(width+PADDING) - renderHelper.RENDER_WIDTH - PADDING)) /(renderHelper.RENDER_WIDTH-12 - renderHelper.getRenderHelper().textureHash.get("scrollBarKnub.png").getWidth()) ),0);
+
     }
     private Integer buildCheck(ArrayList<GamifyImage> possibleBuildingSites, Building toBuy, gamifyGame game )
     {
