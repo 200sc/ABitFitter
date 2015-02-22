@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 public class AccelSender extends IntentService {
 
     int activity;
+    String ID;
 
     public AccelSender() {
         super("Tracker");
@@ -38,7 +39,7 @@ public class AccelSender extends IntentService {
             try {
                 String tmpStr = coord[i][0]+","+coord[i][1]+","+coord[i][2]+","+coord[i][3];
 
-                toSend.put("userID", 1234);
+                toSend.put("userID", ID);
                 toSend.put("xyz", tmpStr);
 
             } catch (JSONException e) {
@@ -49,7 +50,7 @@ public class AccelSender extends IntentService {
         }
         try {
             JSONObject toSend = new JSONObject();
-            toSend.put("userID", 1234);
+            toSend.put("userID", ID);
             toSend.put("activity", actId[0]+","+actId[1]+","+actId[2]);
             doJSONACT(toSend);
         }catch(JSONException e){
@@ -116,6 +117,7 @@ public class AccelSender extends IntentService {
 
     protected void onHandleIntent(Intent intent) {
         String writeData = intent.getStringExtra("writeData");
+        ID = intent.getStringExtra("userID");
         String[] preCoords = writeData.split(System.getProperty("line.separator"));
         String[][] Coords = new String[preCoords.length][4];
         for(int i=0; i < preCoords.length; i++){

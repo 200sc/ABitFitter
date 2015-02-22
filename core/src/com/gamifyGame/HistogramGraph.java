@@ -22,11 +22,6 @@ import java.util.TimeZone;
  */
 public class HistogramGraph extends GamifyGraph {
 
-    ArrayList<Long> xPoints;
-    ArrayList<Integer> yPoints;
-    float yMax;
-    int dataPointCount;
-
     public HistogramGraph(HashMap<Long,Integer> graphPref, String dataType) {
          new HistogramGraph(graphPref,dataType,GamifyColor.BLUE,"medium");
     }
@@ -106,35 +101,6 @@ public class HistogramGraph extends GamifyGraph {
         }
         shapes1.end();
 
-
-    }
-
-    public void textRender(){
-
-        int xIncrement = (xPoints.size()/dataPointCount);
-        int xPixelIncrement = (graphWidth/dataPointCount);
-
-        int x = 0;
-        int borderX = 38;
-        int borderY = 54;
-
-        renderHelper renderer = renderHelper.getRenderHelper();
-
-        renderer.textSet(type,borderX+1,borderY+graphHeight-2,"large");
-
-        for (int i = 0; i < botLabelCount; i++) {
-            Date date = new Date(xPoints.get(x));
-            DateFormat format = new SimpleDateFormat("MMM.dd\nHH:mm");
-            format.setTimeZone(TimeZone.getDefault());
-            String formatted = format.format(date);
-            renderer.textSet(formatted, (borderX+10 + (xPixelIncrement * i)*(dataPointCount/botLabelCount)), borderY,"small");
-            x += xIncrement;
-        }
-        x = 0;
-        for (int i = 0; i < graphHeight; i+= graphHeight / leftLabelCount){
-            renderer.textSet(String.valueOf((int)((yMax/leftLabelCount)*x)),borderX,borderY+i+7,"small");
-            x++;
-        }
     }
 
     public void show(){

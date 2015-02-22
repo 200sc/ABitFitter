@@ -1,6 +1,5 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -26,7 +25,7 @@ public class gamifyGame extends Game {
     public Quad3Screen quad3S;
     public Quad4Screen quad4S;
     public ConsumableScreen consumableScreen;
-    public BuyScreen buyS;
+    public BuildingScreen buyS;
     private listenerHelper helper;
     boolean paused;
 
@@ -37,6 +36,8 @@ public class gamifyGame extends Game {
     private long vitality;
     private float secondsSinceLastCall=0;
     private boolean isLoadingSomething;
+
+    public String challengeText;
     //READ THIS
     //READDDD
 
@@ -70,11 +71,11 @@ public class gamifyGame extends Game {
         mainS = new MainScreen(this);
         testS = new testScreen(this, actionResolver, helper, pref);
         quad1S = new Quad1Screen(this);
-        quad2S = new Quad2Screen(this);
         quad3S = new Quad3Screen(this);
         quad4S = new Quad4Screen(this);
-        buyS = new BuyScreen(this);
+        buyS = new BuildingScreen(this);
         consumableScreen=new ConsumableScreen(this);
+        challengeText = "";
         vitality=this.getPrefs().getLong("vitality", 0);
 
         setScreen(mainS);
@@ -82,11 +83,11 @@ public class gamifyGame extends Game {
     public void updateVitality(float delta )
     {
         secondsSinceLastCall+=delta;
-        if(secondsSinceLastCall>3)
+        if(secondsSinceLastCall>30)
         {
             Json json = new Json();
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
-            secondsSinceLastCall-=3;
+            secondsSinceLastCall-=30;
 
             ArrayList<Consumable> activeConsumables=consumableScreen.getActiveConsumables();
 
@@ -112,10 +113,23 @@ public class gamifyGame extends Game {
         this.getPrefs().flush();
     }
 
+    public void challengeComplete(){
+        // do some big thing with vitality
+        addToVitality(10000l);
+    }
+
     public void updateChallenge(){
+        challengeText = "Starting!";
         if(isLoadingSomething || pref.getInteger("challengeProgress") == 100){
+            if (pref.getBoolean("challengeComplete",false)){
+                pref.putBoolean("challengeComplete",true);
+                challengeText = "Yay!";
+                challengeComplete();
+            }
+            challengeText = "Done!";
             return;
         }
+        challengeText = "Step 2";
         String challenge = pref.getString("challengeVariety","none");
         int progress = 0;
         if(challenge.equals("Be active this hour!")){
@@ -126,7 +140,9 @@ public class gamifyGame extends Game {
         else if (challenge.equals("Try a new food!")){
             progress = 100*pref.getInteger("newFoodThisHour");
         }
+        challengeText = "Step 3";
         pref.putInteger("challengeProgress", Math.min(progress, 100));
+        challengeText = "Done";
     }
 
 

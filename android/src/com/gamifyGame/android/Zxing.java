@@ -73,7 +73,7 @@ public final class Zxing extends Activity {
         }
 
         protected String parseResponse(String response){
-            //Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
             return response;
         }
 

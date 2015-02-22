@@ -27,14 +27,14 @@ public class Quad3Screen extends GamifyScreen implements Screen {
     public void render(float delta) {
         super.render(delta);
         Preferences pref = game.getPrefs();
-        renderHelper.getRenderHelper().moveCorner(retBox, Corner.UPPER_RIGHT, 30);
+
         boolean showChallengeHours = pref.getBoolean("showChallengeHours", false);
 
         ShapeRenderer shapes = renderHelper.getRenderHelper().getShapeRenderer();
 
         String showText;
         if (!showChallengeHours) {
-            showText = "Hours for\nChallenges";
+            showText = "Challenge\nHours";
             int challengeProgress = pref.getInteger("challengeProgress", 0);
 
             shapes.begin(ShapeRenderer.ShapeType.Filled);
@@ -45,8 +45,10 @@ public class Quad3Screen extends GamifyScreen implements Screen {
             shapes.end();
         } else showText = "Close \nWindow";
 
+        renderHelper.getRenderHelper().moveCorner(retBox, Corner.UPPER_RIGHT, 30);
+
         batch.begin();
-        renderHelper.getRenderHelper().textSet(showText, 2, 16);
+        renderHelper.getRenderHelper().textSet(showText, 2, 16, GamifyTextSize.BIG);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
                 String text = Week[i][j].getString("time");
@@ -59,21 +61,20 @@ public class Quad3Screen extends GamifyScreen implements Screen {
                 } else if (showTextInt == 12) {
                     showText = "12PM";
                 } else showText = String.valueOf(showTextInt % 12) + "PM";
-                renderHelper.getRenderHelper().textSet(showText, (int) Week[i][j].getX(), (int) Week[i][j].getY() + 10, "small");
+                renderHelper.getRenderHelper().textSet(showText, (int) Week[i][j].getX(), (int) Week[i][j].getY() + 10);
                 if (j + i == 0) {
-                    renderHelper.getRenderHelper().textSet("SUN", (int) Week[i][j].getX(), (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("MON", (int) Week[i][j].getX() + 20, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("TUE", (int) Week[i][j].getX() + 40, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("WED", (int) Week[i][j].getX() + 60, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("THU", (int) Week[i][j].getX() + 80, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("FRI", (int) Week[i][j].getX() + 100, (int) Week[i][j].getY() + 20, "small");
-                    renderHelper.getRenderHelper().textSet("SAT", (int) Week[i][j].getX() + 120, (int) Week[i][j].getY() + 20, "small");
+                    renderHelper.getRenderHelper().textSet("SUN", (int) Week[i][j].getX(), (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("MON", (int) Week[i][j].getX() + 20, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("TUE", (int) Week[i][j].getX() + 40, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("WED", (int) Week[i][j].getX() + 60, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("THU", (int) Week[i][j].getX() + 80, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("FRI", (int) Week[i][j].getX() + 100, (int) Week[i][j].getY() + 20);
+                    renderHelper.getRenderHelper().textSet("SAT", (int) Week[i][j].getX() + 120, (int) Week[i][j].getY() + 20);
                 }
             }
         }
         bringChallengeScreen();
         batch.end();
-        frameCount = (frameCount + 1) % 30;
     }
 
     private void bringChallengeScreen() {

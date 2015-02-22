@@ -1,6 +1,7 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -41,7 +42,7 @@ public class OverlayHelper extends GamifyImage {
         toBeRestored= new Array<Actor>( renderer.getLayer(3).getActors());
         //Make it so the other layers are not interactable
         renderer.setProcessor(3);
-        setSize(renderer.RENDERED_SCREEN_WIDTH, renderer.RENDERED_SCREEN_HEIGHT);
+        setSize(renderer.RENDER_WIDTH, renderer.RENDER_HEIGHT);
         addAt(renderer.getLayer(3), 0, 0);
         getColor().a = 0.4f;
 
@@ -53,6 +54,7 @@ public class OverlayHelper extends GamifyImage {
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){ resumeGame(); return true;}};
     private void resumeGame(){ // Gets the user back to the main screen away from help overlay
         toDraw = null;
+        game.getActionResolver().putSharedPrefs("isSleeping", "false");
         renderHelper.getRenderHelper().getLayer(3).clear();
         for(Actor actor: toBeRestored){
             renderHelper.getRenderHelper().getLayer(3).addActor(actor);
@@ -64,21 +66,20 @@ public class OverlayHelper extends GamifyImage {
         super.draw(b, parentAlpha);
         renderHelper renderer = renderHelper.getRenderHelper();
 
-        b.end();
-        renderer.getShapeRenderer().begin();
 
-        if(toDraw != null){
 
-            for(ShapeInfo shape : toDraw){
-                renderer.makeBox(renderer.getShapeRenderer(), renderer.getLayer(3),
-                        shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+//        if(toDraw != null){
+//            b.end();
+//            renderer.getShapeRenderer().begin();
+//
+//            for(ShapeInfo shape : toDraw){
+//                renderer.makeBox(renderer.getShapeRenderer(), renderer.getLayer(3),
+//                        shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+//            }
+//            renderer.getShapeRenderer().end();
+//            b.begin();
+//        }
 
-            }
-
-        }
-
-        renderer.getShapeRenderer().end();
-        b.begin();
     }
 
     public void addShape(int x, int y, int width, int height){

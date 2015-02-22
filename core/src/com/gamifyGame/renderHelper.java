@@ -23,8 +23,8 @@ import java.util.HashMap;
  */
 public class renderHelper {
 
-    public static final float RENDERED_SCREEN_HEIGHT=296;
-    public static final float RENDERED_SCREEN_WIDTH=180;
+    public static final float RENDER_HEIGHT =296;
+    public static final float RENDER_WIDTH =180;
 
     HashMap<String,Texture> textureHash;
     HashMap<String,TextureRegionDrawable> drawableHash;
@@ -37,7 +37,7 @@ public class renderHelper {
     ScalingViewport view;
     Stage backgroundLayer, activeLayer, effectsLayer, overlayLayer;
     SpriteBatch batch;
-    BitmapFont smallFont, medFont, bigFont, smallBlackFont, medBlackFont, bigBlackFont  , medGreenFont, bigGreenFont;
+    BitmapFont smallFont, medFont, bigFont, smallGreenFont, smallBlackFont, medBlackFont, bigBlackFont, medGreenFont, bigGreenFont, xtraBigFont, xtraBigBlackFont, xtraBigGreenFont;
 
     InputMultiplexer normalProcessor;
 
@@ -75,7 +75,7 @@ public class renderHelper {
         scrHeight = Gdx.graphics.getHeight();
 
         float screenXRatio =  width/1200f;
-        float screenYRatio =  width/1824f;
+        float screenYRatio =  height/1824f;
 
         shapes = new ShapeRenderer();
         shapes.scale(Float.valueOf(scrWidth)/180,Float.valueOf(scrHeight)/296,1);
@@ -125,13 +125,29 @@ public class renderHelper {
         textureHash.put("trophyBox.png",imageLoad("Trophybox.png"));
         textureHash.put("midBox.png",imageLoad("Midbox.png"));
         textureHash.put("48Box.png",imageLoad("48box.png"));
-        textureHash.put("tophalfbox.png",imageLoad("tophalfbox.png"));
+        textureHash.put("topHalfBox.png",imageLoad("tophalfbox.png"));
+        textureHash.put("servingBox.png",imageLoad("servingBox.png"));
+        textureHash.put("scannerBox.png",imageLoad("scannerBox.png"));
+
+        textureHash.put("help.png", imageLoad("help.png"));
+        textureHash.put("loaded.png", imageLoad("loaded.png"));
+        textureHash.put("loading0.png",imageLoad("loading0.png"));
+        textureHash.put("loading1.png",imageLoad("loading1.png"));
+        textureHash.put("loading2.png",imageLoad("loading2.png"));
+        textureHash.put("loading3.png",imageLoad("loading3.png"));
+
         textureHash.put("arrowBoxLeft.png",imageLoad("arrowBoxLeft.png"));
         textureHash.put("arrowBoxRight.png",imageLoad("arrowBoxRight.png"));
 
+        textureHash.put("star.png", imageLoad("star.png"));
+
+        textureHash.put("scrollBarKnub.png", imageLoad("scrollBarKnub.png"));
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
         textureHash.put("stockingCap.png", imageLoad("stockingCap.png"));
+        textureHash.put("nightCap.png", imageLoad("nightCap.png"));
+        textureHash.put("rightZs.png", imageLoad("rightZs.png"));
+        textureHash.put("leftZs.png", imageLoad("leftZs.png"));
 
         textureHash.put("itemBar.png",imageLoad("ItemBar.png"));
         textureHash.put("longBox.png",imageLoad("longBox.png"));
@@ -140,6 +156,8 @@ public class renderHelper {
         textureHash.put("placeholder64x64.png",imageLoad("placeholder64x64.png"));
         textureHash.put("largeScreenBox.png",imageLoad("LargeScreenBox.png"));
         textureHash.put("buyBar.png", imageLoad("buyBar.png"));
+        textureHash.put("buildingBackground.png", imageLoad("buildingBackground.png"));
+        textureHash.put("overlay.png", imageLoad("overlay.png"));
 
         textureHash.put("Armory1.png",imageLoad("Armory1.png"));
         textureHash.put("Computer1.png",imageLoad("Computer1.png"));
@@ -156,31 +174,45 @@ public class renderHelper {
         textureHash.put("popUpBoxBlue.png",imageLoad("popUpBoxBlue.png"));
         textureHash.put("smallPopUpBoxBlue.png",imageLoad("smallPopUpBoxBlue.png"));
 
+        textureHash.put("battery.png",imageLoad("battery.png"));
+        textureHash.put("dollar.png",imageLoad("dollar.png"));
+        textureHash.put("feather.png",imageLoad("feather.png"));
+
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("subFree.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lastStory.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = Math.round(32* screenXRatio);
+        parameter.size = Math.round(32 * screenXRatio);
         medFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         medBlackFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medBlackFont.setColor(Color.BLACK);
         medGreenFont = generator.generateFont(parameter); // smallFont size 12 pixels
-        medGreenFont.setColor(Color.GREEN);
+        medGreenFont.setColor(greenLight);
 
 
-        parameter.size = Math.round(24* screenXRatio);
+        parameter.size = Math.round(24 * screenXRatio);
         smallFont = generator.generateFont(parameter);
         smallFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         smallBlackFont = generator.generateFont(parameter);
         smallBlackFont.setColor(Color.BLACK);
+        smallGreenFont = generator.generateFont(parameter);
+        smallGreenFont.setColor(greenLight);
 
-        parameter.size = Math.round(48*screenXRatio);
+        parameter.size = Math.round(48 * screenXRatio);
         bigFont = generator.generateFont(parameter);
         bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         bigBlackFont = generator.generateFont(parameter);
         bigBlackFont.setColor(Color.BLACK);
         bigGreenFont = generator.generateFont(parameter);
-        bigGreenFont.setColor(Color.GREEN);
+        bigGreenFont.setColor(greenLight);
+
+        parameter.size = Math.round(64*screenXRatio);
+        xtraBigFont = generator.generateFont(parameter);
+        bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        xtraBigBlackFont = generator.generateFont(parameter);
+        xtraBigBlackFont.setColor(Color.BLACK);
+        xtraBigGreenFont = generator.generateFont(parameter);
+        xtraBigGreenFont.setColor(Color.GREEN);
 
         generator.dispose();
 
@@ -197,6 +229,10 @@ public class renderHelper {
         Gdx.input.setInputProcessor(new InputMultiplexer(overlayLayer));
     }
 
+    public void endRender(){
+        getLayer(3).draw();
+    }
+
     /*
      **********Image Setup functions***********
                                               */
@@ -210,76 +246,12 @@ public class renderHelper {
         return image;
     }
 
-    private BitmapFont getFont(String size){
-        return getFont(size, "white");
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size) {
+        drawTextOnImageNicely(text,image,offsetx,offsety,GamifyTextSize.MEDIUM,GamifyColor.WHITE);
     }
 
-    private BitmapFont getFont(String size, String color){
-        if (size.equals("small")){
-            if(color.equals("black")){return smallBlackFont; }
-            return smallFont;
-        }
-        else if (size.equals("large")){
-            if(color.equals("black")){return bigBlackFont; }
-            else if(color.equals("green")){return bigGreenFont;}
-            return bigFont;
-        }
-        if(color.equals("black")){return medBlackFont; }
-        if(color.equals("green")){return medGreenFont;}
-        return medFont;
-    }
-
-    public void textSet(String text, float x, float y, String size, String align){
-        textSet(text,x,y,size,align,0);
-    }
-
-    public void textSet(String text, float x, float y, String size, String align, float lineWidth){
-        BitmapFont curFont = getFont(size);
-        if (align.equals("right")) x -= (180*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
-        else if (align.equals("center")) x-= (90*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
-        textSet(text,x,y,size,lineWidth);
-    }
-
-    public void textSet(String text, float x, float y, float lineWidth){ textSet(text,x,y,"medium",lineWidth);}
-
-    public void textSet(String text, float x, float y, String size, float lineWidth){textSet(text,"white",x,y,size,lineWidth);}
-    public void textSet(String text, String color, float x, float y, String size, float lineWidth){
-        BitmapFont curFont = getFont(size,color);
-        curFont.drawWrapped(batch,text,(x * scrWidth) / 180,(y * scrHeight) / 296, (lineWidth * scrWidth) / 180);
-    }
-
-    public void textSet(String text, String color, float x, float y, String size){
-        BitmapFont curFont = getFont(size, color);
-        curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);
-    }
-
-    public void textSet(String text, float x, float y){textSet(text,"white", x,y,"normal");}
-    public void textSet(String text, float x, float y, String size){textSet(text,"white", x,y,size);}
-
-
-    public void textSetCenter(String text, float offsetx, float offsety)
-    {
-        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
-        medFont.draw(batch, text, (textLoc.x),
-                (textLoc.y));
-    }
-    public void textSetCenter(String text, float offsetx, float offsety, String size)
-    {
-        BitmapFont curFont = getFont(size);
-        BitmapFont.TextBounds bounds = curFont.getBounds(text); //TODO: Use text boundaries to center text
-        Point textLoc= convertImageCoorsToTextCoors(new Point(RENDERED_SCREEN_WIDTH/2+offsetx, RENDERED_SCREEN_HEIGHT/2+offsety));
-        curFont.draw(batch, text, (textLoc.x),
-                (textLoc.y));
-    }
-    public void drawTextOnImage(String text, Image image, float offsetx, float offsety) {
-        Point textCoorsLoc=new Point(offsetx+image.getX()+image.getImageWidth()/2 , offsety+image.getY()+image.getImageHeight()/2);
-        textSet(text, (int) textCoorsLoc.x, (int) textCoorsLoc.y, image.getWidth()/2);
-        //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
-    }
-    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size) {drawTextOnImageNicely(text,image,offsetx,offsety,size,"white");}
-
-    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size, String color) {
-        BitmapFont curFont = getFont(size, color);
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, GamifyTextSize size, GamifyColor color) {
+        BitmapFont curFont = getFont(color, size);
         BitmapFont.TextBounds curBounds = curFont.getBounds(text);
         Point convertedDimensions=new Point(curBounds.width, curBounds.height);
         convertedDimensions=convertTextCoorsToImageCoors(convertedDimensions);
@@ -289,7 +261,7 @@ public class renderHelper {
 
         Point textCoorsLoc=new Point(offsetx+image.getX()+(image.getImageWidth()+4)/2- toOffset , offsety+image.getY()+image.getImageHeight()/2);
 
-        textSet(text, color,  (int) textCoorsLoc.x , (int) textCoorsLoc.y, size,  image.getWidth());
+        textSet(text, color,  (int) textCoorsLoc.x , (int) textCoorsLoc.y, size, "left",  image.getWidth());
         //medFont.draw(batch, text, textCoorsLoc.x, textCoorsLoc.y);
     }
 
@@ -303,11 +275,11 @@ public class renderHelper {
 
     public Point convertImageCoorsToTextCoors(Point point)
     {
-        return new Point(point.x*scrWidth/RENDERED_SCREEN_WIDTH, point.y*scrHeight/RENDERED_SCREEN_HEIGHT);
+        return new Point(point.x*scrWidth/ RENDER_WIDTH, point.y*scrHeight/ RENDER_HEIGHT);
     }
     public Point convertTextCoorsToImageCoors(Point point)
     {
-        return new Point(point.x*RENDERED_SCREEN_WIDTH/scrWidth, point.y*RENDERED_SCREEN_HEIGHT/scrHeight);
+        return new Point(point.x* RENDER_WIDTH /scrWidth, point.y* RENDER_HEIGHT /scrHeight);
     }
 
     public static Texture imageLoad(String file)
@@ -349,11 +321,11 @@ public class renderHelper {
     public void moveCorner(Image toMove, Corner quad, int frames){
         if (quad == Corner.UPPER_RIGHT)
         {
-            movePosition(toMove, new Point(RENDERED_SCREEN_WIDTH - toMove.getImageWidth(), RENDERED_SCREEN_HEIGHT - toMove.getImageHeight()), frames, 2);
+            movePosition(toMove, new Point(RENDER_WIDTH - toMove.getImageWidth(), RENDER_HEIGHT - toMove.getImageHeight()), frames, 2);
         }
         else if (quad == Corner.UPPER_LEFT)
         {
-            movePosition(toMove, new Point(0, RENDERED_SCREEN_HEIGHT - toMove.getImageHeight()), frames, 2);
+            movePosition(toMove, new Point(0, RENDER_HEIGHT - toMove.getImageHeight()), frames, 2);
         }
         else if (quad == Corner.LOWER_LEFT)
         {
@@ -361,7 +333,7 @@ public class renderHelper {
         }
         else
         {
-           movePosition(toMove, new Point(RENDERED_SCREEN_WIDTH - toMove.getImageWidth(), 0), frames, 2);
+           movePosition(toMove, new Point(RENDER_WIDTH - toMove.getImageWidth(), 0), frames, 2);
         }
     }
 
@@ -404,7 +376,7 @@ public class renderHelper {
     // Getters
     public int getWidth(){return scrWidth;}
     public int getHeight(){return scrHeight;}
-    public float getRenderedWidth() { return RENDERED_SCREEN_WIDTH;}
+    public float getRenderedWidth() { return RENDER_WIDTH;}
     public ShapeRenderer getShapeRenderer(){return shapes;}
     public ScalingViewport getView(){return view;}
     public SpriteBatch getBatch(){return batch;}
@@ -449,11 +421,11 @@ public class renderHelper {
         ArrayList<GamifyImage> toReturn=new ArrayList<GamifyImage>(buildings.length);
         //ChangingImage[] imageList = new ChangingImage[buildings.length];
         // Figure out the width and height from the HQ1
-        int bridgelen = 8; //TODO: change this
+        int bridgelen = 6; //TODO: change this
 
         int width = textureHash.get("HQ1.png").getWidth() + bridgelen;
         int height = textureHash.get("HQ1.png").getHeight() + 2;
-        int wOffset = 4; //TODO: Find the optimal lengths
+        int wOffset = 6; //TODO: Find the optimal lengths
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;
@@ -485,9 +457,8 @@ public class renderHelper {
         }
 
 
-        Image basicBox = renderer.imageSetup("tophalfbox.png", renderHelper.getRenderHelper().getLayer(0), wOffset/2, hOffset-(row)*height - 2);
-        basicBox.setSize( width*3-bridgelen, height* (row+1));
-        basicBox.setColor(Color.DARK_GRAY);
+        Image basicBox = renderer.imageSetup("buildingBackground.png", renderHelper.getRenderHelper().getLayer(0), 3+wOffset/2, hOffset-(row)*height);
+        basicBox.setSize( width*3-bridgelen, height* (row+1)-2);
         basicBox.setZIndex(firstZIndex);
 
 
@@ -510,58 +481,74 @@ public class renderHelper {
 
     public void makeBridges(Stage stage, Integer[] bridges){
         // Figure out the width and height from the HQ1
-        int bridgelen = 8; //TODO: change this
+        int bridgelen = 6; //TODO: change this
         int hqWidth = textureHash.get("HQ1.png").getWidth();
         int width = textureHash.get("HQ1.png").getWidth()+bridgelen;
         int height = textureHash.get("HQ1.png").getHeight() + 2;
-        int wOffset = 4; //TODO: Find the optimal lengths
+        int wOffset = 6; //TODO: Find the optimal lengths
         int hOffset = (int) (height * 2.9);
-        int row = 0;
-        int column = 0;
+        int row;
+        int column;
         for(int i=0; i <= bridges.length-1; i++){
             column = i%2;
             row = i/2;
 
 //            if(bridges[i] == 1){imageSetup("Bridge1.png", stage, (int)(wOffset + hqWidth+(column)*width), hOffset - row*height);}
 //            if(bridges[i] == 2){imageSetup("Elevator1.png", stage, (int)(wOffset+hqWidth+(column)*width), hOffset - row*height);}
-            if(bridges[i] == 1){new ChangingImage("Bridge1.png", "Elevator1.png", stage, (int)((wOffset + hqWidth+(column)*width)-1), hOffset - row*height);}
-            if(bridges[i] == 2){new ChangingImage("Elevator1.png","Bridge1.png", stage, (int)((wOffset+hqWidth+(column)*width)-1), hOffset - row*height);}
+            if(bridges[i] == 1){new ChangingImage("Bridge1.png", "Elevator1.png", stage, ((wOffset + hqWidth+(column)*width)-3), hOffset - row*height);}
+            if(bridges[i] == 2){new ChangingImage("Elevator1.png","Bridge1.png", stage, ((wOffset+hqWidth+(column)*width)-3), hOffset - row*height);}
         }
     }
 
-    public void makeBox(ShapeRenderer shapes, Stage stage, int x, int y, int w, int h){
-        assert w > 4;
-        assert h > 4;
-        Image tImage;
-        shapes.rect(x,y,w,h);
-        applyTexture(boxBottomLeft, stage, x, y-2);
-        for (int i = 2; i < w - 2; i++) {
-            if (i < (w - 2) / new Float(4)){
-                applyTexture(boxBottomLeftFace, stage, x+i, y-2);
-            }
-            else if (i > 3*((w - 2) / new Float(4))){
-                applyTexture(boxBottomRightFace, stage, x+i, y-2);
-            }
-            else applyTexture(boxBottomFace, stage, x+i, y-2);
+    // Font and Text functions
+
+    // getFont
+    private BitmapFont getFont(GamifyColor color, GamifyTextSize size){
+        switch (color){
+            case BLUE:
+            case YELLOW:
+            case PINK:
+            case WHITE:
+                switch (size){
+                    case SMALL: return smallFont;
+                    case BIG: return bigFont;
+                    case XTRABIG: return xtraBigFont;
+                    default: return medFont;
+                }
+            case BLACK:
+                switch (size){
+                    case SMALL: return smallBlackFont;
+                    case BIG: return bigBlackFont;
+                    case XTRABIG: return xtraBigBlackFont;
+                    default: return medBlackFont;
+                }
+            case GREEN:
+                switch (size){
+                    case SMALL: return smallGreenFont;
+                    case BIG: return bigGreenFont;
+                    case XTRABIG: return xtraBigGreenFont;
+                    default: return medGreenFont;
+                }
+            default: return medFont;
         }
-        applyTexture(boxBottomRight, stage, x+w-2,y-2);
-        for (int i = y; i < y+h - 2; i++) {
-            applyTexture(boxRightFace, stage, x+w-2, i);
-        }
-        applyTexture(boxTopRight, stage, x+w-2,y+h-11);
-        for (int i = 0; i < w - 4; i++) {
-            if (i < (w - 2) / new Float(4)){
-                tImage = applyTexture(boxBottomRightFace, stage, x + w -2 -i, y+h-2);
-            }
-            else if (i > 3*((w - 2) / Float.valueOf(4))){
-                tImage = applyTexture(boxBottomLeftFace, stage, x + w -2 -i, y+h-2);
-            }
-            else tImage = applyTexture(boxBottomFace, stage, x + w -2 -i, y+h-2);
-            tImage.setRotation(180);
-        }
-        applyTexture(boxTopLeft, stage, x, y+h-11);
-        for (int i = y+h-2; i > y - 2; i--) {
-            applyTexture(boxLeftFace, stage, x, i);
-        }
+    }
+    public void textSet(String text, float x, float y){
+        textSet(text,GamifyColor.WHITE,x,y,GamifyTextSize.MEDIUM,"left",0);
+    }
+    public void textSet(String text, float x, float y, GamifyTextSize size){
+        textSet(text,GamifyColor.WHITE,x,y,size,"left",0);
+    }
+    public void textSetCenter(String text, float x, float y){
+        textSet(text,GamifyColor.WHITE,x+ RENDER_WIDTH/2,y+ RENDER_HEIGHT/2,GamifyTextSize.MEDIUM,"left",0);
+    }
+    public void textSetCenter(String text, GamifyColor color, float x, float y, GamifyTextSize size, String align, float lineWidth){
+        textSet(text,color,x+ RENDER_WIDTH/2,y+ RENDER_HEIGHT/2,size,align,lineWidth);
+    }
+    public void textSet(String text, GamifyColor color, float x, float y, GamifyTextSize size, String align, float lineWidth){
+        BitmapFont curFont = getFont(color,size);
+        if (align.equals("right")) x -= (180*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
+        else if (align.equals("center")) x-= (90*Math.min(curFont.getBounds(text).width,lineWidth*scrWidth/180))/scrWidth;
+        if (lineWidth == 0){ curFont.drawMultiLine(batch, text, (x * scrWidth) / 180, (y * scrHeight) / 296);}
+        else curFont.drawWrapped(batch,text,(x * scrWidth) / 180,(y * scrHeight) / 296, (lineWidth * scrWidth) / 180);
     }
 }

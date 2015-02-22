@@ -1,25 +1,11 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import com.gamifyGame.Corner;
-import com.gamifyGame.GamifyScreen;
-import com.gamifyGame.gamifyGame;
-import com.gamifyGame.renderHelper;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.Renderer;
 
 
 /**
@@ -43,15 +29,14 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
 
         renderer.getBatch().begin();
-        renderer.textSet("Scan new food", 40, 227);
-        renderer.textSet("Food Graphs", 100, 227);
+
 
         renderer.textSet("Click for number", 70, 277);
         renderer.textSet(" of servings", 70, 267);
         renderer.getBatch().end();
 
         //Set up the data from the last food seen
-        String latestFood = "No Food recorded";
+        String latestFood;
         if(game.getPrefs().getString("latestFood") != null) {
             latestFood = game.getPrefs().getString("latestFood");
 
@@ -87,7 +72,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
                 String[] foodDescriptor = {"", "", "Calcium : ", "Calories : ", "Carbs: ", "Protein: ", "Sugar: ", "Fiber: ", "Serving Size: "};
                 renderer.getBatch().begin();
-                renderer.textSet("Your last eaten food information:", 45, 150, "largeiiu");
+                renderer.textSet("Your last eaten food information:", 45, 150, GamifyTextSize.BIG);
                 for (int i = 0; i < 9; i++) {
                     if (foodInfo[i] != null) {
                         renderer.textSet(foodDescriptor[i] + foodInfo[i], 45, 130 - 10 * i);
@@ -96,7 +81,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
                 renderer.getBatch().end();
             } else {
                 renderer.getBatch().begin();
-                renderer.textSet("Your last eaten food information:", 45, 150, "large");
+                renderer.textSet("Your last eaten food information:", 45, 150, GamifyTextSize.BIG);
                 renderer.textSet("Scan food to see data here:", 45, 130);
                 renderer.getBatch().end();
             }
@@ -114,27 +99,24 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
 
         // Set up scanning Image and its background
-        Image scanBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), -30,60);
+        TextDisplayBox scanBox = new TextDisplayBox("48Box.png");
+        scanBox.addAt(renderer.getLayer(1), -30, 60);
 
         Image dumbServingsBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 0,110);
         dumbServingsBox.addListener(game.getListenerHelper().getServingsChosen());
 
-        Image graphBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 30, 60);
+        //Image graphBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 30, 60);
+
         // Silly scanning image with tongue
         Image scanImage = renderer.imageSetup("print_scan.png", renderer.getLayer(1), 38, 185);
         scanImage.setSize(scanImage.getWidth()/8, scanImage.getHeight()/8);
         //scanImage.setColor(com.badlogic.gdx.graphics.Color.MAGENTA);
         scanImage.addListener(game.getListenerHelper().scanningAction());
 
-        Image basicBox = renderer.imageSetup("tophalfbox.png", renderer.getLayer(1), 0, 30);
+        Image basicBox = renderer.imageSetup("topHalfBox.png", renderer.getLayer(1), 0, 30);
 
         textDisplayBox=new TextDisplayBox("midBox.png");
         textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 120, 150);
-
-
-
-
-
     }
 
     private void showRecentFoods(TextDisplayBox displayBox){

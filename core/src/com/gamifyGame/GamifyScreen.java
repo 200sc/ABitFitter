@@ -2,17 +2,11 @@ package com.gamifyGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-import javax.xml.soap.Text;
 
 /**
  * Created by Andrew on 2/9/2015.
@@ -54,18 +48,23 @@ public abstract class GamifyScreen implements Screen {
         layer1.draw();
         layer2.draw();
         layer3.draw();
-        if (frameCount % 180 == 0) {
-            game.updateChallenge();
+        if (frameCount % 60 * 10 == 0){
+            if (frameCount % (60*30) == 0) {
+                game.updateChallenge();
+            }
+            System.gc();
         }
         game.updateVitality(delta);
         renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());
 
-        //renderer.moveCorner(retBox,Corner.LOWER_LEFT,30);
+        renderHelper.getRenderHelper().getBatch().begin();
+        renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),15,60);
+        renderHelper.getRenderHelper().textSet(String.valueOf(delta),15,70);
+        renderHelper.getRenderHelper().getBatch().end();
 
-        //batch.begin();
-        //batch.end();
-        frameCount = (frameCount + 1) % 180;
+        frameCount = (frameCount + 1);
+        frameCount = frameCount % (60*30);
     }
 
     @Override

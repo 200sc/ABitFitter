@@ -1,21 +1,11 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Stephen on 2/16/2015.
@@ -121,10 +111,12 @@ public class SpiderGraph extends GamifyGraph{
 
     public void textRender(){
 
+        int borderX = 38;
+        int borderY = 54;
+
         renderHelper renderer = renderHelper.getRenderHelper();
 
-        // Graph Title
-        renderer.textSet(type,borderX+1,borderY+graphHeight-2,"large");
+        renderer.textSet(type,borderX+1,borderY+graphHeight-2,GamifyTextSize.XTRABIG);
 
         // Data labels
         for (int i = 0; i < 6; i++) {
@@ -133,7 +125,7 @@ public class SpiderGraph extends GamifyGraph{
             if (i < 3){ yOffset = 7;} else {yOffset = -5;}
             if (i == 0) align = "right";
             else if (i == 3) align = "left";
-            renderer.textSet(labels[i],centerX+ (70*hexX[i]),centerY+ (70*hexY[i])+yOffset,"small",align, 70);
+            renderer.textSet(labels[i],GamifyColor.WHITE,centerX+ (70*hexX[i]),centerY+ (70*hexY[i])+yOffset,GamifyTextSize.SMALL,align, 70);
         }
     }
 

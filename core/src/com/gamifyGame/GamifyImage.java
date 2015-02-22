@@ -11,6 +11,11 @@ public class GamifyImage extends Image
 {
     public GamifyImage(String path)
     {
+      setup(path);
+    }
+
+    protected void setup(String path)
+    {
         Texture text1 = renderHelper.getRenderHelper().textureHash.get(path);
         TextureRegionDrawable textured1 = renderHelper.getRenderHelper().getTextureRegionDrawable(path);
         this.setDrawable(textured1);

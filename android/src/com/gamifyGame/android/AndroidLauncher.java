@@ -1,34 +1,15 @@
 package com.gamifyGame.android;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.IntegerRes;
 import android.view.Display;
-import android.view.View;
-import android.widget.Toast;
 
-import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.utils.Array;
-import com.gamifyGame.ActionResolver;
 import com.gamifyGame.gamifyGame;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.security.Key;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 
 public class AndroidLauncher extends AndroidApplication {
@@ -61,7 +42,7 @@ public class AndroidLauncher extends AndroidApplication {
         // Set screen size of this device in pixels
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
-        display.getSize(size);
+        display.getSize(size); //TODO: Do what android studio says in the red line
         float width = size.x;
         float height = size.y;
         System.out.println("AndroidLauncher: Screen Width: "+ width + " Height: " + height );
@@ -70,23 +51,6 @@ public class AndroidLauncher extends AndroidApplication {
 
 
         pref.putString("userID", fakeID);
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("bitPref", 0);
-        if(sharedPref.getBoolean("challengeAlarmTriggered",false)){
-            pref.putInteger("minutesWalked",sharedPref.getInt("minutesWalked",0));
-            pref.putInteger("minutesRan",sharedPref.getInt("minutesRan",0));
-            pref.putInteger("minutesDanced",sharedPref.getInt("minutesDanced",0));
-            pref.putInteger("minutesBiked",sharedPref.getInt("minutesBiked",0));
-
-            pref.putInteger("minutesWalkedThisHour",sharedPref.getInt("minutesWalkedThisHour",0));
-            pref.putInteger("minutesRanThisHour",sharedPref.getInt("minutesRanThisHour",0));
-            pref.putInteger("minutesDancedThisHour",sharedPref.getInt("minutesDancedThisHour",0));
-            pref.putInteger("minutesBikedThisHour",sharedPref.getInt("minutesBikedThisHour",0));
-            pref.putInteger("newFoodThisHour", sharedPref.getInt("newFoodThisHour",0));
-            pref.putBoolean("challengeHour", sharedPref.getBoolean("challengeHour",false));
-            pref.putBoolean("challengedToday", sharedPref.getBoolean("challengedToday",false));
-            pref.putString("challengeVariety", sharedPref.getString("challengeVariety","none"));
-            sharedPref.edit().putBoolean("challengeAlarmTriggered",false).apply();
-        }
         pref.flush();
 
 
@@ -101,8 +65,6 @@ public class AndroidLauncher extends AndroidApplication {
 
         AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
-        alarm.setVersion(GAMIFY_VERSION);
-
         alarm.setAlarm(this, GAMIFY_VERSION, fakeID);
 
 
@@ -135,7 +97,6 @@ public class AndroidLauncher extends AndroidApplication {
             edit.apply();
 
         }
-
         // Force clearing for testing
         //sharedPref.edit().clear().commit();
 
