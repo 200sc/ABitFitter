@@ -65,8 +65,8 @@ public class ScrollBar
                        else
                             current.setColor(Color.GREEN);
                     }
-                    Building currentEvent=(Building) event.getListenerActor();
-                    myScreen.setSelectedBuilding(currentEvent);
+                    Buyable currentEvent=(Buyable) event.getListenerActor();
+                    myScreen.setSelectedBuyable(currentEvent);
                 }
                 //myScreen.getMovingTextDisplayBox().waitThenGradualMoveToPosition(120, 175, 1.5f, 10);
                 myScreen.getMovingTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);

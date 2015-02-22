@@ -172,6 +172,10 @@ public class renderHelper {
         textureHash.put("popUpBoxBlue.png",imageLoad("popUpBoxBlue.png"));
         textureHash.put("smallPopUpBoxBlue.png",imageLoad("smallPopUpBoxBlue.png"));
 
+        textureHash.put("battery.png",imageLoad("battery.png"));
+        textureHash.put("dollar.png",imageLoad("dollar.png"));
+        textureHash.put("feather.png",imageLoad("feather.png"));
+
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lastStory.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
