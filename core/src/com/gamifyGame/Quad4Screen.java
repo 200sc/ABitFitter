@@ -87,7 +87,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
             }
         }
         showRecentFoods(textDisplayBox);
-
+        renderHelper.getRenderHelper().endRender();
     }
 
 

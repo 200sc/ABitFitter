@@ -38,6 +38,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         renderHelper.getRenderHelper().getBatch().begin();
         testGraphs[i].textRender();
         renderHelper.getRenderHelper().getBatch().end();
+        renderHelper.getRenderHelper().endRender();
     }
 
     public void show() {
