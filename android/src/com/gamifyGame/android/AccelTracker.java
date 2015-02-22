@@ -15,6 +15,10 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.List;
+import java.util.ArrayList;
+import java.lang.Exception;
 
 /**
  * Created by Stephen on 11/21/2014.
@@ -40,7 +44,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
         //SystemClock.sleep(30000);
-        SystemClock.sleep(10000);
+        SystemClock.sleep(5000);
         mSensorManager.unregisterListener(this);
         String completeData = writeData.substring(0);
         activity = Classify(completeData);
@@ -69,111 +73,211 @@ public class AccelTracker extends IntentService implements SensorEventListener {
     }
 
     protected int Classify(String completeData){
-        float xthreshold = (float)0.0;
-        float ythreshold = (float)0.0;
-        float zthreshold = (float)0.0;
-        int xthresholdTotal = 0;
-        int ythresholdTotal = 0;
-        int zthresholdTotal = 0;
-        int xbypass;
-        int ybypass;
-        int zbypass;
-        int timer = 3000;
-        long timestamp = 0;
-        int inactiveTime = 0;
-        String[] coords;
+        //find peaks
+        //find time between peaks
+        //find Average Resultant Acceleration
+        //find average accelerations
+
+        float xSum = 0;
+        float ySum = 0;
+        float zSum = 0;
+
+        float xTemp;
+        float yTemp;
+        float zTemp;
+
+        float[] xPeaks;
+        float[] yPeaks;
+        float[] zPeaks;
+
+        float xRandPeak;
+        float yRandPeak;
+        float zRandPeak;
+
+        float xAvgPeakTimeDiff;
+        float yAvgPeakTimeDiff;
+        float zAvgPeakTimeDiff;
+
+        float xAverage = 0;
+        float yAverage = 0;
+        float zAverage = 0;
+
+        double resultantAccel = 0;
+
         String line;
+
+        ArrayList<ArrayList<String>> masLines = new ArrayList<ArrayList<String>>();
+
         String[] lines = completeData.split(System.getProperty("line.separator"));
-        for(int i = 0; i < lines.length; i++) {
-            line = lines[i];
-            coords = line.split(",");
-            if (timestamp != 0){
-                timer -= Long.valueOf(coords[3]) - timestamp;
+
+        for(int i = 0; i < lines.length; i++){
+            ArrayList<String>coords = new ArrayList<String>();
+            line = new String(lines[i]);
+            for (String retval: line.split(",")){
+                coords.add(retval);
             }
-            timestamp = Long.valueOf(coords[3]);
-            if (timer < 0){
-                inactiveTime -= timer;
-                timer = 0;
-            }
-            xthreshold = thresholdCheck(xthreshold,Float.valueOf(coords[0]));
-            if (xthreshold < -4000) {
-                xthreshold += 5000;
-                xbypass = 1;
-            }
-            else xbypass = 0;
-            xthresholdTotal += xthreshold;
-            ythreshold = thresholdCheck(ythreshold,Float.valueOf(coords[1]));
-            if (ythreshold < -4000) {
-                ythreshold += 5000;
-                ybypass = 1;
-            }
-            else ybypass = 0;
-            ythresholdTotal += ythreshold;
-            zthreshold = thresholdCheck(zthreshold,Float.valueOf(coords[2]));
-            if (zthreshold < -4000) {
-                zthreshold += 5000;
-                zbypass = 1;
-            }
-            else zbypass = 0;
-            zthresholdTotal += zthreshold;
-            if (0 == xbypass || 0 == ybypass || 0 == zbypass){
-                timer = 3000;
-            }
+            masLines.add(coords);
+
+
+            xTemp = Float.parseFloat(coords.get(0));
+            yTemp = Float.parseFloat(coords.get(1));
+            zTemp = Float.parseFloat(coords.get(2));
+
+            xSum += xTemp;
+            ySum += yTemp;
+            zSum += zTemp;
         }
-        float xaverage = xthresholdTotal / lines.length;
-        float yaverage = ythresholdTotal / lines.length;
-        float zaverage = zthresholdTotal / lines.length;
-        return activityAnalysis(xaverage,yaverage,zaverage,inactiveTime);
+
+
+        xAverage = xSum/lines.length;
+        yAverage = ySum/lines.length;
+        zAverage = zSum/lines.length;
+
+
+        resultantAccel = Math.sqrt((xSum * xSum) + (ySum * ySum) + (zSum * zSum));
+
+        ArrayList<List<Long>> peakLists;
+
+        peakLists = findPeaks(masLines);
+
+        List<Long> xPeakList = new ArrayList<Long>();
+        List<Long> yPeakList = new ArrayList<Long>();
+        List<Long> zPeakList = new ArrayList<Long>();
+
+        xPeakList = peakLists.get(0);
+        yPeakList = peakLists.get(1);
+        zPeakList = peakLists.get(2);
+
+        xAvgPeakTimeDiff = getAvgPeakDiff(xPeakList);
+        yAvgPeakTimeDiff = getAvgPeakDiff(yPeakList);
+        zAvgPeakTimeDiff = getAvgPeakDiff(zPeakList);
+
+        System.out.println(xAvgPeakTimeDiff);
+        System.out.println(yAvgPeakTimeDiff);
+        System.out.println(zAvgPeakTimeDiff);
+
+        return activityAnalysis(/*xRandPeak, yRandPeak, zRandPeak,*/resultantAccel, xAverage, yAverage, zAverage, xAvgPeakTimeDiff, yAvgPeakTimeDiff, zAvgPeakTimeDiff);
     }
 
-    protected int activityAnalysis(float x, float y, float z, int t){
-        /*
-        if ((x < 0) && (y < -10) && (z < -5) && t < 5000){
-            // "active", or walking
-            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
-            return 1;
-        }
-        */
 
-        if (((x < 10) && (x > -10)) && ((y < 20) && (y > -10)) && ((z > -10) && (z < 12))){
-            //return running
-            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
-            return 2;
+    protected ArrayList<List<Long>> findPeaks(ArrayList<ArrayList<String>> myList) {
+        int xCounter = 0;
+        int yCounter = 0;
+        int zCounter = 0;
+
+        List<String> currentPeak;
+        List<String> tempNode;
+        List<String> prevNeigh;
+        List<String> nextNeigh;
+
+        List<Long> xPeaks = new ArrayList<Long>();
+        List<Long> yPeaks = new ArrayList<Long>();
+        List<Long> zPeaks = new ArrayList<Long>();
+
+        ArrayList<List<Long>> peakLists = new ArrayList<List<Long>>();
+
+
+        float xTempCurrent = 0;
+        float yTempCurrent = 0;
+        float zTempCurrent = 0;
+
+        float xTempPreNeigh = 0;
+        float yTempPreNeigh = 0;
+        float zTempPreNeigh = 0;
+
+        float xTempNextNeigh = 0;
+        float yTempNextNeigh = 0;
+        float zTempNextNeigh = 0;
+
+
+        for (int i = 1; i < myList.size() - 1; i++) {
+            tempNode = myList.get(i);
+            prevNeigh = myList.get(i - 1);
+            nextNeigh = myList.get(i + 1);
+
+            xTempCurrent = Float.parseFloat(tempNode.get(0));
+            yTempCurrent = Float.parseFloat(tempNode.get(1));
+            zTempCurrent = Float.parseFloat(tempNode.get(2));
+
+            xTempPreNeigh = Float.parseFloat(prevNeigh.get(0));
+            yTempPreNeigh = Float.parseFloat(prevNeigh.get(1));
+            zTempPreNeigh = Float.parseFloat(prevNeigh.get(2));
+
+            xTempNextNeigh = Float.parseFloat(nextNeigh.get(0));
+            yTempNextNeigh = Float.parseFloat(nextNeigh.get(1));
+            zTempNextNeigh = Float.parseFloat(nextNeigh.get(2));
+
+
+            //check node if peak for x
+            //System.out.println(xTempCurrent + xTempPreNeigh + xTempNextNeigh);
+            if ((xTempCurrent > xTempPreNeigh) && (xTempCurrent > xTempNextNeigh)) {
+                currentPeak = tempNode;
+                xPeaks.add(Long.parseLong(currentPeak.get(3)));
+                System.out.println("adding x peak");
+                i++;
+            } else {
+                i++;
+            }
+
+            if ((yTempCurrent > yTempPreNeigh) && (yTempCurrent > yTempNextNeigh)) {
+                currentPeak = tempNode;
+                yPeaks.add(Long.parseLong(currentPeak.get(3)));
+                System.out.println("adding y peak");
+                i++;
+            } else {
+                i++;
+            }
+
+            if ((zTempCurrent > zTempPreNeigh) && (zTempCurrent > zTempNextNeigh)) {
+                currentPeak = tempNode;
+                zPeaks.add(Long.parseLong(currentPeak.get(3)));
+                System.out.println("adding z peak");
+                i++;
+            } else {
+                i++;
+            }
         }
 
-        if (((x < 10) && (x > -5)) && ((y < 20) && (y > 0)) && ((z > -5) && (z < 10))){
-            //return walking
-            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
+            peakLists.add(xPeaks);
+            peakLists.add(yPeaks);
+            peakLists.add(zPeaks);
+
+            return peakLists;
+
+        }
+
+    protected float getAvgPeakDiff(List<Long>list){
+        float sum = 0;
+        int listSize = list.size();
+
+        for (int i = 0; i < list.size() - 1; i++){
+            sum += list.get(i + 1) - list.get(i);
+        }
+
+        return sum/listSize;
+    }
+
+    protected int activityAnalysis(/*float xPeak, float yPeak, float zPeak, */double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
+        sendNotification("xAvg:" + Float.toString(xAvgPTD) + "yAvg" + Float.toString(yAvgPTD) + "zAvg:" + Float.toString(zAvgPTD));
+        if ((zAvg < 10 && zAvg > -10) && (xAvg < 10 && xAvg > -3) && (yAvg < 5 && yAvg > -3)){
+                sendNotification("Sitting" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+                return 6;
+        }
+
+        if ((yAvgPTD > 0 && yAvgPTD < 400) && (yAvg < 20 && yAvg > -10)){
+            sendNotification("running" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+                return 2;
+            }
+
+        if ((yAvgPTD > 400) && (yAvg < 30 && yAvg > -5)){
+            sendNotification("walking" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
             return 5;
         }
 
-        if (((x < 5) && (x > 4)) && ((y < 5) && (y > 3)) && ((z > 7) && (z < 8))){
-            //return sitting
-            return 6;
-        }
-
-
-        if (((x < 0) && (x > -2)) && ((y < 10) && (y > 9)) && ((z > 0) && (z < 1.5))){
-            //return standing
-            sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 1");
-            return 7;
-        }
-
-        sendNotification("x="+String.valueOf((int)x)+" y="+String.valueOf((int)y)+" z="+String.valueOf((int)z)+" t="+String.valueOf(t)+" 0");
-        // 0 currently means in-active
+        //sendNotification("inactive" + Float.toString(yAvg) + " " + Double.toString(yAvgPTD));
         return 0;
-    }
 
-    protected float thresholdCheck(float threshold,float curValue){
-        float delta = (float)2.0;
-        if (Math.abs(curValue - threshold) < delta){
-            return curValue;
         }
-        else if (threshold > curValue){
-            return curValue - 5000;
-        }
-        return threshold - 5000;
-    }
 
     private void sendNotification(String msg) {
         NotificationManager mNotificationManager = (NotificationManager)
