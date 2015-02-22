@@ -279,10 +279,10 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     protected int activityAnalysis(long xAvgPeak, long yAvgPeak, long zAvgPeak, double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
         //sendNotification(xAvgPeak + " " + yAvgPeak + " " + zAvgPeak);
-        if(((xAvgPeak < 10) && (xAvgPeak > -5)) && ((yAvgPeak > -10) && (yAvgPeak < 20)) && ((zAvgPeak < 15) && (zAvgPeak > -10))){
-            if ((yAvgPTD > 0 && yAvgPTD < 400) && (yAvg < 20 && yAvg > -10) && (xAvg < 10 && xAvg > 0) && (zAvg < 5 && zAvg > -10)){
+        if(((xAvgPeak < 10 && xAvgPeak > -5)) && ((yAvgPeak > -10 && yAvgPeak < 20)) && ((zAvgPeak < 15 && zAvgPeak > -10))){
+            if ((yAvgPTD > 0 && yAvgPTD < 400)){
                 sendNotification("sitting" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
-                return 2;
+                return 6;
             }
         }
 
