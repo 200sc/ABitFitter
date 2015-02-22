@@ -1,6 +1,8 @@
 package com.gamifyGame;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -35,14 +37,47 @@ public class SleepOverlayListener extends ClickListener {
 
 
         TextDisplayBox resumeGame = new TextDisplayBox("popUpBoxBlue.png");
-        resumeGame.addAt(renderer.getLayer(3), renderer.RENDER_WIDTH /2-renderer.textureHash.get("popUpBoxBlue.png").getWidth()/2, renderer.RENDER_HEIGHT /3-renderer.textureHash.get("popUpBoxBlue.png").getHeight()/2);
+        resumeGame.addAt(renderer.getLayer(3), renderer.RENDER_WIDTH /2-renderer.textureHash.get("popUpBoxBlue.png").getWidth()/2, renderer.RENDER_HEIGHT/3-renderer.textureHash.get("popUpBoxBlue.png").getHeight()/2);
         resumeGame.addText(new Point(0,0), "Resume Game", GamifyTextSize.BIG, GamifyColor.GREEN);
         resumeGame.addListener(overlay.resumeListener);
         resumeGame.setColor(Color.WHITE);
 
         GamifyImage sleepingCap = new GamifyImage("stockingCap.png");
         sleepingCap.setSize(renderer.textureHash.get("48Box.png").getWidth()/2, renderer.textureHash.get("48Box.png").getHeight()); //TODO: get actual resourceand take out this line
-        sleepingCap.addAt(renderer.getLayer(3), 2 + renderer.RENDER_WIDTH /2-renderer.textureHash.get("48Box.png").getWidth()/2/2, renderer.RENDER_HEIGHT *2/3);
+        sleepingCap.addAt(renderer.getLayer(3), 2 + renderer.RENDER_WIDTH/2-renderer.textureHash.get("48Box.png").getWidth()/2/2, renderer.RENDER_HEIGHT*2/3);
+
+        final GamifyImage z = new GamifyImage("arrowBoxLeft.png");
+        z.addAt(renderer.getLayer(3), renderHelper.RENDER_WIDTH*2/3, sleepingCap.getY() + 10);
+        z.addAction(new Action() {
+            float deltaCount = 0;
+            @Override
+            public boolean act(float delta) {
+                deltaCount = deltaCount + delta;
+                int deltaC = (int) deltaCount;
+                if(deltaC < 10){
+                    z.moveBy(delta, delta);
+                    z.getColor().a = .8f;
+                }
+                else if(deltaC  < 20 ){
+                   z.moveBy(delta, delta);
+                    z.getColor().a = .6f;
+                }
+                else if(deltaC < 30){
+                    z.moveBy(delta, delta);
+                    z.getColor().a = .2f;
+                }
+                else if(deltaC < 40){
+                    z.getColor().a = 0f;
+                    z.setPosition(renderHelper.RENDER_WIDTH*2/3, renderHelper.RENDER_HEIGHT*2/3 + 10);
+                }
+                else{
+                    deltaCount = 0;
+                    z.getColor().a = 1;
+                }
+
+                return false;
+            }
+        });
 
         game.getActionResolver().putSharedPrefs("isSleeping", "true");
 

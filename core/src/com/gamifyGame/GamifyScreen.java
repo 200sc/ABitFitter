@@ -24,7 +24,7 @@ public abstract class GamifyScreen implements Screen {
 
     public GamifyScreen(gamifyGame game)
     {
-        this.game = game; frameCount = 1;
+        this.game = game;
     }
 
 
