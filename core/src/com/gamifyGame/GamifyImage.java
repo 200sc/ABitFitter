@@ -29,4 +29,5 @@ public class GamifyImage extends Image
         this.setPosition(hOrigin, vOrigin);
         stage.addActor(this);
     }
+
 }

@@ -71,7 +71,6 @@ public class BuyScreen extends GamifyScreen implements Screen
     public void hide() {
         // called when current screen changes from this to a different screen
         //renderer.getLayer(1).removeListener(dragHandle);
-        renderHelper.getRenderHelper().getLayer(0).clear();
         super.hide();
     }
 

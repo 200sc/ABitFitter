@@ -105,7 +105,6 @@ public class Quad3Screen extends GamifyScreen implements Screen {
 
     @Override
     public void show() {
-
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
 
         retBox = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);

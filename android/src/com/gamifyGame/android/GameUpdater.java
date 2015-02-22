@@ -26,10 +26,10 @@ public class GameUpdater extends IntentService {
         gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
         String activity = intent.getStringExtra("curActivity");
         if (LifeListener.getLifeListener().getStatus()) {
-            //System.out.println("GameUpdater: ALL LIFE LIFE LIFE");
+            System.out.println("GameUpdater: ALL LIFE LIFE LIFE");
             gameProcess.graphUpdate(String.valueOf(System.currentTimeMillis()), activity);
         } else {
-            //System.out.println("GameUpdater: NO LIFE NO LIFE NO LIFE");
+            System.out.println("GameUpdater: NO LIFE NO LIFE NO LIFE");
 
             File toWrite = new File(this.getApplicationContext().getFilesDir(), "updateFile");
             try {

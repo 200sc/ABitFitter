@@ -48,12 +48,15 @@
         </activity>
         <service
             android:name=".AccelTracker"
+            android:process=":second"
             android:exported="false"/>
         <service
             android:name=".AccelSender"
+            android:process=":second"
             android:exported="false"/>
         <service
             android:name=".GameUpdater"
+            android:process=":second"
             android:exported="false"/>
         <receiver
             android:name=".AccelAlarm"/>

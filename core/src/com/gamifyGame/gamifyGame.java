@@ -36,6 +36,7 @@ public class gamifyGame extends Game {
     private long vitality;
     private float secondsSinceLastCall=0;
     private boolean isLoadingSomething;
+    SkyImage sky;
 
     public String challengeText;
     //READ THIS
@@ -178,7 +179,7 @@ public class gamifyGame extends Game {
 
     public void graphUpdate(String inKey, String val){
         Date date = new Date(Long.valueOf(inKey));
-        DateFormat format = new SimpleDateFormat("HH:mm", Locale.US);
+        DateFormat format = new SimpleDateFormat("HH,mm", Locale.US);
         format.setTimeZone(TimeZone.getDefault());
         String key = format.format(date);
         pref.putString("graphTmp", "I got " + val + " at time " + key);

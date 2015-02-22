@@ -3,9 +3,13 @@ package com.gamifyGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -19,12 +23,15 @@ public abstract class GamifyScreen implements Screen {
     //protected float Ax, A2x, A5x, Ay, A2y, A5y, Az, A2z, A5z;
     protected int frameCount;
     protected Image retBox;
-
+    int starsDrawn;
+    ArrayList<Image> stars;
 
 
     public GamifyScreen(gamifyGame game)
     {
         this.game = game;
+        stars = new ArrayList<Image>();
+        starsDrawn = 0;
     }
 
 
@@ -55,6 +62,7 @@ public abstract class GamifyScreen implements Screen {
             System.gc();
         }
         game.updateVitality(delta);
+        renderHelper.getRenderHelper().getLayer(0).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());
 
@@ -65,6 +73,7 @@ public abstract class GamifyScreen implements Screen {
 
         frameCount = (frameCount + 1);
         frameCount = frameCount % (60*30);
+
     }
 
     @Override
@@ -103,7 +112,4 @@ public abstract class GamifyScreen implements Screen {
         }
         return false;
     }
-
-
-
 }
