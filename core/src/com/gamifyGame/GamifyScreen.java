@@ -60,8 +60,6 @@ public abstract class GamifyScreen implements Screen {
         //batch.begin();
         //batch.end();
 
-        renderHelper.getRenderHelper().endRender();
-
         frameCount = (frameCount + 1) % 180;
     }
 

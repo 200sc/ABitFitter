@@ -161,7 +161,7 @@ public class renderHelper {
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lastStory.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 32 / screenXRatio;
+        parameter.size = Math.round(32 * screenXRatio);
         medFont = generator.generateFont(parameter); // smallFont size 12 pixels
         medFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         medBlackFont = generator.generateFont(parameter); // smallFont size 12 pixels
@@ -170,7 +170,7 @@ public class renderHelper {
         medGreenFont.setColor(greenLight);
 
 
-        parameter.size = 24/ screenXRatio;
+        parameter.size = Math.round(24 * screenXRatio);
         smallFont = generator.generateFont(parameter);
         smallFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         smallBlackFont = generator.generateFont(parameter);
@@ -178,7 +178,7 @@ public class renderHelper {
         smallGreenFont = generator.generateFont(parameter);
         smallGreenFont.setColor(greenLight);
 
-        parameter.size = 48 /screenXRatio;
+        parameter.size = Math.round(48 * screenXRatio);
         bigFont = generator.generateFont(parameter);
         bigFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         bigBlackFont = generator.generateFont(parameter);
