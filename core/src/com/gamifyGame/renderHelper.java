@@ -247,7 +247,7 @@ public class renderHelper {
         return image;
     }
 
-    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety, String size) {
+    public void drawTextOnImageNicely(String text, Image image, float offsetx, float offsety) {
         drawTextOnImageNicely(text,image,offsetx,offsety,GamifyTextSize.MEDIUM,GamifyColor.WHITE);
     }
 
