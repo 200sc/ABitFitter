@@ -27,7 +27,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
     public void render(float delta) {
         super.render(delta);
         Preferences pref = game.getPrefs();
-        renderHelper.getRenderHelper().moveCorner(retBox, Corner.UPPER_RIGHT, 30);
+
         boolean showChallengeHours = pref.getBoolean("showChallengeHours", false);
 
         ShapeRenderer shapes = renderHelper.getRenderHelper().getShapeRenderer();
@@ -44,6 +44,8 @@ public class Quad3Screen extends GamifyScreen implements Screen {
             shapes.box(retBox.getX() + 4, retBox.getY() + 4, 0, (float) (challengeProgress / 2.5), 3, 0);
             shapes.end();
         } else showText = "Close \nWindow";
+
+        renderHelper.getRenderHelper().moveCorner(retBox, Corner.UPPER_RIGHT, 30);
 
         batch.begin();
         renderHelper.getRenderHelper().textSet(showText, 2, 16, GamifyTextSize.BIG);
@@ -73,7 +75,6 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         }
         bringChallengeScreen();
         batch.end();
-        frameCount = (frameCount + 1) % 30;
     }
 
     private void bringChallengeScreen() {

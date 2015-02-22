@@ -65,8 +65,6 @@ public class AndroidLauncher extends AndroidApplication {
 
         AccelAlarm alarm = new AccelAlarm();
         alarm.setPref(pref);
-        alarm.setVersion(GAMIFY_VERSION);
-
         alarm.setAlarm(this, GAMIFY_VERSION, fakeID);
 
 
