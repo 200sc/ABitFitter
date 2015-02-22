@@ -117,11 +117,6 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
         textDisplayBox=new TextDisplayBox("midBox.png");
         textDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 120, 150);
-
-
-
-
-
     }
 
     private void showRecentFoods(TextDisplayBox displayBox){
