@@ -10,4 +10,5 @@ public interface ActionResolver {
     public void toHomeScreen(CharSequence text);
     public void showToast(CharSequence text);
     public void putSharedPrefs(String key, String value);
+    public void setSleepState(boolean isSleeping);
 }
