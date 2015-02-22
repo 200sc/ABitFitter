@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -25,6 +26,7 @@ public class AndroidLauncher extends AndroidApplication {
     private final String GAMIFY_VERSION = "0.1.1a";
     Preferences pref;
     FileObserver outChallengeWatch;
+    private gamifyGame gameProcess;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
@@ -33,7 +35,7 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         ActionResolverAndroid actionResolverAndroid = ActionResolverAndroid.getActionResolverAndroid(this, true);
-        final gamifyGame gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
+        gameProcess = gamifyGame.getGamifyGame(actionResolverAndroid);
 
         Bundle extras = this.getIntent().getExtras();
         try{String userID = (String) extras.get("ID");}
@@ -91,6 +93,8 @@ public class AndroidLauncher extends AndroidApplication {
                     this.stopWatching();
                     System.out.println("GAMEBATCHUPDATER: THE FILE IS " + file);
                     if(file.equals("outChallenge")) challengeFileUpdater();
+                    if(file.equals("updateFile")) updateFileUpdater();
+
                     this.startWatching();
                 }
 
@@ -171,6 +175,43 @@ public class AndroidLauncher extends AndroidApplication {
         }catch(Exception e) {return false;
         }
         System.out.println("ANDROID LAUNCHER: CHALLENGE UPDATE");
+        return true;
+    }
+
+    public boolean updateFileUpdater(){
+
+        System.out.println("Android Launcher : updated the updateFile stuff");
+        final Preferences updatePref = this.getPreferences("Update");
+        try {
+
+            File toRead = new File(getApplicationContext().getFilesDir(), "updateFile");
+            BufferedReader reader = new BufferedReader(new FileReader((toRead)));
+            String line = null;
+            String[] lineParts;
+            HashMap<String, String> updateFile = new HashMap<String, String>();
+            int i = 0;
+            while ((line = reader.readLine()) != null) {
+                lineParts = line.split(",");
+                updateFile.put(lineParts[0], lineParts[1]);
+                System.out.println("GAMEBATCHUPDATER: KEYS and VALS: " + lineParts[0] + " , " + lineParts[1]);
+            }
+            updatePref.put(updateFile);
+            System.out.print("This updatefile" + updateFile);
+            updatePref.flush();
+            // Replace fakeID with userID when userID is implemented
+            reader.close();
+
+            // Reset toRead
+            if(!toRead.delete()){System.out.println("GAMEBATCHUPDATER: Failed to delete file");}
+            if (toRead.exists()){System.out.println("GAMEBATCHUPDATER: Failed to delete file correctly");}
+            gameProcess.storeUpdatePrefs(updatePref);
+
+            updatePref.get();
+
+        }catch(Exception e){
+            System.out.println("GAMEBATCHUPDATER:" + e.getMessage());
+            System.out.println("GAMEBATCHUPDATER: crash in background");
+        }
         return true;
     }
 
