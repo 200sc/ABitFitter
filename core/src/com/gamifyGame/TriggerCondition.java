@@ -5,5 +5,5 @@ package com.gamifyGame;
  */
 public enum TriggerCondition
 {
-    SLEEP, FOOD, RUNNING, NONE;
+    INACTIVE, ACTIVE, RUNNING, CYCLING, DANCING, ALL, FOOD, SLEEP, NONE;
 }

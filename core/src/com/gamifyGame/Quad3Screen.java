@@ -153,4 +153,6 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         super.hide();
     }
 
+
+
 }

@@ -5,22 +5,19 @@ package com.gamifyGame;
  */
 public class Buyable extends GamifyImage
 {
-    private TriggerCondition triggerCondition;
     private String desc;
     private String name;
     private int cost;
 
-    public Buyable(String path, String name, int cost, TriggerCondition triggerCondition, String desc ) {
+    public Buyable(String path, String name, int cost, String desc ) {
         super(path);
-        this.triggerCondition = triggerCondition;
+
         this.desc = desc;
         this.name = name;
         this.cost = cost;
     }
 
-    public TriggerCondition getTriggerCondition() {
-        return triggerCondition;
-    }
+
 
     public String getDesc() {
         return desc;
