@@ -26,8 +26,11 @@ public class ConsumableScreen extends GamifyScreen
     {
         retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
-        this.drawConsumables(Consumable.getAllConsumables().values(), 10, 90);
-        for(Consumable currentConsumable: inventory) {
+
+        Collection<Consumable> possibleToBuy=Consumable.getAllConsumables().values();
+        this.drawConsumables(possibleToBuy, 10, 90);
+        for(Consumable currentConsumable: possibleToBuy) {
+            //currentConsumable.clearListeners();
             addBuyListener(currentConsumable);
         }
     }
@@ -45,6 +48,20 @@ public class ConsumableScreen extends GamifyScreen
             }
         }
         active.removeAll(toRemove);
+
+
+
+
+        this.drawConsumables(inventory, 10, 130);
+        for(Consumable current: inventory)
+        {
+            current.clearListeners();
+            addActivateListener(current);
+        }
+        for(Consumable current: active)
+        {
+            current.clearListeners();
+        }
     }
 
     private void drawConsumables(Collection<Consumable> toDraw, int xPadding, int yLoc)
@@ -61,15 +78,14 @@ public class ConsumableScreen extends GamifyScreen
 
     private void addActivateListener(Consumable consumable)
     {
-        consumable.clearListeners();
         consumable.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Consumable consumable = (Consumable) event.getListenerActor();
                 inventory.remove(consumable);
+                consumable.remove();
                 active.add(consumable);
                 consumable.run();
-                consumable.clearListeners();
 
                 //inventory.remove(event.getListenerActor());
                 //active.add((Consumable) (event.getListenerActor()));
@@ -86,9 +102,11 @@ public class ConsumableScreen extends GamifyScreen
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
                 Consumable consumable=(Consumable) event.getListenerActor();
-                if(game.getVitality()>consumable.getCost()) {
-                    inventory.add(consumable);
-                    addActivateListener(consumable);
+                if(game.getVitality()>consumable.getCost())
+                {
+                    Consumable newInventory=consumable.copy();
+                    inventory.add(newInventory);
+                    addActivateListener(newInventory);
                     game.addToVitality((long) -consumable.getCost());
                 }
                 return true;
