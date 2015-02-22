@@ -40,12 +40,14 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
     Preferences updatePref;
     Context context;
     gamifyGame game;
+    String toDo;
 
-    public GameBatchUpdater(Preferences basicPref, Preferences updaterPrefs, Context mainContext, gamifyGame gamifyGame){
+    public GameBatchUpdater(Preferences basicPref, Preferences updaterPrefs, Context mainContext, gamifyGame gamifyGame, String thing){
         pref = basicPref;
         updatePref = updaterPrefs;
         context = mainContext;
         game = gamifyGame;
+        toDo = thing;
 
     }
     protected void onPostExecute(String output){}
@@ -78,6 +80,8 @@ public class GameBatchUpdater<T> extends AsyncTask<JSONObject, Void, String> {
     @Override
     protected String doInBackground(JSONObject... jsonObjects) {
         System.out.println("GAMEBATCHUPDATER: Start");
+
+        if(toDo.equals("challenge")){challengeFileUpdater(); System.out.println("GamebatchUpdater: On File listener");return "";}
 
         challengeFileUpdater();
 
