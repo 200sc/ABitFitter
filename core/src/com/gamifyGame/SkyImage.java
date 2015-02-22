@@ -24,7 +24,7 @@ public class SkyImage extends GamifyImage {
     private SkyImage(String path){
         super(path);
         dayTime = timeOfDay();
-        time = renderHelper.getRenderHelper().imageSetup( dayTime, renderHelper.getRenderHelper().getLayer(0), 0, 0);
+        time = renderHelper.getRenderHelper().imageSetup(dayTime, renderHelper.getRenderHelper().getLayer(0), 0, 0);
         this.addAt(renderHelper.getRenderHelper().getLayer(0),0,-296);
         renderHelper.getRenderHelper().imageSetup("background.png", renderHelper.getRenderHelper().getLayer(0), 0, 0);
         this.addAction(new Action(){
@@ -34,6 +34,7 @@ public class SkyImage extends GamifyImage {
                     dayTime = timeOfDay();
                     time.remove();
                     time = renderHelper.getRenderHelper().imageSetup( dayTime, renderHelper.getRenderHelper().getLayer(0), 0, 0);
+                    time.setZIndex(0);
                 }
                 return false;
             }

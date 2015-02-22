@@ -9,7 +9,7 @@ public class HelpInfoBox extends TextDisplayBox {
 
         super(path);
         this.addAt(renderHelper.getRenderHelper().getLayer(3), xOrigin, yOrigin);
-        this.addText(new Point(0,this.getHeight()/2-2 ), description, GamifyTextSize.MEDIUM, GamifyColor.GREEN);
+        this.addText(new Point(0,this.getHeight()/2-2 ), description, GamifyTextSize.MEDIUM, GamifyColor.GREEN, "left");
 
 
     }

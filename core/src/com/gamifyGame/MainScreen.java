@@ -18,7 +18,7 @@ public class MainScreen extends GamifyScreen implements Screen
     private Image quad3, theSky;
     private float deltaCount;
     private double deltaSum;
-    private TextDisplayBox loadingBox;
+    private LoadingImage loadingBox;
 
     public MainScreen(gamifyGame game) {
          super(game);
@@ -38,15 +38,6 @@ public class MainScreen extends GamifyScreen implements Screen
 
             renderHelper.getRenderHelper().getBatch().begin();
 
-            if(game.getLoadingFlag()){
-                if(deltaCount/8 % 4 == 0){   loadingBox.addText(new Point(0, 0), "Loading   ", GamifyTextSize.SMALL);}
-                if(deltaCount/8 % 4 == 1){   loadingBox.addText(new Point(0, 0), "Loading.  ", GamifyTextSize.SMALL);}
-                if(deltaCount/8 % 4 == 2){   loadingBox.addText(new Point(0, 0), "Loading.. ", GamifyTextSize.SMALL);}
-                if(deltaCount/8 % 4 == 3){   loadingBox.addText(new Point(0, 0), "Loading...", GamifyTextSize.SMALL);}
-            }
-            else{
-                loadingBox.addText(new Point(0, 0), "Loaded   ", GamifyTextSize.SMALL);
-            }
             renderHelper.getRenderHelper().textSet(game.challengeText,15,50);
             renderHelper.getRenderHelper().textSetCenter("Vitality", GamifyColor.GREEN, -28 , 35, GamifyTextSize.BIG,"left",0);
             renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), GamifyColor.GREEN, -28 , 25, GamifyTextSize.XTRABIG,"left",0);
@@ -100,11 +91,15 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().makeBridges(layer0, bridges);
 
 
-            Image quad1 = renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", layer1, 37, 50);
+            TextDisplayBox quad1 = new TextDisplayBox("stepBox.png");
+            renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", layer1, 37, 50);
+            quad1.addAtCenter(layer1,37,50);
+
+            quad1.addText(new Point(20,16),String.valueOf(game.getPrefs().getInteger("stepsTakenToday",0)),GamifyTextSize.BIG,GamifyColor.WHITE, "right");
             //Image quad2 = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
             TextDisplayBox quad2 = new TextDisplayBox("streakBox.png");
             quad2.addAtCenter(layer1,-37,50);
-            quad2.addText(new Point(-12,-14),String.valueOf(game.getPrefs().getInteger("challengeStreak",0)),GamifyTextSize.BIG,GamifyColor.BLACK);
+            quad2.addText(new Point(-12,-14),String.valueOf(game.getPrefs().getInteger("challengeStreak",0)),GamifyTextSize.BIG,GamifyColor.BLACK, "left");
 
 
 
@@ -114,15 +109,14 @@ public class MainScreen extends GamifyScreen implements Screen
 
 
 
-            loadingBox =new TextDisplayBox("activeHour.png");
-            loadingBox.addAt(renderHelper.getRenderHelper().getLayer(0), 3, 2);
-            loadingBox.setColor(Color.NAVY);
+            loadingBox = new LoadingImage(layer1,3,2,game,"loaded.png");
+
 
 
             //TODO: Decide if this is the right place for help
             //Sets up the button for triggering help
-            HelpDisplay helpBox =new HelpDisplay("help.png", game);
-            helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), renderHelper.getRenderHelper().RENDER_WIDTH/2 - renderHelper.getRenderHelper().textureHash.get("help.png").getWidth()/2, 1);
+            HelpDisplay helpBox =new HelpDisplay("inactiveHour.png", game);
+            helpBox.addAt(renderHelper.getRenderHelper().getLayer(3), renderHelper.getRenderHelper().RENDER_WIDTH/2 - renderHelper.getRenderHelper().textureHash.get("inactiveHour.png").getWidth()/2, 1);
             helpBox.setColor(Color.WHITE);
 
             //Set up the sleep bar

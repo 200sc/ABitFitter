@@ -40,7 +40,7 @@ public class SleepOverlayListener extends ClickListener {
 
         TextDisplayBox resumeGame = new TextDisplayBox("popUpBoxBlue.png");
         resumeGame.addAt(renderer.getLayer(3), renderer.RENDER_WIDTH /2-renderer.textureHash.get("popUpBoxBlue.png").getWidth()/2, renderer.RENDER_HEIGHT/3-renderer.textureHash.get("popUpBoxBlue.png").getHeight()/2);
-        resumeGame.addText(new Point(0, 0), "Resume Game", GamifyTextSize.BIG, GamifyColor.WHITE);
+        resumeGame.addText(new Point(0, 0), "Resume Game", GamifyTextSize.BIG, GamifyColor.WHITE, "left");
         resumeGame.addListener(resumeListener);
 
 
