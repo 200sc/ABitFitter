@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -114,7 +113,7 @@ public class gamifyGame extends Game {
                       default: return "nothing";
                      */
                     if (currentBuilding.getTriggerCondition()== TriggerCondition.ALL || curActivity == currentBuilding.getTriggerCondition()) {
-                        vitality += currentBuilding.getVitalityPerThreeSeconds();
+                        vitality += currentBuilding.getVitalityPer30Seconds();
                     }
 
                 }

@@ -1,9 +1,5 @@
 package com.gamifyGame;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -11,7 +7,7 @@ import java.util.HashMap;
  */
 public class Building extends Buyable
 {
-    private int vitalityPerThreeSeconds;
+    private int vitalityPer30Seconds;
     private int power;
     private TriggerCondition triggerCondition;
     private float currentMultiplier;
@@ -22,7 +18,7 @@ public class Building extends Buyable
         super(key, name, cost, desc);
         this.triggerCondition = triggerCondition;
         this.power=power;
-        this.vitalityPerThreeSeconds=vitalityPerThreeSeconds;
+        this.vitalityPer30Seconds =vitalityPerThreeSeconds;
         this.replaceable=replaceable;
         currentMultiplier=1;
     }
@@ -58,9 +54,9 @@ public class Building extends Buyable
         return getDefaultBuildings().get(name);
     }
 
-    public float getVitalityPerThreeSeconds()
+    public float getVitalityPer30Seconds()
     {
-        return vitalityPerThreeSeconds*=currentMultiplier;
+        return vitalityPer30Seconds*currentMultiplier;
     }
 
     public boolean isReplaceable() {
