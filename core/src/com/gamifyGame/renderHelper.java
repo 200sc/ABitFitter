@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
@@ -143,6 +144,9 @@ public class renderHelper {
         textureHash.put("star.png", imageLoad("star.png"));
 
         textureHash.put("scrollBarKnub.png", imageLoad("scrollBarKnub.png"));
+
+        textureHash.put("servingBox.png", imageLoad("servingBox.png"));
+        textureHash.put("scannerBox.png", imageLoad("scannerBox.png"));
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
 
@@ -417,8 +421,11 @@ public class renderHelper {
     }
 
 
-    public ArrayList<GamifyImage> makeUnderground(Stage stage, String[] buildings)
+    public ArrayList<GamifyImage> makeUnderground(int stageNum, gamifyGame game)
     {
+        Stage stage=renderHelper.getRenderHelper().getLayer(stageNum);
+        Json json = new Json();
+        String[] buildings=json.fromJson(String[].class, game.getPrefs().getString("undergroundBuildings"));
         ArrayList<GamifyImage> toReturn=new ArrayList<GamifyImage>(buildings.length);
         //ChangingImage[] imageList = new ChangingImage[buildings.length];
         // Figure out the width and height from the HQ1

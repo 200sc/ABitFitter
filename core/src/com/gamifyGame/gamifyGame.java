@@ -90,7 +90,7 @@ public class gamifyGame extends Game {
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
             secondsSinceLastCall -= 30;
 
-            ArrayList<Consumable> activeConsumables = consumableScreen.getActiveConsumables();
+            //ArrayList<Consumable> activeConsumables = consumableScreen.getActiveConsumables();
 
             for (String name : underground) {
                 if (!name.equals("Empty")) {
