@@ -31,14 +31,18 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         super.render(delta);
         renderHelper.getRenderHelper().moveCorner(this.retBox, Corner.LOWER_LEFT, 30);
 
-        int i = game.getPrefs().getInteger("currentGraph",0) % 2;
-        if (i == -1){i = 1; game.getPrefs().putInteger("currentGraph",1);}
+        int i = game.getPrefs().getInteger("currentScreen1Graph",0) % 2;
+        if (i == -1){i = 1; game.getPrefs().putInteger("currentScreen1Graph",1);}
 
+        renderHelper.getRenderHelper().getLayer(1).draw();
         testGraphs[i].shapeRender();
         renderHelper.getRenderHelper().getBatch().begin();
+
+
         testGraphs[i].textRender();
         renderHelper.getRenderHelper().getBatch().end();
         renderHelper.getRenderHelper().endRender();
+        renderHelper.getRenderHelper().getLayer(2).draw();
     }
 
     public void show() {
@@ -48,8 +52,8 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         Image rightBox = renderer.imageSetup("arrowBoxRight.png", renderer.getLayer(1),156,0);
 
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
-        leftBox.addListener(game.getListenerHelper().setInt("currentGraph","--"));
-        rightBox.addListener(game.getListenerHelper().setInt("currentGraph","++"));
+        leftBox.addListener(game.getListenerHelper().setInt("currentScreen1Graph","--"));
+        rightBox.addListener(game.getListenerHelper().setInt("currentScreen1Graph","++"));
 
         testGraphs = new GamifyGraph[2];
         renderer.imageSetup("largeScreenBox.png", renderer.getLayer(1), 36, 42);
@@ -89,7 +93,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         testData.put(System.currentTimeMillis()-60000,104);
         testData.put(System.currentTimeMillis()-50000,34);
         testData.put(System.currentTimeMillis()-40000,78);
-        testGraphs[0] = new LineGraph(testData,"Test Data",GamifyColor.GREEN);
+        testGraphs[0] = new LineGraph(testData,"Test Data",GamifyColor.GREEN,36,42);
 
         HashMap<Integer,Integer> spiderData = new HashMap<Integer,Integer>();
         spiderData.put(0,50);
@@ -99,7 +103,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         spiderData.put(4,46);
         spiderData.put(5,64);
         String[] labels = {"Percent Time Active", "Percent Time Excercising", "Vitamin Intake", "Percent Daily Values Reached", "Unbroken Days Well-Slept", "Unbroken Challenges"};
-        testGraphs[1] = new SpiderGraph(spiderData,labels,"Test Data",GamifyColor.YELLOW);
+        testGraphs[1] = new SpiderGraph(spiderData,labels,"Test Data",GamifyColor.YELLOW, 38, 54);
     }
 
 

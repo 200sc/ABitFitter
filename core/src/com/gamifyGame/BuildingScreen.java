@@ -24,6 +24,8 @@ public class BuildingScreen extends BuyScreen
     public void show()
     {
         super.show();
+        renderHelper.getRenderHelper().getLayer(1).draw();
+        renderHelper.getRenderHelper().getLayer(2).draw();
 
         TextDisplayBox placeHold = new TextDisplayBox("longBox.png");
         float placeHoldX = (renderHelper.getRenderHelper().RENDER_WIDTH - renderHelper.getRenderHelper().textureHash.get("longBox.png").getWidth())/2;

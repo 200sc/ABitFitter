@@ -26,6 +26,8 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         super.render(delta);
         renderHelper renderer = renderHelper.getRenderHelper();
         renderer.moveCorner(retBox, Corner.UPPER_LEFT, 30);
+        renderHelper.getRenderHelper().getLayer(1).draw();
+        renderHelper.getRenderHelper().getLayer(2).draw();
 
 
         renderer.getBatch().begin();

@@ -55,8 +55,6 @@ public abstract class GamifyScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         layer0.draw();
-        layer1.draw();
-        layer2.draw();
 
         if (frameCount % 60 * 10 == 0){
             if (frameCount % (60*30) == 0) {

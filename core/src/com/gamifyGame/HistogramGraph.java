@@ -22,13 +22,12 @@ import java.util.TimeZone;
  */
 public class HistogramGraph extends GamifyGraph {
 
-    public HistogramGraph(HashMap<Long,Integer> graphPref, String dataType) {
-         new HistogramGraph(graphPref,dataType,GamifyColor.BLUE,"medium");
-    }
-
-    public HistogramGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor, String scale) {
+    public HistogramGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor, String scale, int x, int y) {
         data = graphPref;
         type = dataType;
+        keys = asSortedList(data.keySet());
+        xPoints = new ArrayList<Long>();
+        yPoints = new ArrayList<Integer>();
         show();
         switch (inColor){
             case PINK:
@@ -51,10 +50,12 @@ public class HistogramGraph extends GamifyGraph {
         if (scale.equals("small")){
             dataPointCount = 32;
         }
-        else if (scale.equals("large")){
-            dataPointCount = 8;
-        }
+        //else if (scale.equals("large")){
+            //dataPointCount = 8;
+        //}
         else dataPointCount = 16;
+        borderX = x;
+        borderY = y;
         update();
     }
 
@@ -66,8 +67,6 @@ public class HistogramGraph extends GamifyGraph {
         int xPixelIncrement = (graphWidth/dataPointCount);
 
         int x = 0;
-        int borderX = 48;
-        int borderY = 54;
 
         renderHelper renderer = renderHelper.getRenderHelper();
 
@@ -91,8 +90,8 @@ public class HistogramGraph extends GamifyGraph {
         shapes1.begin(ShapeRenderer.ShapeType.Line);
         shapes1.setColor(color3);
         for (int i = 0; i < graphHeight; i+= graphHeight / leftLabelCount){
-            shapes1.line(borderX,borderY+i,renderer.getRenderedWidth()-2,borderY+i);
-            shapes1.line(borderX,borderY+i+1,renderer.getRenderedWidth()-2,borderY+i+1);
+            shapes1.line(borderX,borderY+i,borderX+130,borderY+i);
+            shapes1.line(borderX,borderY+i+1,borderX+130,borderY+i+1);
         }
         x = 0;
         for (int i = 0; i < dataPointCount; i+= 2) {
@@ -103,10 +102,35 @@ public class HistogramGraph extends GamifyGraph {
 
     }
 
+    public void textRender(){
+
+        int xIncrement = (xPoints.size()/dataPointCount);
+        int xPixelIncrement = (graphWidth/dataPointCount);
+
+        int x = 0;
+        int borderX = 19;
+        int borderY = 25;
+
+        renderHelper renderer = renderHelper.getRenderHelper();
+
+        renderer.textSet(type,borderX+1,borderY+graphHeight-2,GamifyTextSize.XTRABIG);
+
+        for (int i = 0; i < botLabelCount; i++) {
+            Date date = new Date(xPoints.get(x));
+            DateFormat format = new SimpleDateFormat("MMM dd\nHH mm");
+            format.setTimeZone(TimeZone.getDefault());
+            String formatted = format.format(date);
+            renderer.textSet(formatted, (borderX+10 + (xPixelIncrement * i)*(dataPointCount/botLabelCount)), borderY);
+            x += xIncrement;
+        }
+        x = 0;
+        for (int i = 0; i < graphHeight; i+= graphHeight / leftLabelCount){
+            renderer.textSet(String.valueOf((int)((yMax/leftLabelCount)*x)),borderX,borderY+i+7,GamifyTextSize.SMALL);
+            x++;
+        }
+    }
+
     public void show(){
-        keys = asSortedList(data.keySet());
-        xPoints = new ArrayList<Long>();
-        yPoints = new ArrayList<Integer>();
         yMax = 0;
         for (Iterator i = keys.iterator(); i.hasNext();) {
             Object xData =  i.next();

@@ -22,6 +22,8 @@ public class ConsumableScreen extends BuyScreen {
 
     public ConsumableScreen(gamifyGame game) {
         super(game);
+        renderHelper.getRenderHelper().getLayer(1).draw();
+        renderHelper.getRenderHelper().getLayer(2).draw();
         inventory = new HashMap<Consumable, Integer>();
         capacity = new HashMap<Consumable, Integer>();
         for (Consumable current : Consumable.getAllConsumables().values()) {
