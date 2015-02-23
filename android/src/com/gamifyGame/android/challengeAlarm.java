@@ -159,7 +159,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
                 hourWriter.write(("challengeVariety," + challengePrompt).getBytes());
 
 
-                //sendChallengeNotification(context.getApplicationContext(), challengePrompt);
+                sendChallengeNotification(context.getApplicationContext(), challengePrompt);
             //}
 
             hourWriter.close();
