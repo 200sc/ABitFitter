@@ -13,6 +13,8 @@ import java.util.HashMap;
  */
 public class LoadingImage extends AnimatingImage {
 
+    int frameSum;
+
     public LoadingImage(Stage stage, int hOrigin, int vOrigin, final gamifyGame game, final String lastImage){
         String[] loadings = {"loading0.png","loading1.png","loading2.png","loading3.png"};
         names = new ArrayList<String>();
@@ -30,11 +32,13 @@ public class LoadingImage extends AnimatingImage {
 
         imageCount = loadings.length;
         curFile = 0;
+        frameSum = 0;
 
         this.addAction(new Action(){
             public boolean act(float delta) {
-                if (game.getLoadingFlag()) {
-                    curFile++;
+                frameSum++;
+                if (game.getLoadingFlag() && frameSum % 2 == 0) {
+                    curFile = (curFile + 1) % imageCount;
                     setName(names.get(curFile));
                     setDrawable(textures.get(curFile));
                     return false;
