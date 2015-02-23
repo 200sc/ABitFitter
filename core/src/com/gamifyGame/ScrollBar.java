@@ -75,7 +75,7 @@ public class ScrollBar
                     myScreen.setSelectedBuyable(currentEvent);
                 }
                 //myScreen.getMovingTextDisplayBox().waitThenGradualMoveToPosition(120, 175, 1.5f, 10);
-                myScreen.getMovingTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
+                myScreen.getMovingTextDisplayBox().gradualMoveToPosition(110, 175, 1.5f);
                 return true;
 
             }
