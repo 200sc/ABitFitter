@@ -162,6 +162,12 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         yAverage = Math.abs(ySum/lines.length);
         zAverage = Math.abs(zSum/lines.length);
 
+        xSumAbs = xSumAbs - (xAverage * lines.length);
+        ySumAbs = ySumAbs - (yAverage * lines.length);
+        zSumAbs = zSumAbs - (zAverage * lines.length);
+
+        float yMag = ySumAbs * ySumAbs;
+
 
 
         resultantAccel = Math.sqrt((xSum * xSum) + (ySum * ySum) + (zSum * zSum));
@@ -190,7 +196,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         yPeakAvg = avgPeakList.get(1);
         zPeakAvg = avgPeakList.get(2);
 
-        return activityAnalysis(magnitude, xPeakAvg, yPeakAvg, zPeakAvg, resultantAccel, xAverage, yAverage, zAverage, xAvgPeakTimeDiff, yAvgPeakTimeDiff, zAvgPeakTimeDiff);
+        return activityAnalysis(yMag, magnitude, xPeakAvg, yPeakAvg, zPeakAvg, resultantAccel, xAverage, yAverage, zAverage, xAvgPeakTimeDiff, yAvgPeakTimeDiff, zAvgPeakTimeDiff);
     }
 
 
@@ -291,7 +297,6 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             peakLists.add(peakAvgs);
 
             return peakLists;
-
         }
 
     protected float getAvgPeakDiff(List<Long>list){
@@ -305,12 +310,12 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         return sum/listSize;
     }
 
-    protected int activityAnalysis(double mag, long xAvgPeak, long yAvgPeak, long zAvgPeak, double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
+    protected int activityAnalysis(float yMag, double mag, long xAvgPeak, long yAvgPeak, long zAvgPeak, double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
         //sendNotification(xAvgPeak + " " + yAvgPeak + " " + zAvgPeak);
 
         if((xAvg < 10 && xAvg > 5) && (yAvg > 0 && yAvg < 5) && (zAvg < 10 && zAvg > 0)){
             if (rawr < 5000) {
-                sendNotification("Sitting" + " " + xAvg + " " + yAvg + " " + zAvg + " " + rawr);
+                sendNotification("Sitting" + " " + xAvg + " " + yAvg + " " + zAvg + " " + yMag);
                 //sendNotification(Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
                 Log.d("Salubrity", "SITTING: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
                 Log.d("Salubrity", "averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
@@ -321,8 +326,8 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         }
 
         if((xAvg < 10 && xAvg > 5) && (yAvg < 10 && yAvg > 3) && (zAvg > 0 && zAvg < 10)){
-            if (rawr < 1000) {
-                sendNotification("Jogging" + " " + xAvg + " " + yAvg + " " + zAvg + " " + rawr + " " + mag);
+            if (mag  < 500) {
+                sendNotification("Jogging" + " " + xAvg + " " + yAvg + " " + zAvg + " " + yMag + " " + mag);
                 //sendNotification("Walking" + Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
                 Log.d("Salubrity", "WALKING: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
                 Log.d("Salubrity", "averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
@@ -334,7 +339,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
         if((xAvg < 5 && xAvg > 0) && (yAvg < 10 && yAvg > 5) && (zAvg > 0 && zAvg < 5)){
             if (rawr < 5000 && rawr > 1000) {
-                sendNotification("Walking" + " " + xAvg + " " + yAvg + " " + zAvg + " " + rawr + " " + mag);
+                sendNotification("Walking" + " " + xAvg + " " + yAvg + " " + zAvg + " " + yMag + " " + mag);
                 //sendNotification("Walking" + Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
                 Log.d("Salubrity", "WALKING: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
                 Log.d("Salubrity", "averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
@@ -346,7 +351,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
         if((xAvg < 3 && xAvg > 0) && (yAvg < 1 && yAvg > 0) && (zAvg > 9 && zAvg < 10)){
             //if ((yAvgPTD >= 0 && yAvgPTD <= 500) || (yAvgPTD == Double.NaN)) {
-            sendNotification("On Table" + " " + xAvg + " " + yAvg + " " + zAvg + " " + rawr + " " + mag);
+            sendNotification("On Table" + " " + xAvg + " " + yAvg + " " + zAvg + " " + yMag + " " + mag);
             //sendNotification("Walking" + Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
             Log.d("Salubrity", "WALKING: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
             Log.d("Salubrity", "averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
@@ -358,7 +363,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
         //sendNotification(xAvg + " " + yAvg + " " + zAvg + " " + yAvgPTD);
         //sendNotification(Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
-        sendNotification("Inactive" + " " + xAvg + " " + yAvg + " " + zAvg + " " + rawr + " " + mag);
+        sendNotification("Inactive" + " " + xAvg + " " + yAvg + " " + zAvg + " " + yMag + " " + mag);
         Log.d("Salubrity","INACTIVE: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
         Log.d("Salubrity","averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
         Log.d("Salubrity","PTD: " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
