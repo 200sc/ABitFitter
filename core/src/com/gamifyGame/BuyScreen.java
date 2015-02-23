@@ -43,8 +43,8 @@ public abstract class BuyScreen extends GamifyScreen
     {
         super.render(delta);
         if(selectedBuyable !=null)
-            movingTextDisplayBox.addText(new Point(0, 30), selectedBuyable.toString());
-        movingTextDisplayBox.addText(new Point(0, -15),"Vitality: "+game.getVitality( ));
+            movingTextDisplayBox.addText(new Point(0, 30), selectedBuyable.toString(), GamifyTextSize.MEDIUM);
+        movingTextDisplayBox.addText(new Point(0, -15),"Vitality "+game.getVitality(), GamifyTextSize.MEDIUM);
         renderHelper.getRenderHelper().endRender();
     }
 

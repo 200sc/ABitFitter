@@ -38,10 +38,10 @@ public class BuildingScreen extends BuyScreen
     {
         Json json = new Json();
         Preferences pref = game.getPrefs();
-        String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
+
         Integer[] bridges = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
 
-        ArrayList<GamifyImage> undergroundBuild = renderHelper.getRenderHelper().makeUnderground(renderHelper.getRenderHelper().getLayer(1), underground);
+        ArrayList<GamifyImage> undergroundBuild = renderHelper.getRenderHelper().makeUnderground(1, game);
         renderHelper.getRenderHelper().makeBridges(renderHelper.getRenderHelper().getLayer(1), bridges);
 
         scrollBar=new ScrollBar(new ArrayList<GamifyImage>(Building.getBuyableBuildings().values()), undergroundBuild, game, this);
