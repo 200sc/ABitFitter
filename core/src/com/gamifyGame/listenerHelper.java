@@ -42,22 +42,24 @@ public class listenerHelper {
         servingsChosen = new ClickListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                new PopUpBox(60, 150, 10, "Food chosen");
+                new PopUpBox(60, 150, 3, " One serving of current food eaten");
 
                 if(game.getPrefs().getString("latestFood") != null) {
                     String latestFood = pref.getString("latestFood");
                     serverHelper.sendFood(pref.getString("userID"),latestFood, 1);
 
+
+
                     // create recent food list
                     String recentFoodCheck = pref.getString("recentFoods");
                     Json json = new Json();
                     if(recentFoodCheck == null) {
-                        Queue<String> queueForPrefs = new PriorityQueue<String>();
+                        PriorityQueue<String> queueForPrefs = new PriorityQueue<String>();
                         pref.putString("recentFoods", json.toJson(queueForPrefs));
                     }
 
-                    try {
-                        Queue recentFoods = json.fromJson(Queue.class, recentFoodCheck);
+                    /*try {
+                        PriorityQueue recentFoods = json.fromJson(PriorityQueue.class, recentFoodCheck);
 
 
                         if(!recentFoods.contains(latestFood)) {
@@ -74,7 +76,7 @@ public class listenerHelper {
 
                     }catch(Exception e){
                             new PopUpBox(60, 150, 10, "recent foods is not a queue");
-                    }
+                    }*/
                 }
 
 
