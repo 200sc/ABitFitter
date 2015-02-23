@@ -40,9 +40,11 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().getBatch().begin();
 
             //renderHelper.getRenderHelper().textSet(game.challengeText,15,50);
-            renderHelper.getRenderHelper().textSetCenter("Vitality", GamifyColor.GREEN, -28 , 35, GamifyTextSize.BIG,"left",0);
-            renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), GamifyColor.GREEN, -28 , 25, GamifyTextSize.XTRABIG,"left",0);
-            renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp", "null")), 15, 30);
+            if (!game.getPrefs().getString("isSleeping","false").equals("true")) {
+                renderHelper.getRenderHelper().textSetCenter("Vitality", GamifyColor.GREEN, -28, 35, GamifyTextSize.BIG, "left", 0);
+                renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), GamifyColor.GREEN, -28 , 25, GamifyTextSize.XTRABIG,"left",0);
+            }
+            //renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp", "null")), 15, 30);
             renderHelper.getRenderHelper().getBatch().end();
 
             renderHelper.getRenderHelper().getLayer(2).draw();
@@ -107,8 +109,9 @@ public class MainScreen extends GamifyScreen implements Screen
 
 
             quad3 = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
-            Image quad4 = renderHelper.getRenderHelper().imageSetupCenter("48Box.png", layer1, 37, -25);
+            Image quad4 = renderHelper.getRenderHelper().imageSetupCenter("strawberryBox.png", layer1, 37, -25);
             Image midbox = renderHelper.getRenderHelper().imageSetupCenter("midBox.png", layer1, 0, 12);
+            renderHelper.getRenderHelper().imageSetupCenter("leagueSilver.png", layer1, 0, -3);
 
 
 
@@ -130,7 +133,8 @@ public class MainScreen extends GamifyScreen implements Screen
             SleepOverlayListener sleepListener = new SleepOverlayListener(game);
             sleepBox.addListener(sleepListener);
 
-
+            pref.putString("isSleeping","false");
+            pref.flush();
             if(pref.getString("isSleeping", "false").equals("true")){sleepListener.setSleepOverlay();}
 
             // Assign items their listeners

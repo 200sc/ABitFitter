@@ -130,6 +130,7 @@ public class renderHelper {
         textureHash.put("topHalfBox.png",imageLoad("tophalfbox.png"));
         textureHash.put("servingBox.png",imageLoad("servingBox.png"));
         textureHash.put("scannerBox.png",imageLoad("scannerBox.png"));
+        textureHash.put("leagueSilver.png",imageLoad("leagueSilver.png"));
 
         textureHash.put("help.png", imageLoad("help.png"));
         textureHash.put("loaded.png", imageLoad("loaded.png"));
@@ -147,6 +148,7 @@ public class renderHelper {
 
         textureHash.put("servingBox.png", imageLoad("servingBox.png"));
         textureHash.put("scannerBox.png", imageLoad("scannerBox.png"));
+        textureHash.put("strawberryBox.png", imageLoad("strawberryBox.png"));
 
         textureHash.put("print_scan.png", imageLoad("print_scan.png"));
 
