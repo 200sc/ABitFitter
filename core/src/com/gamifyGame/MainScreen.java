@@ -96,7 +96,7 @@ public class MainScreen extends GamifyScreen implements Screen
             //for(int i =0; i< underground.length; i++)
             //game.getActionResolver().showToast(underground[i]);
 
-            renderHelper.getRenderHelper().makeUnderground(layer0, underground);
+            renderHelper.getRenderHelper().makeUnderground(0, game);
             renderHelper.getRenderHelper().makeBridges(layer0, bridges);
 
 
