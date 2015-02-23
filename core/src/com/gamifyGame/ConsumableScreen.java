@@ -43,10 +43,6 @@ public class ConsumableScreen extends BuyScreen {
             inventory.put(Consumable.getAllConsumables().get(convertNumberToName(i)), inventoryFromPrefs[i]);
         }
 
-        retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
-        retBox.addListener(new GoScreenClickListener(game.mainS, game));
-        retBox.setZIndex(100);
-
         Collection<Consumable> possibleToBuy = Consumable.getAllConsumables().values();
         this.drawPossibleToBuy(possibleToBuy, 50, 10, 260);
         for (Consumable currentConsumable : possibleToBuy) {
@@ -62,6 +58,10 @@ public class ConsumableScreen extends BuyScreen {
             current.addListener(getDefaultScrollBarListener(result));
         }
         drawInventory(inventory, 10, 200, 10);
+
+        retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
+        retBox.addListener(new GoScreenClickListener(game.mainS, game));
+        retBox.setZIndex(100);
     }
 
     @Override
