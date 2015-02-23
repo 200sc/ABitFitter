@@ -82,8 +82,14 @@ public class HelpDisplay extends TextDisplayBox {
     private void quadScreen2Display(){
         consumableDisplay();
     }
-    private void consumableDisplay() {
-
+    private void consumableDisplay()
+    {
+        renderHelper renderer = renderHelper.getRenderHelper();
+        Texture t48 = renderer.textureHash.get("smallPopUpBoxBlue.png");
+        HelpInfoBox buyableDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 15, renderer.RENDER_HEIGHT -t48.getHeight(), "Buy consumables by clicking here\n" , GamifyColor.GREEN);
+        HelpInfoBox inventory = new HelpInfoBox("smallPopUpBoxBlue.png", 37, renderer.RENDER_HEIGHT -t48.getHeight()-60, "The numbers beside each item is how many you have \n" , GamifyColor.GREEN);
+        HelpInfoBox buildingSpaceDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderer.RENDER_WIDTH /2-t48.getWidth()
+                , renderer.RENDER_HEIGHT /2 - t48.getHeight()/2-20, "Drag a consumable from your inventory to a building to use it" , GamifyColor.GREEN);
     }
     private void quadScreen3Display(){
         HelpInfoBox showChallengeDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 4, 36, "Shows or hides challenge hour selection", GamifyColor.GREEN);
