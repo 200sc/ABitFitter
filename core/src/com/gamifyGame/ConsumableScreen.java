@@ -1,8 +1,10 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Json;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +17,6 @@ public class ConsumableScreen extends BuyScreen
 {
     private HashMap<Consumable, Integer> inventory;
     private HashMap<Consumable, Integer> capacity;
-    private ArrayList<Consumable> active;
 
     public ConsumableScreen(gamifyGame game)
     {
@@ -27,8 +28,6 @@ public class ConsumableScreen extends BuyScreen
             inventory.put(current, 0);
             capacity.put(current, 1);
         }
-        active= new ArrayList<Consumable>();
-
     }
 
     public void show()
@@ -44,21 +43,13 @@ public class ConsumableScreen extends BuyScreen
             addBuyListener(currentConsumable);
             currentConsumable.addListener(this.textBoxControlListener());
         }
+        renderHelper.getRenderHelper().makeUnderground(1, game);
     }
     @Override
     public void render(float delta)
     {
         super.render(delta);
         renderHelper.getRenderHelper().moveCorner(retBox, Corner.LOWER_RIGHT, 31);
-        ArrayList<Consumable> toRemove= new ArrayList<Consumable>();
-        for(Consumable currentConsumable: active)
-        {
-            if(currentConsumable.getLifespan()<=0)
-            {
-                toRemove.add(currentConsumable);
-            }
-        }
-        active.removeAll(toRemove);
 
 
 
@@ -71,10 +62,6 @@ public class ConsumableScreen extends BuyScreen
                 addActivateListener(current);
                 current.addListener(this.textBoxControlListener());
             }
-        }
-        for(Consumable current: active)
-        {
-            current.clearListeners();
         }
     }
 
@@ -131,14 +118,40 @@ public class ConsumableScreen extends BuyScreen
                 if(inventory.get(consumable)>0)
                 {
                     Consumable activated=consumable.copy();
-                    active.add(activated);
-                    //activated.run();
+                    Json json = new Json();
+                    String result=game.getPrefs().getString("consumables", null);
+                    float[][] consumables=new float[][]{
+                            {0, 0, 0},{0, 0, 0},{0, 0, 0},{0, 0, 0},{0, 0, 0},{0, 0, 0},{0,0,0},{0, 0, 0},{0, 0, 0}};
+                    if(result!=null)
+                    {
+                        consumables = json.fromJson(float[][].class, result);
+                    }
+
+                    consumables[0][converTypeNumber(consumable)]=consumables[0][converTypeNumber(consumable)]+consumable.getLifespan();
+                    game.getPrefs().putString("consumables", json.toJson(consumables));
+                    game.getPrefs().flush();
+
                     inventory.put(consumable, inventory.get(consumable)-1);
                 }
                 //consumable.remove();
                 return true;
             }
         });
+    }
+    private int converTypeNumber(Consumable consumable)
+    {
+        if(consumable.getBuyableName().equals("Battery"))
+        {
+            return 0;
+        }
+        else if(consumable.getBuyableName().equals("Dollar"))
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
     }
 
     private void addBuyListener(Consumable consumable)
@@ -159,11 +172,4 @@ public class ConsumableScreen extends BuyScreen
             }
         });
     }
-
-
-    public ArrayList<Consumable> getActiveConsumables()
-    {
-        return active;
-    }
-
 }
