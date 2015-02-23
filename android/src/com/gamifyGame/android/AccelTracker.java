@@ -133,9 +133,9 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         }
 
 
-        xAverage = xSum/lines.length;
-        yAverage = ySum/lines.length;
-        zAverage = zSum/lines.length;
+        xAverage = Math.abs(xSum/lines.length);
+        yAverage = Math.abs(ySum/lines.length);
+        zAverage = Math.abs(zSum/lines.length);
 
 
         resultantAccel = Math.sqrt((xSum * xSum) + (ySum * ySum) + (zSum * zSum));
@@ -279,26 +279,30 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
     protected int activityAnalysis(long xAvgPeak, long yAvgPeak, long zAvgPeak, double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
         //sendNotification(xAvgPeak + " " + yAvgPeak + " " + zAvgPeak);
+        /**
         if(((xAvgPeak < 10 && xAvgPeak > -5)) && ((yAvgPeak > -10 && yAvgPeak < 20)) && ((zAvgPeak < 15 && zAvgPeak > -10))){
             if ((yAvgPTD > 0 && yAvgPTD < 400)){
                 sendNotification("sitting" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
                 return 6;
             }
         }
+         **/
 
-        if((xAvg < 10 && xAvg < -10) && (yAvg < 20 && yAvg > -10) && (zAvg > -5 && zAvg < 10 )){
+        if((xAvg < 5 && xAvg > 0) && (yAvg > 9 && yAvg < 10) && (zAvg < 5  && zAvg > 0)){
             if ((yAvgPTD > 300)){
-                sendNotification("walking" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+                sendNotification("walking" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg) + " " + yAvgPTD);
                 return 5;
             }
         }
 
+        /**
         if((xAvg < 10 && xAvg < -10) && (yAvg < 20 && yAvg > -10) && (zAvg > -5 && zAvg < 10 )){
             if ((yAvgPTD <= 300)){
                 sendNotification("jogging" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
                 return 2;
             }
         }
+         **/
 
         sendNotification("inactive" + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
         return 0;
