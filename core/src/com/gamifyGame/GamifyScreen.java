@@ -38,8 +38,11 @@ public abstract class GamifyScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            game.getActionResolver().toHomeScreen("Back Pressed");
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK) && frameCount % 4 == 0){
+            if (game.getScreen() == game.mainS) {
+                game.getActionResolver().toHomeScreen("Back Pressed");
+            }
+            else game.setScreen(game.mainS);
         }
 
         Stage layer0 = renderHelper.getRenderHelper().getLayer(0);
@@ -67,10 +70,10 @@ public abstract class GamifyScreen implements Screen {
         renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());
         renderHelper.getRenderHelper().getLayer(3).act(Gdx.graphics.getDeltaTime());
 
-        renderHelper.getRenderHelper().getBatch().begin();
-        renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),15,60);
-        renderHelper.getRenderHelper().textSet(String.valueOf(delta),15,70);
-        renderHelper.getRenderHelper().getBatch().end();
+        //renderHelper.getRenderHelper().getBatch().begin();
+        //renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),15,60);
+        //renderHelper.getRenderHelper().textSet(String.valueOf(delta),15,70);
+        //renderHelper.getRenderHelper().getBatch().end();
 
         frameCount = (frameCount + 1);
         frameCount = frameCount % (60*30);

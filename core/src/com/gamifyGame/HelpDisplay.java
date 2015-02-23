@@ -22,7 +22,7 @@ public class HelpDisplay extends TextDisplayBox {
     public HelpDisplay(String path, gamifyGame curGame) {
         super(path);
         this.game = curGame;
-        //this.addText(new Point(-2, 2), "Help", GamifyTextSize.MEDIUM);
+        this.addText(new Point(-2, 2), "Help", GamifyTextSize.MEDIUM);
         this.addHelpListener();
         this.imgWidth = renderHelper.getRenderHelper().textureHash.get("overlay.png").getWidth();
         this.imgHeight = renderHelper.getRenderHelper().textureHash.get("overlay.png").getHeight();
