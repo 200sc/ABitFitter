@@ -105,14 +105,15 @@ public class Consumable extends Buyable
 
     public String toString()
     {
-        /*String effectiveOnSummary="\nEffective on:";
+        String effectiveOnSummary="\nEffective on\n";
         for(Building current: worksWith)
         {
-            effectiveOnSummary+=" "+current.getBuyableName()+",";
-        }*/
-        return super.toString();
-                //+effectiveOnSummary.substring(0, effectiveOnSummary.length()-2);
+            effectiveOnSummary+=" "+current.getBuyableName()+"\n";
+        }
+        return this.getBuyableName()+"\n Cost "+ this.getCost()+"\n"+effectiveOnSummary.substring(0, effectiveOnSummary.length());
     }
 
-
+    public ArrayList<Building> getWorksWith() {
+        return worksWith;
+    }
 }
