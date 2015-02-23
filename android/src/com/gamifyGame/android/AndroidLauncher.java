@@ -122,13 +122,20 @@ public class AndroidLauncher extends AndroidApplication {
 
 
         if(sharedPref.getString("currentFood", null) != null){
-
-            pref.putString("latestFood", sharedPref.getString("currentFood", null));
-            pref.flush();
+            if(sharedPref.getString("currentFood", null).equals("")){
+                pref.putInteger("FoodPopUp", 1);
+            }else {
+                pref.putString("latestFood", sharedPref.getString("currentFood", null));
+            }
             edit.remove("currentFood");
             edit.apply();
 
+            pref.flush();
+
+
         }
+
+
         // Force clearing for testing
         //sharedPref.edit().clear().commit();
 
@@ -214,5 +221,7 @@ public class AndroidLauncher extends AndroidApplication {
         }
         return true;
     }
+
+
 
 }

@@ -64,7 +64,7 @@ public class Consumable extends Buyable
         worksWith.add(allBuildings.get("Armory"));
         worksWith.add(allBuildings.get("Garage"));
         worksWith.add(allBuildings.get("Forging Office"));
-        defConsumables.put("Dollar", new Consumable("dollar.png", "Cash", 100,  "Funds your operation", 3f,  2*60*60, worksWith));
+        defConsumables.put("Dollar", new Consumable("dollar.png", "Dollar", 100,  "Funds your operation", 3f,  2*60*60, worksWith));
 
         worksWith=new ArrayList<Building>();
         worksWith.add(allBuildings.get("HQ"));

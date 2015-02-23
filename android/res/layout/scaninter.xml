@@ -2,35 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@drawable/background">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_camera_parameters"
-        android:id="@+id/get_camera_parameters"
-        android:layout_gravity="center_horizontal|top" />
-
-
-    <ImageButton
-        android:id="@+id/scan_anything"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left|center_vertical"
-        android:src="@drawable/print_scan" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="622dp"
-        android:id="@+id/imageView"
-        android:layout_gravity="left|top"
-        android:src="@drawable/background" />
-
-    <ImageButton android:id="@+id/restart_app"
-        android:layout_width="86dp"
-        android:layout_height="89dp"
-
-        android:layout_gravity="right|center_vertical"
-        android:src="@drawable/ic_launcher" />
 
 </FrameLayout>
