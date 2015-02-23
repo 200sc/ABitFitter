@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Quad4Screen extends GamifyScreen implements Screen {
 
 
-    private TextDisplayBox textDisplayBox;
+    private TextDisplayBox mainBox;
 
     public Quad4Screen(gamifyGame game) {
 
@@ -70,13 +70,16 @@ public class Quad4Screen extends GamifyScreen implements Screen {
                     foodInfo[1] = "Use the scan button to scan barcode of food.";
                 }
 
-                String[] foodDescriptor = {"", "", "Calcium : ", "Calories : ", "Carbs: ", "Protein: ", "Sugar: ", "Fiber: ", "Serving Size: "};
+                String[] foodDescriptor = {"Brand ", "", "Calcium  ", "Calories  ", "Carbs ", "Protein ", "Sugar ", "Fiber ", "Serving Size "};
                 renderer.getBatch().begin();
-                renderer.textSet("Your last eaten food information:", 45, 150, GamifyTextSize.BIG);
+                mainBox.addText(new Point(0, renderer.textureHash.get("largeScreenBox.png").getHeight()/2-8) ,"Your last eaten food information", GamifyTextSize.BIG);
+                String foodDescriptorString= "";
                 for (int i = 0; i < 9; i++) {
                     if (foodInfo[i] != null) {
-                        renderer.textSet(foodDescriptor[i] + foodInfo[i], 45, 130 - 10 * i);
+                        foodDescriptorString += foodDescriptor[i] + " " + foodInfo[i] + "\n\n";
+                        //renderer.textSet(foodDescriptor[i] + foodInfo[i], 45, 130 - 10 * i);
                     }
+                    mainBox.addText(new Point(0,renderer.textureHash.get("largeScreenBox.png").getHeight()/2 - 40), foodDescriptorString, GamifyTextSize.MEDIUM);
                 }
                 renderer.getBatch().end();
             } else {
@@ -100,13 +103,16 @@ public class Quad4Screen extends GamifyScreen implements Screen {
 
 
 
-        TextDisplayBox mainBox = new TextDisplayBox("largeScreenBox.png");
+        mainBox = new TextDisplayBox("largeScreenBox.png");
         mainBox.addAt(renderer.getLayer(1), renderer.RENDER_WIDTH- renderer.textureHash.get("largeScreenBox.png").getWidth(), 0);
 
         // Set up scanning Image and its background
-        TextDisplayBox scanBox = new TextDisplayBox("48Box.png");
-        scanBox.addAt(renderer.getLayer(1), -30, 60);
+        TextDisplayBox scanBox = new TextDisplayBox("scannerBox.png");
+        scanBox.addAt(renderer.getLayer(1), renderer.textureHash.get("48Box.png").getWidth(), renderer.RENDER_HEIGHT-renderer.textureHash.get("scannerBox.png").getHeight());
 
+        TextDisplayBox servingsBox = new TextDisplayBox("servingBox.png");
+        servingsBox.addAt(renderer.getLayer(1), renderer.textureHash.get("48Box.png").getWidth() + renderer.textureHash.get("scannerBox.png").getWidth()
+                , renderer.RENDER_HEIGHT-renderer.textureHash.get("servingBox.png").getHeight());
         //Image dumbServingsBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 0,110);
         //dumbServingsBox.addListener(game.getListenerHelper().getServingsChosen());
 
