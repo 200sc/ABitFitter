@@ -32,6 +32,6 @@ public class Buyable extends GamifyImage
     }
     public String toString()
     {
-        return this.getBuyableName()+"\n Cost: "+ this.getCost()+"\n"+ this.getDesc();
+        return this.getBuyableName()+"\n Cost "+ this.getCost()+"\n"+ this.getDesc();
     }
 }

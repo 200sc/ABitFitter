@@ -24,7 +24,6 @@ public class MovingTextDisplayBox extends TextDisplayBox
         remainingWaitingTime=0;
         queuedRemainingMoveTime =0;
         queuedRemainingWaitTime =0;
-
         this.addAction(new Action() {
             @Override
             public boolean act(float delta) {
