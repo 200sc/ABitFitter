@@ -140,11 +140,7 @@ public class ConsumableScreen extends BuyScreen {
 
     private DragListener getDefaultScrollBarListener(final ArrayList<GamifyImage> undergroundBuildings) {
         return new DragListener() {
-            private float startX
-                    ,
-                    startY
-                    ,
-                    sY;
+            private float startX,startY,sY;
             private Color startColor;
             private boolean notScroll = false;
 
@@ -171,7 +167,7 @@ public class ConsumableScreen extends BuyScreen {
                 for (GamifyImage current : undergroundBuildings)
                     current.setColor(startColor);
                buildCheck(undergroundBuildings, eventImage, game);
-
+               drawInventory(inventory, 10, 200, 10);
             }
 
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
