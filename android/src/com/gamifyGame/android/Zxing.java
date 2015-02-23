@@ -91,12 +91,14 @@ public final class Zxing extends Activity {
             try {
                 out = new JSONObject(output);
                 String brand = out.getString("brand_name");
-                //Toast.makeText(getApplicationContext(), brand, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), brand, Toast.LENGTH_LONG).show();
                 edit.putString("currentFood", output);
 
             } catch (JSONException e) {
+                edit.putString("currentFood", "");
                 e.printStackTrace();
             }
+
 
             edit.commit();
 

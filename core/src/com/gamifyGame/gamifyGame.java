@@ -246,6 +246,8 @@ public class gamifyGame extends Game {
         vitality += toAdd;
     }
 
-
+    public void popUp(String text){
+        new PopUpBox(60, 150, 10, text);
+    }
 }
 

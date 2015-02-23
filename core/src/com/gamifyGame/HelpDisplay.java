@@ -42,10 +42,6 @@ public class HelpDisplay extends TextDisplayBox {
         overlay.setColor(Color.GRAY);
         overlay.getColor().a = 0.4f;
 
-        TextDisplayBox resumeGame = new TextDisplayBox("smallPopUpBoxBlue.png");
-        resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth()/2, 12);
-        resumeGame.addText(new Point(0, 0), "Resume Game");
-        resumeGame.addListener(overlay.resumeListener);
 
 
         Screen curScreen =  game.getScreen();
@@ -56,7 +52,14 @@ public class HelpDisplay extends TextDisplayBox {
         else if(curScreen instanceof Quad4Screen){quadScreen4Display();}
         else if(curScreen instanceof ConsumableScreen){consumableDisplay();}
         else{buyScreenDisplay();}
-}
+
+
+        TextDisplayBox resumeGame = new TextDisplayBox("smallPopUpBoxBlue.png");
+        resumeGame.addAt(renderHelper.getRenderHelper().getLayer(3), xLoc-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth()/2, 12);
+        resumeGame.addText(new Point(0, 0), "Resume Game");
+        resumeGame.addListener(overlay.resumeListener);
+
+    }
 
     private void addHelpListener(){
         ClickListener helpListener = new ClickListener(){
@@ -77,7 +80,12 @@ public class HelpDisplay extends TextDisplayBox {
         HelpInfoBox sleepScreen = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH * 2/3, 4, "Click to start logging sleep, stops logging everything else", GamifyColor.GREEN);
 
     }
-    private void quadScreen1Display(){
+    private void quadScreen3Display(){
+        HelpInfoBox sDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 4, 36, "Shows or hides challenge hour selection", GamifyColor.GREEN);
+        HelpInfoBox blueDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH-4-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth(), renderHelper.RENDER_HEIGHT*2/3, "Hours in blue are open for challeneges", GamifyColor.GREEN);
+
+        HelpInfoBox challengeSelectorDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH/2, renderHelper.RENDER_HEIGHT/3, "Select hours for which challenges can happen", GamifyColor.GREEN);
+
     }
     private void quadScreen2Display(){
         consumableDisplay();
@@ -91,14 +99,21 @@ public class HelpDisplay extends TextDisplayBox {
         HelpInfoBox buildingSpaceDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderer.RENDER_WIDTH /2-t48.getWidth()
                 , renderer.RENDER_HEIGHT /2 - t48.getHeight()/2-20, "Drag a consumable from your inventory to a building to use it" , GamifyColor.GREEN);
     }
-    private void quadScreen3Display(){
-        HelpInfoBox showChallengeDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 4, 36, "Shows or hides challenge hour selection", GamifyColor.GREEN);
-        HelpInfoBox blueDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH-4-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth(), renderHelper.RENDER_HEIGHT*2/3, "Hours in blue are open for challeneges", GamifyColor.GREEN);
+    private void quadScreen1Display(){
+        HelpInfoBox returnDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 4, 36, "Return to main screen", GamifyColor.GREEN);
+        HelpInfoBox graphDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH-4-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth(), renderHelper.RENDER_HEIGHT*2/3, "Graphs of your data", GamifyColor.GREEN);
+        HelpInfoBox changeGraph = new HelpInfoBox("smallPopUpBoxBlue.png",renderHelper.RENDER_WIDTH-renderHelper.getRenderHelper().textureHash.get("smallPopUpBoxBlue.png").getWidth()+4,4, "Cycle through graphs to show", GamifyColor.GREEN);
 
-        HelpInfoBox challengeSelectorDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH/2, renderHelper.RENDER_HEIGHT/3, "Select hours for which challenges can happen", GamifyColor.GREEN);
 
     }
     private void quadScreen4Display(){
+        HelpInfoBox showFoodDesc = new HelpInfoBox("smallPopUpBoxBlue.png", 2, renderHelper.RENDER_HEIGHT - 60, "To return to main screen", GamifyColor.GREEN);
+        HelpInfoBox scanDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH/3, renderHelper.RENDER_HEIGHT -35, "Click to bring up scanner for food", GamifyColor.GREEN);
+
+        HelpInfoBox servingDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH * 3/4 -15, renderHelper.RENDER_HEIGHT - 60, "Select hours for which challenges can happen", GamifyColor.GREEN);
+        HelpInfoBox mainDesc = new HelpInfoBox("smallPopUpBoxBlue.png", renderHelper.RENDER_WIDTH/2, renderHelper.RENDER_HEIGHT/3, "Select hours for which challenges can happen", GamifyColor.GREEN);
+
+
     }
     private void buyScreenDisplay(){
         renderHelper renderer = renderHelper.getRenderHelper();

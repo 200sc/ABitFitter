@@ -37,7 +37,9 @@ public class SpiderGraph extends GamifyGraph{
 
 
 
-    public SpiderGraph(HashMap<Integer,Integer> graphPref, String[] inLabels, String dataType, GamifyColor inColor) {
+    public SpiderGraph(HashMap<Integer,Integer> graphPref, String[] inLabels, String dataType, GamifyColor inColor, int x, int y) {
+        borderX = x;
+        borderY = y;
         data = graphPref;
         type = dataType;
         labels = inLabels;
@@ -110,9 +112,6 @@ public class SpiderGraph extends GamifyGraph{
     }
 
     public void textRender(){
-
-        int borderX = 38;
-        int borderY = 54;
 
         renderHelper renderer = renderHelper.getRenderHelper();
 

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import java.util.HashMap;
+
 /**
  * Created by Stephen on 2/1/2015.
  */
@@ -18,6 +20,8 @@ public class Quad3Screen extends GamifyScreen implements Screen {
 
     private Image border;
 
+    GamifyGraph[] testGraphs;
+
     public Quad3Screen(gamifyGame game) {
         super(game);
         batch = renderHelper.getRenderHelper().getBatch();
@@ -27,27 +31,42 @@ public class Quad3Screen extends GamifyScreen implements Screen {
     public void render(float delta) {
         super.render(delta);
         Preferences pref = game.getPrefs();
-
         boolean showChallengeHours = pref.getBoolean("showChallengeHours", false);
+
+        if (!showChallengeHours){
+            renderHelper.getRenderHelper().getLayer(1).draw();
+            renderHelper.getRenderHelper().getLayer(2).draw();
+        }
+
 
         ShapeRenderer shapes = renderHelper.getRenderHelper().getShapeRenderer();
 
         String showText;
         if (!showChallengeHours) {
             showText = "Challenge\nHours";
-            int challengeProgress = pref.getInteger("challengeProgress", 0);
+            /*int challengeProgress = pref.getInteger("challengeProgress", 0);
 
             shapes.begin(ShapeRenderer.ShapeType.Filled);
             if (challengeProgress == 100) {
                 shapes.setColor(renderHelper.getRenderHelper().yellowLight);
             } else shapes.setColor(new Color(0.30f, 1.0f, 0.0f, 1.0f));
             shapes.box(retBox.getX() + 4, retBox.getY() + 4, 0, (float) (challengeProgress / 2.5), 3, 0);
-            shapes.end();
+            shapes.end();*/
         } else showText = "Close \nWindow";
 
-        renderHelper.getRenderHelper().moveCorner(retBox, Corner.UPPER_RIGHT, 30);
+        if (!showChallengeHours) {
+            testGraphs[0].shapeRender();
+        }
 
+        renderHelper.getRenderHelper().moveCorner(retBox, Corner.UPPER_RIGHT, 30);
+        if (showChallengeHours){
+             renderHelper.getRenderHelper().getLayer(1).draw();
+             renderHelper.getRenderHelper().getLayer(2).draw();
+        }
         batch.begin();
+        if (!showChallengeHours) {
+            testGraphs[0].textRender();
+        }
         renderHelper.getRenderHelper().textSet(showText, 2, 16, GamifyTextSize.BIG);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 24; j++) {
@@ -107,9 +126,28 @@ public class Quad3Screen extends GamifyScreen implements Screen {
     @Override
     public void show() {
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
+        renderHelper renderer = renderHelper.getRenderHelper();
+
 
         retBox = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
         Image showBox = renderHelper.getRenderHelper().imageSetup("48Box.png", layer1, 0, 0);
+
+        testGraphs  = new GamifyGraph[2];
+
+        renderer.imageSetup("largeScreenBox.png", renderer.getLayer(1), 19, 20);
+
+
+        long aDay = 86400000;
+
+        HashMap<Integer,Integer> testData3 = new HashMap<Integer,Integer>();
+        testData3.put(0,63);
+        testData3.put(1,20);
+        testData3.put(2,70);
+        testData3.put(3,45);
+        testData3.put(4,0);
+        testData3.put(5,50);
+        String[] labels = {"Activity","Biking","Food","Running","Dancing","Sleep"};
+        testGraphs[0] = new SpiderGraph(testData3,labels,"Types of Challenges",GamifyColor.GREEN, 19,20);
 
         int borderX = 19;
         int borderY = 20;

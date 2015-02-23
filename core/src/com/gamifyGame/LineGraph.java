@@ -20,7 +20,7 @@ import java.util.TimeZone;
  */
 public class LineGraph extends GamifyGraph {
 
-    public LineGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor) {
+    public LineGraph(HashMap<Long,Integer> graphPref, String dataType, GamifyColor inColor, int x, int y) {
         data = graphPref;
         type = dataType;
         switch (inColor){
@@ -45,6 +45,8 @@ public class LineGraph extends GamifyGraph {
         keys = asSortedList(data.keySet());
         xPoints = new ArrayList<Long>();
         yPoints = new ArrayList<Integer>();
+        borderX = x;
+        borderY = y;
         show();
         update();
     }

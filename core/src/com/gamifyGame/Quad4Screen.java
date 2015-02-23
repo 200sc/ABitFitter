@@ -26,14 +26,10 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         super.render(delta);
         renderHelper renderer = renderHelper.getRenderHelper();
         renderer.moveCorner(retBox, Corner.UPPER_LEFT, 30);
+        renderHelper.getRenderHelper().getLayer(1).draw();
+        renderHelper.getRenderHelper().getLayer(2).draw();
 
 
-        renderer.getBatch().begin();
-
-
-        renderer.textSet("Click for number", 70, 277);
-        renderer.textSet(" of servings", 70, 267);
-        renderer.getBatch().end();
 
         //Set up the data from the last food seen
         String latestFood;
@@ -90,6 +86,12 @@ public class Quad4Screen extends GamifyScreen implements Screen {
             }
         }
 
+        if(game.getPrefs().getInteger("FoodPopUp", 0) == 1){
+            game.getPrefs().putInteger("FoodPopUp", 0);
+            game.getPrefs().flush();
+            new PopUpBox(60, 150, 3, "Barcode was not found in database");
+        }
+
         renderHelper.getRenderHelper().endRender();
     }
 
@@ -109,24 +111,14 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         // Set up scanning Image and its background
         TextDisplayBox scanBox = new TextDisplayBox("scannerBox.png");
         scanBox.addAt(renderer.getLayer(1), renderer.textureHash.get("48Box.png").getWidth(), renderer.RENDER_HEIGHT-renderer.textureHash.get("scannerBox.png").getHeight());
+        scanBox.addListener(game.getListenerHelper().scanningAction());
+
+
 
         TextDisplayBox servingsBox = new TextDisplayBox("servingBox.png");
         servingsBox.addAt(renderer.getLayer(1), renderer.textureHash.get("48Box.png").getWidth() + renderer.textureHash.get("scannerBox.png").getWidth()
                 , renderer.RENDER_HEIGHT-renderer.textureHash.get("servingBox.png").getHeight());
-        //Image dumbServingsBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 0,110);
-        //dumbServingsBox.addListener(game.getListenerHelper().getServingsChosen());
-
-        //Image graphBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 30, 60);
-
-        // Silly scanning image with tongue
-        //Image scanImage = renderer.imageSetup("print_scan.png", renderer.getLayer(1), 38, 185);
-        //scanImage.setSize(scanImage.getWidth()/8, scanImage.getHeight()/8);
-        //scanImage.setColor(com.badlogic.gdx.graphics.Color.MAGENTA);
-        //scanImage.addListener(game.getListenerHelper().scanningAction());
-
-        //Image basicBox = renderer.imageSetup("topHalfBox.png", renderer.getLayer(1), 0, 30);
-
-
+        servingsBox.addListener(game.getListenerHelper().getServingsChosen());
 
     }
 

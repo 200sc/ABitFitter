@@ -28,6 +28,7 @@ public class MainScreen extends GamifyScreen implements Screen
         public void render(float delta)
         {
             super.render(delta);
+            renderHelper.getRenderHelper().getLayer(1).draw();
             int challengeProgress = game.getPrefs().getInteger("challengeProgress",0);
 
             renderHelper.getRenderHelper().getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
@@ -38,11 +39,13 @@ public class MainScreen extends GamifyScreen implements Screen
 
             renderHelper.getRenderHelper().getBatch().begin();
 
-            renderHelper.getRenderHelper().textSet(game.challengeText,15,50);
+            //renderHelper.getRenderHelper().textSet(game.challengeText,15,50);
             renderHelper.getRenderHelper().textSetCenter("Vitality", GamifyColor.GREEN, -28 , 35, GamifyTextSize.BIG,"left",0);
             renderHelper.getRenderHelper().textSetCenter(String.valueOf(game.getVitality()), GamifyColor.GREEN, -28 , 25, GamifyTextSize.XTRABIG,"left",0);
             renderHelper.getRenderHelper().textSet(String.valueOf(game.getPrefs().getString("graphTmp", "null")), 15, 30);
             renderHelper.getRenderHelper().getBatch().end();
+
+            renderHelper.getRenderHelper().getLayer(2).draw();
 
             deltaCount = (deltaCount+1) % 32;
             renderHelper.getRenderHelper().endRender();
@@ -82,7 +85,7 @@ public class MainScreen extends GamifyScreen implements Screen
 
 
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
-            Integer[] bridges        = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
+            Integer[] bridges = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
 
             //for(int i =0; i< underground.length; i++)
             //game.getActionResolver().showToast(underground[i]);
