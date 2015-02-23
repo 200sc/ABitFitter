@@ -73,7 +73,7 @@ public class ConsumableScreen extends BuyScreen
             currentConsumable.addAt(renderHelper.getRenderHelper().getLayer(1), xLoc, currentY);
             currentY += currentConsumable.getHeight() + yPadding;
             renderHelper.getRenderHelper().batch.begin();
-            renderHelper.getRenderHelper().drawTextOnImageNicely(""+toDraw.get(currentConsumable),currentConsumable, 10, 0, GamifyTextSize.MEDIUM, GamifyColor.BLACK);
+            renderHelper.getRenderHelper().drawTextOnImageNicely(""+toDraw.get(currentConsumable),currentConsumable,10,0,GamifyTextSize.MEDIUM, GamifyColor.BLACK,"left");
             renderHelper.getRenderHelper().batch.end();
         }
     }

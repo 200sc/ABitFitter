@@ -1,5 +1,6 @@
 package com.gamifyGame.android;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -98,9 +99,9 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
             dailyWriter.write(("stepsTaken,"+String.valueOf(
                     getInteger(daily,"stepsTaken")+
                     getInteger(input,"stepsTakenThisHour"))+"\n").getBytes());
-            dailyWriter.write(("newFood,"+String.valueOf(
-                    getInteger(daily,"newFood")+
-                    getInteger(input,"newFoodThisHour"))+"\n").getBytes());
+            dailyWriter.write(("newFood," + String.valueOf(
+                    getInteger(daily, "newFood") +
+                            getInteger(input, "newFoodThisHour")) + "\n").getBytes());
 
 
             // And the output for GDX
@@ -150,7 +151,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
             boolean availableThisHour = Boolean.valueOf(input.get(challengeTime()));
             float challengeChancesToday = getChallengeChances(input);
 
-            if (availableThisHour && Math.random() < 1f / challengeChancesToday && !getBoolean(daily,"challengedToday")) {
+            //if (availableThisHour && Math.random() < 1f / challengeChancesToday && !getBoolean(daily,"challengedToday")) {
                 hourWriter.write(("challengeHour,true").getBytes());
                 hourWriter.write(("challengedToday,true").getBytes());
 
@@ -158,8 +159,8 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
                 hourWriter.write(("challengeVariety," + challengePrompt).getBytes());
 
 
-                sendChallengeNotification(context, challengePrompt);
-            }
+                sendChallengeNotification(context.getApplicationContext(), challengePrompt);
+            //}
 
             hourWriter.close();
             dailyWriter.close();
@@ -202,6 +203,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
                         .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
+        mBuilder.setVibrate(new long[]{100, 500, 50, 300, 200});
         mNotificationManager.notify(1, mBuilder.build());
     }
 

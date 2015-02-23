@@ -29,10 +29,10 @@ public class TextDisplayBox extends GamifyImage
 
     public void addText(Point location, String text, GamifyTextSize fontSize)
     {
-        addText(location, text, fontSize, GamifyColor.WHITE);
+        addText(location, text, fontSize, GamifyColor.WHITE, "left");
     }
-    public void addText(Point location, String text, GamifyTextSize fontSize, GamifyColor color){
-        locationToText.put(location, new TextInfo(text, fontSize, color));
+    public void addText(Point location, String text, GamifyTextSize fontSize, GamifyColor color, String align){
+        locationToText.put(location, new TextInfo(text, fontSize, color, align));
     }
 
 
@@ -44,7 +44,7 @@ public class TextDisplayBox extends GamifyImage
         for(Point curLoc: locationToText.keySet())
         {
             renderHelper.getRenderHelper().drawTextOnImageNicely(locationToText.get(curLoc).getTextToWrite(),
-                    this, curLoc.x, curLoc.y,locationToText.get(curLoc).getSizeOfFont(), locationToText.get(curLoc).getColorOfFont() );
+                    this, curLoc.x, curLoc.y,locationToText.get(curLoc).getSizeOfFont(), locationToText.get(curLoc).getColorOfFont(), locationToText.get(curLoc).getAlignment() );
         }
         renderHelper.getRenderHelper().getBatch().end();
         b.begin();
@@ -56,11 +56,18 @@ public class TextDisplayBox extends GamifyImage
     }
 
     private class TextInfo extends Object{
-        String textToWrite;GamifyTextSize sizeOfFont; GamifyColor colorOfFont;
-        public TextInfo(String text, GamifyTextSize size){
+        String textToWrite;GamifyTextSize sizeOfFont; GamifyColor colorOfFont; String alignment;
+        public TextInfo(String text, GamifyTextSize size, String align){
             textToWrite = text;
             sizeOfFont = size;
             colorOfFont = GamifyColor.WHITE;
+            alignment = align;
+        }
+        public TextInfo(String text, GamifyTextSize size, GamifyColor color, String align){
+            textToWrite = text;
+            sizeOfFont = size;
+            colorOfFont = color;
+            alignment = align;
         }
         public TextInfo(String text, GamifyTextSize size, GamifyColor color){
             textToWrite = text;
@@ -70,6 +77,7 @@ public class TextDisplayBox extends GamifyImage
         public String getTextToWrite(){return textToWrite;}
         public GamifyTextSize getSizeOfFont(){return sizeOfFont;}
         public GamifyColor getColorOfFont(){return colorOfFont;}
+        public String getAlignment(){return alignment;}
     }
 
 }

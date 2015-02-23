@@ -32,9 +32,6 @@ public class GameUpdater extends IntentService {
             if (writer == null) {
                 System.out.println("GameUpdater: Writer is null");
             }
-
-            //System.out.println("GameUpdater: act is " + activity);
-
             writer.write((String.valueOf(System.currentTimeMillis()) + ',' + activity + "\n").getBytes());
             writer.close();
         } catch (Exception e) {
