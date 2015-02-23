@@ -1,6 +1,5 @@
 package com.gamifyGame;
 
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,8 +29,20 @@ public class ConsumableScreen extends BuyScreen {
         }
     }
 
-    public void show() {
+    public void show()
+    {
         super.show();
+        Json json = new Json();
+        String success = game.getPrefs().getString("inventory", null);
+        int[] inventoryFromPrefs = new int[]{0, 0, 0};
+        if (success != null) {
+            inventoryFromPrefs = json.fromJson(int[].class, success);
+        }
+        for(int i=0; i<inventoryFromPrefs.length; i++)
+        {
+            inventory.put(Consumable.getAllConsumables().get(convertNumberToName(i)), inventoryFromPrefs[i]);
+        }
+
         retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
         retBox.setZIndex(100);
@@ -47,10 +58,8 @@ public class ConsumableScreen extends BuyScreen {
         {
             if (inventory.get(current) > 0) {
                 current.clearListeners();
-
-            }//addActivateListener(current);
+            }
             current.addListener(getDefaultScrollBarListener(result));
-            //current.addListener(this.textBoxControlListener());
         }
         drawInventory(inventory, 10, 200, 10);
     }
@@ -103,25 +112,26 @@ public class ConsumableScreen extends BuyScreen {
         };
     }
 
-
-    /*private void addActivateListener(Consumable consumable) {
-        consumable.addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-            }
-        });
-    }*/
-
-    private int converTypeNumber(Consumable consumable) {
+    private int convertConsumableToNumber(Consumable consumable) {
         if (consumable.getBuyableName().equals("Battery")) {
             return 0;
         } else if (consumable.getBuyableName().equals("Dollar")) {
             return 1;
-        } else {
+        } else
+        {
             return 2;
         }
     }
+    private String convertNumberToName(int num)
+    {
+        if(num==0)
+            return "Battery";
+        else if(num==1)
+            return "Dollar";
+        else
+            return "Feather";
+    }
+
 
     private void addBuyListener(Consumable consumable) {
         consumable.addListener(new ClickListener() {
@@ -129,8 +139,9 @@ public class ConsumableScreen extends BuyScreen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Consumable consumable = (Consumable) event.getListenerActor();
                 if (game.getVitality() > consumable.getCost()) {
-                    Consumable newInventory = consumable.copy();
-                    inventory.put(newInventory, inventory.get(newInventory) + 1);
+                    Consumable newToInventory = consumable.copy();
+                    inventory.put(newToInventory, inventory.get(newToInventory) + 1);
+                    changeInventoryInPrefs(newToInventory, 1);
                     game.addToVitality((long) -consumable.getCost());
                 }
                 return true;
@@ -225,11 +236,13 @@ public class ConsumableScreen extends BuyScreen {
                         consumables = json.fromJson(float[][].class, result);
                     }
 
-                    consumables[i][converTypeNumber(toBuy)] = consumables[i][converTypeNumber(toBuy)] + toBuy.getLifespan();
+                    consumables[i][convertConsumableToNumber(toBuy)] = consumables[i][convertConsumableToNumber(toBuy)] + toBuy.getLifespan();
                     game.getPrefs().putString("consumables", json.toJson(consumables));
                     game.getPrefs().flush();
 
                     inventory.put(toBuy, inventory.get(toBuy) - 1);
+                    changeInventoryInPrefs(toBuy, -1);
+
                     return;
                 }
                 return;
@@ -237,6 +250,19 @@ public class ConsumableScreen extends BuyScreen {
         }
 
         return;
+    }
+
+    private void changeInventoryInPrefs(Consumable changed, int change)
+    {
+        Json json=new Json();
+        int[] inventoryFromPrefs = new int[]{0, 0, 0};
+        String loadInvenSuccess = game.getPrefs().getString("inventory", null);
+        if (loadInvenSuccess != null) {
+            inventoryFromPrefs = json.fromJson(int[].class, loadInvenSuccess);
+        }
+        inventoryFromPrefs[convertConsumableToNumber(changed)]=inventoryFromPrefs[convertConsumableToNumber(changed)]+change;
+        game.getPrefs().putString("inventory", json.toJson(inventoryFromPrefs));
+        game.getPrefs().flush();
     }
 }
 
