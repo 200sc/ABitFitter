@@ -226,7 +226,7 @@ public class ConsumableScreen extends BuyScreen {
             //TODO: Worry about other conditions
             if (renderHelper.getRenderHelper().rectangleCollided(minX, maxX, minY, maxY, currentImage.getX(), currentImage.getRight(), currentImage.getY(), currentImage.getTop())) {
                 boolean success;
-                if (currentImage instanceof Building && inventory.get(toBuy) > 0)
+                if (currentImage instanceof Building && inventory.get(toBuy) > 0 && toBuy.getWorksWith().contains(currentImage))
                 {
                     Building currentBuilding = (Building) currentImage;
                     Consumable activated = toBuy.copy();

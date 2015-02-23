@@ -103,5 +103,17 @@ public class Consumable extends Buyable
         return this.getBuyableName().hashCode();
     }
 
+    public String toString()
+    {
+        String effectiveOnSummary="\nEffective on\n";
+        for(Building current: worksWith)
+        {
+            effectiveOnSummary+=" "+current.getBuyableName()+"\n";
+        }
+        return this.getBuyableName()+"\n Cost "+ this.getCost()+"\n"+effectiveOnSummary.substring(0, effectiveOnSummary.length());
+    }
 
+    public ArrayList<Building> getWorksWith() {
+        return worksWith;
+    }
 }
