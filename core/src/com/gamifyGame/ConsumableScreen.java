@@ -154,7 +154,7 @@ public class ConsumableScreen extends BuyScreen {
                 }
                 Buyable currentEvent = (Buyable) event.getListenerActor();
                 setSelectedBuyable(currentEvent);
-                getMovingTextDisplayBox().gradualMoveToPosition(120, 175, 1.5f);
+                getMovingTextDisplayBox().gradualMoveToPosition(110, 175, 1.5f);
                 return true;
 
             }
