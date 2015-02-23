@@ -94,6 +94,7 @@ public class SleepOverlayListener extends ClickListener {
             }
         });
 
+        game.getPrefs().putString("isSleeping","true");
         game.getActionResolver().putSharedPrefs("isSleeping", "true");
         game.getActionResolver().setSleepState(true);
 

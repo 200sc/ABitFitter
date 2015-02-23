@@ -100,7 +100,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
     public void show() {
         renderHelper renderer = renderHelper.getRenderHelper().getRenderHelper();
 
-        retBox = renderer.imageSetupCenter("48Box.png", renderer.getLayer(1), 37, -25);
+        retBox = renderer.imageSetupCenter("strawberryBox.png", renderer.getLayer(1), 37, -25);
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
 
 
