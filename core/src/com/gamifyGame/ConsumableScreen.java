@@ -225,7 +225,7 @@ public class ConsumableScreen extends BuyScreen {
                         consumables = json.fromJson(float[][].class, result);
                     }
 
-                    consumables[0][converTypeNumber(toBuy)] = consumables[0][converTypeNumber(toBuy)] + toBuy.getLifespan();
+                    consumables[i][converTypeNumber(toBuy)] = consumables[i][converTypeNumber(toBuy)] + toBuy.getLifespan();
                     game.getPrefs().putString("consumables", json.toJson(consumables));
                     game.getPrefs().flush();
 
