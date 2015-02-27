@@ -1,16 +1,21 @@
 package com.gamifyGame.android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.view.Display;
+import android.widget.Toast;
 
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.gamifyGame.gamifyGame;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -49,6 +54,8 @@ public class AndroidLauncher extends AndroidApplication {
         String fakeID = pref.getString("userID",String.valueOf(ID));
 
 
+        // For testing clear prefs here
+        pref.clear();
 
         // Set screen size of this device in pixels
         Display display = getWindowManager().getDefaultDisplay();
@@ -79,8 +86,7 @@ public class AndroidLauncher extends AndroidApplication {
         alarm.setAlarm(this, GAMIFY_VERSION, fakeID);
 
 
-        // For testing clear prefs here
-        //pref.clear();
+
 
 
         // CREATE FILE LISTENERS AND ATTACH APPROPRIATE
@@ -102,7 +108,8 @@ public class AndroidLauncher extends AndroidApplication {
         };
         outChallengeWatch.startWatching();
 
-
+        //For presentation scans in progresso // TODO: Remove after presentation
+        new checkFood("http://www.opennutritiondatabase.com/foods/", "041196010121.json").execute();
 
 
         setContentView(R.layout.loginscreenres);
@@ -222,6 +229,46 @@ public class AndroidLauncher extends AndroidApplication {
         return true;
     }
 
+    //TODO: remove after presentation
+    class checkFood extends FoodRequestTask<String> {
 
 
+        public checkFood(String serverAddress, String endpoint) {
+            super(serverAddress, endpoint, getApplicationContext());
+        }
+
+        protected String parseResponse(String response){
+            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String output){
+
+            Intent change = new Intent(getApplicationContext(), AndroidLauncher.class);
+
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences("bitPref", 1);
+            SharedPreferences.Editor edit = prefs.edit();
+
+
+            JSONObject out = null;
+
+            try {
+                out = new JSONObject(output);
+                String brand = out.getString("brand_name");
+                Toast.makeText(getApplicationContext(), brand, Toast.LENGTH_LONG).show();
+                edit.putString("currentFood", output);
+
+            } catch (JSONException e) {
+                edit.putString("currentFood", "");
+                e.printStackTrace();
+            }
+
+
+            edit.commit();
+
+
+            startActivity(change);
+        }
+    }
 }
