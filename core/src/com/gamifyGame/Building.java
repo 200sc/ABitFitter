@@ -34,11 +34,11 @@ public class Building extends Buyable
         defList.put("Computer Room", new Building("Computer Room", "The place where the computers are", 300, 2, 1, TriggerCondition.SLEEP, "Computer1.png", true));
         defList.put("Costume Closet", new Building("Costume Closet", "A vast wardrobe, filled with costumes.", 300, 3, 2, TriggerCondition.FOOD, "Costume1.png", true));
         defList.put("Forging Office", new Building("Forging Office", "An office filled with stacks of official seals, brief cases of fake documents and intricate utensils", 4, 16, 1, TriggerCondition.SLEEP, "Forgery1.png", true));
-        defList.put("Garage", new Building("Garage", "Where are the cars are", 90000000, 4, 3, TriggerCondition.CYCLING, "Garage1.png", true));
+        defList.put("Garage", new Building("Garage", "The place the vehicles are", 90000000, 4, 3, TriggerCondition.CYCLING, "Garage1.png", true));
         defList.put("Generator", new Building("Generator", "It makes power", 600, 0, 5, TriggerCondition.ACTIVE, "Generator1.png", true));
         defList.put("HQ", new Building("HQ", "You live here", 1000000000, 100, 3, TriggerCondition.ALL, "HQ1.png", false));
-        defList.put("Lab", new Building("Lab", "You live here", 600, 5, 3, TriggerCondition.RUNNING, "Lab1.png", true));
-        defList.put("Smuggler's Cove", new Building("Smuggler's Cove", "You live here", 600, 6, 3, TriggerCondition.NONE, "Smuggler1.png", true));
+        defList.put("Lab", new Building("Lab","The place where you develop new technologies and conduct experiments", 600, 5, 3, TriggerCondition.RUNNING, "Lab1.png", true));
+        defList.put("Smuggler's Cove", new Building("Smuggler's Cove", "Your contacts meet you here for suspicious dealings", 600, 6, 3, TriggerCondition.NONE, "Smuggler1.png", true));
         return defList;
     }
 
