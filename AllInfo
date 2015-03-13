@@ -1,0 +1,36 @@
+GDX Preferences:
+Key                     Type                                            Some classes that use
+Inventory               int[]{}                                         Consumable Screen
+Consumables             float[][]                                       Consumable Screen
+undergroundBridges      Integer[]                                       Building Screen, MainScreen
+screenHeight            Float                                           Gamify Game
+screenWidth             Float                                           Gamify Game
+vitality                long                                            Gamify Game
+undergroundBuildings    String[]                                        Gamify Game, MainScreen, renderHelper, ScrollBar
+curActivity             String                                          Gamify Game
+challengeProgress       Integer                                         Gamify Game
+challengeComplete       boolean                                         Gamify Game
+challengeVariety        String                                          Gamify Game
+minutesWalkedThisHour   Integer                                         Gamify Game
+minutesRanThisHour      Integer                                         Gamify Game
+minutesDancedThisHour   Integer                                         Gamify Game
+minutesBikedThisHour    Integer                                         Gamify Game
+newFoodThisHour         Integer                                         Gamify Game
+challengeProgress       Integer                                         Gamify Game, MainScreen
+userID                  String                                          Gamify Game, listenerHelper
+graphTmp                String                                          Gamify Game
+activity                String                                          Gamify Game
+latestFood              String                                          listenerHelper, Quad4Screen
+recentFoods             PriorityQueue<String>                           listenerHelper
+isSleeping              String                                          MainScreen, OverlayHelper, SleepOverlayListener
+stepsTakenToday         Integer                                         MainScreen
+challengeStreak         Integer                                         MainScreen
+currentScreen1Graph     Integer                                         Quad1Screen
+showChallengeHours      Boolean                                         Quad3Screen
+FoodPopUp               Integer                                         Quad4Screen
+confirmed               Integer                                         testScreen
+showChallengeHours      Boolean                                         Quad3Screen
+currentScreen1Graph     Integer                                         Quad1Screen
+
+#### HELP#### challenge.getString     Boolean                                         listenerHelper
+Look for setInt, setBoolean,
