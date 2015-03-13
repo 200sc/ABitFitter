@@ -34,6 +34,14 @@ public class ConsumableScreen extends BuyScreen {
     public void show()
     {
         super.show();
+
+        // Setup real images
+        renderHelper.getRenderHelper().imageSetup("dollarBuyBox.png",renderHelper.getRenderHelper().getLayer(0),52,296);
+        renderHelper.getRenderHelper().imageSetup("batteryBuyBox.png",renderHelper.getRenderHelper().getLayer(0),94,296);
+        renderHelper.getRenderHelper().imageSetup("featherBuyBox.png",renderHelper.getRenderHelper().getLayer(0),138,296);
+
+
+
         Json json = new Json();
         String success = game.getPrefs().getString("inventory", null);
         int[] inventoryFromPrefs = new int[]{0, 0, 0};
