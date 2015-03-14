@@ -57,7 +57,6 @@ public class BuildingScreen extends BuyScreen
         super.hide();
     }
 
-
     public ArrayList<Building> getBuyableBuildings()
     {
         return (ArrayList<Building>) scrollBar.getImages();

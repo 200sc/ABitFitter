@@ -14,11 +14,6 @@ import com.gamifyGame.GamifyScreen;
 import com.gamifyGame.gamifyGame;
 import com.gamifyGame.renderHelper;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -27,7 +22,6 @@ import java.util.HashMap;
 public class Quad1Screen extends GamifyScreen implements Screen {
 
     GamifyGraph[] testGraphs;
-
 
     public Quad1Screen(gamifyGame game) {
         super(game);
@@ -41,13 +35,15 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         if (i == -1){i = 6; game.getPrefs().putInteger("currentScreen1Graph",1);}
 
         renderHelper.getRenderHelper().getLayer(1).draw();
-        testGraphs[i].shapeRender();
-        renderHelper.getRenderHelper().getBatch().begin();
+        if (retBox.getX() < 2) {
+            testGraphs[i].shapeRender();
+            renderHelper.getRenderHelper().getBatch().begin();
 
 
-        testGraphs[i].textRender();
-        renderHelper.getRenderHelper().getBatch().end();
-        renderHelper.getRenderHelper().endRender();
+            testGraphs[i].textRender();
+            renderHelper.getRenderHelper().getBatch().end();
+            renderHelper.getRenderHelper().endRender();
+        }
         renderHelper.getRenderHelper().getLayer(2).draw();
     }
 

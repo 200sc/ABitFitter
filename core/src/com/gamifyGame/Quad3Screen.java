@@ -54,7 +54,8 @@ public class Quad3Screen extends GamifyScreen implements Screen {
             shapes.end();*/
         } else showText = "Close \nWindow";
 
-        if (!showChallengeHours) {
+
+        if (!showChallengeHours && retBox.getX() > 130) {
             testGraphs[0].shapeRender();
         }
 
@@ -64,7 +65,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
              renderHelper.getRenderHelper().getLayer(2).draw();
         }
         batch.begin();
-        if (!showChallengeHours) {
+        if (!showChallengeHours  && retBox.getX() > 130) {
             testGraphs[0].textRender();
         }
         renderHelper.getRenderHelper().textSet(showText, 2, 16, GamifyTextSize.BIG);
@@ -128,10 +129,6 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         Stage layer1 = renderHelper.getRenderHelper().getLayer(1);
         renderHelper renderer = renderHelper.getRenderHelper();
 
-
-        retBox = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
-        Image showBox = renderHelper.getRenderHelper().imageSetup("48Box.png", layer1, 0, 0);
-
         testGraphs  = new GamifyGraph[2];
 
         renderer.imageSetup("largeScreenBox.png", renderer.getLayer(1), 19, 20);
@@ -172,6 +169,8 @@ public class Quad3Screen extends GamifyScreen implements Screen {
             }
             day++;
         }
+        retBox = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
+        Image showBox = renderHelper.getRenderHelper().imageSetup("48Box.png", layer1, 0, 0);
 
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
         showBox.addListener(game.getListenerHelper().setBoolean("showChallengeHours", 'a'));

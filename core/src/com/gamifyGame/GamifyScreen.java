@@ -57,6 +57,11 @@ public abstract class GamifyScreen implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        renderHelper.getRenderHelper().getLayer(0).act(Gdx.graphics.getDeltaTime());
+        renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
+        renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());
+        renderHelper.getRenderHelper().getLayer(3).act(Gdx.graphics.getDeltaTime());
+
         layer0.draw();
 
         if (frameCount % 60 * 10 == 0){
@@ -66,15 +71,6 @@ public abstract class GamifyScreen implements Screen {
             System.gc();
         }
         game.updateVitality(delta);
-        renderHelper.getRenderHelper().getLayer(0).act(Gdx.graphics.getDeltaTime());
-        renderHelper.getRenderHelper().getLayer(1).act(Gdx.graphics.getDeltaTime());
-        renderHelper.getRenderHelper().getLayer(2).act(Gdx.graphics.getDeltaTime());
-        renderHelper.getRenderHelper().getLayer(3).act(Gdx.graphics.getDeltaTime());
-
-        //renderHelper.getRenderHelper().getBatch().begin();
-        //renderHelper.getRenderHelper().textSet(String.valueOf(frameCount),15,60);
-        //renderHelper.getRenderHelper().textSet(String.valueOf(delta),15,70);
-        //renderHelper.getRenderHelper().getBatch().end();
 
         frameCount = (frameCount + 1);
         frameCount = frameCount % (60*30);

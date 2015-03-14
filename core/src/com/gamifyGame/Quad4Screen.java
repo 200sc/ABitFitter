@@ -39,7 +39,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
             // Parse the data from its Json form
             Json json = new Json();
             HashMap food = json.fromJson(HashMap.class, latestFood);
-            if (food != null && food.get("nutrition") != null) {
+            if (food != null && food.get("nutrition") != null && retBox.getX() < 2) {
                 JsonValue nutritionJson = (JsonValue) food.get("nutrition");
                 HashMap nutritionMap = json.readValue(HashMap.class, nutritionJson);
 
@@ -78,7 +78,7 @@ public class Quad4Screen extends GamifyScreen implements Screen {
                     mainBox.addText(new Point(0,renderer.textureHash.get("largeScreenBox.png").getHeight()/2 - 40), foodDescriptorString, GamifyTextSize.MEDIUM);
                 }
                 renderer.getBatch().end();
-            } else {
+            } else if (retBox.getX() < 2) {
                 renderer.getBatch().begin();
                 renderer.textSet("Your last eaten food information:", 45, 150, GamifyTextSize.BIG);
                 renderer.textSet("Scan food to see data here:", 45, 130);
@@ -100,11 +100,6 @@ public class Quad4Screen extends GamifyScreen implements Screen {
     public void show() {
         renderHelper renderer = renderHelper.getRenderHelper().getRenderHelper();
 
-        retBox = renderer.imageSetupCenter("strawberryBox.png", renderer.getLayer(1), 37, -25);
-        retBox.addListener(new GoScreenClickListener(game.mainS, game));
-
-
-
         mainBox = new TextDisplayBox("largeScreenBox.png");
         mainBox.addAt(renderer.getLayer(1), renderer.RENDER_WIDTH- renderer.textureHash.get("largeScreenBox.png").getWidth(), 0);
 
@@ -113,12 +108,13 @@ public class Quad4Screen extends GamifyScreen implements Screen {
         scanBox.addAt(renderer.getLayer(1), renderer.textureHash.get("48Box.png").getWidth(), renderer.RENDER_HEIGHT-renderer.textureHash.get("scannerBox.png").getHeight());
         scanBox.addListener(game.getListenerHelper().scanningAction());
 
-
-
         TextDisplayBox servingsBox = new TextDisplayBox("servingBox.png");
         servingsBox.addAt(renderer.getLayer(1), renderer.textureHash.get("48Box.png").getWidth() + renderer.textureHash.get("scannerBox.png").getWidth()
                 , renderer.RENDER_HEIGHT-renderer.textureHash.get("servingBox.png").getHeight());
         servingsBox.addListener(game.getListenerHelper().getServingsChosen());
+
+        retBox = renderer.imageSetupCenter("strawberryBox.png", renderer.getLayer(1), 37, -25);
+        retBox.addListener(new GoScreenClickListener(game.mainS, game));
 
     }
 
