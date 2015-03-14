@@ -131,14 +131,14 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
                 File deleteFile = new File(context.getFilesDir(), "day"+lastWeek);
 
                 FileOutputStream weekWriter = new FileOutputStream(weeklyFile, true);
-                hourWriter.write(Byte.valueOf("challengeProgress," + getInteger(daily, "challengeProgress") + "\n"));
-                hourWriter.write(Byte.valueOf("todaysChallenge," + getString(daily, "todaysChallenge") + "\n"));
-                hourWriter.write(Byte.valueOf("stepsTaken," + getInteger(daily, "stepsTaken") + "\n"));
-                hourWriter.write(Byte.valueOf("minutesSlept," + getInteger(daily, "minutesSlept") + "\n"));
-                hourWriter.write(Byte.valueOf("minutesWalked," + getInteger(daily, "minutesWalked") + "\n"));
-                hourWriter.write(Byte.valueOf("minutesRan," + getInteger(daily, "minutesRan") + "\n"));
-                hourWriter.write(Byte.valueOf("minutesBiked," + getInteger(daily, "minutesBiked") + "\n"));
-                hourWriter.write(Byte.valueOf("minutesDanced," + getInteger(daily, "minutesDanced") + "\n"));
+                weekWriter.write(Byte.valueOf("challengeProgress," + getInteger(daily, "challengeProgress") + "\n"));
+                weekWriter.write(Byte.valueOf("todaysChallenge," + getString(daily, "todaysChallenge") + "\n"));
+                weekWriter.write(Byte.valueOf("stepsTaken," + getInteger(daily, "stepsTaken") + "\n"));
+                weekWriter.write(Byte.valueOf("minutesSlept," + getInteger(daily, "minutesSlept") + "\n"));
+                weekWriter.write(Byte.valueOf("minutesWalked," + getInteger(daily, "minutesWalked") + "\n"));
+                weekWriter.write(Byte.valueOf("minutesRan," + getInteger(daily, "minutesRan") + "\n"));
+                weekWriter.write(Byte.valueOf("minutesBiked," + getInteger(daily, "minutesBiked") + "\n"));
+                weekWriter.write(Byte.valueOf("minutesDanced," + getInteger(daily, "minutesDanced") + "\n"));
 
                 weekWriter.close();
 
