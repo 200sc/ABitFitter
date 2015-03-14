@@ -120,6 +120,7 @@ public class renderHelper {
         textureHash.put("sunrise.png",imageLoad("sunrise.png"));
         textureHash.put("nightSky.png",imageLoad("nightSky.png"));
         textureHash.put("background.png",imageLoad("background.png"));
+
         textureHash.put("activeHour.png",imageLoad("ActiveHour.png"));
         textureHash.put("inactiveHour.png",imageLoad("InactiveHour.png"));
         textureHash.put("streakBox.png",imageLoad("Streakbox.png"));
@@ -180,10 +181,18 @@ public class renderHelper {
         textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));
         textureHash.put("popUpBoxBlue.png",imageLoad("popUpBoxBlue.png"));
         textureHash.put("smallPopUpBoxBlue.png",imageLoad("smallPopUpBoxBlue.png"));
+        textureHash.put("slideOutBox.png", imageLoad("slideOutBox.png"));
 
         textureHash.put("battery.png",imageLoad("battery.png"));
+        textureHash.put("batteryBuyBox.png", imageLoad("batteryBuyBox.png"));
+        textureHash.put("batteryStockBox.png", imageLoad("batteryStockBox.png"));
         textureHash.put("dollar.png",imageLoad("dollar.png"));
+        textureHash.put("dollarBuyBox.png", imageLoad("dollarBuyBox.png"));
+        textureHash.put("dollarStockBox.png", imageLoad("dollarStockBox.png"));
         textureHash.put("feather.png",imageLoad("feather.png"));
+        textureHash.put("featherBuyBox.png", imageLoad("featherBuyBox.png"));
+        textureHash.put("featherStockBox.png", imageLoad("featherStockBox.png"));
+        textureHash.put("consumableStockBox.png", imageLoad("ConsumableStockBox.png"));
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lastStory.ttf"));
@@ -380,7 +389,10 @@ public class renderHelper {
         toMove.moveBy(distances.x, distances.y);
     }
 
+    // ******
     // Getters
+    // ******
+
     public int getWidth(){return scrWidth;}
     public int getHeight(){return scrHeight;}
     public float getRenderedWidth() { return RENDER_WIDTH;}
@@ -422,6 +434,9 @@ public class renderHelper {
         return image;
     }
 
+    // ******
+    // Underground display functions
+    // ******
 
     public ArrayList<GamifyImage> makeUnderground(int stageNum, gamifyGame game)
     {
@@ -431,11 +446,11 @@ public class renderHelper {
         ArrayList<GamifyImage> toReturn=new ArrayList<GamifyImage>(buildings.length);
         //ChangingImage[] imageList = new ChangingImage[buildings.length];
         // Figure out the width and height from the HQ1
-        int bridgelen = 6; //TODO: change this
+        int bridgelen = 6;
 
         int width = textureHash.get("HQ1.png").getWidth() + bridgelen;
         int height = textureHash.get("HQ1.png").getHeight() + 2;
-        int wOffset = 6; //TODO: Find the optimal lengths
+        int wOffset = 6;
         int hOffset = (int) (height * 2.9);
         int row = 0;
         int column = 0;
@@ -475,14 +490,6 @@ public class renderHelper {
         return toReturn;
     }
 
-
-
-    public boolean rectangleCollided(float minX1, float maxX1, float minY1, float maxY1,
-                                     float minX2, float maxX2, float minY2, float maxY2){
-        if(maxX1>minX2 && maxX2>minX1 && maxY1>minY2 && maxY2>minY1){return true;}
-        return false;
-    }
-
     public void colorUnderground(Stage stage, ChangingImage[] undergroundHandles){
         for(int i=0; i <undergroundHandles.length; i++){
             undergroundHandles[i].setColor(Color.GREEN);
@@ -491,11 +498,11 @@ public class renderHelper {
 
     public void makeBridges(Stage stage, Integer[] bridges){
         // Figure out the width and height from the HQ1
-        int bridgelen = 6; //TODO: change this
+        int bridgelen = 6;
         int hqWidth = textureHash.get("HQ1.png").getWidth();
         int width = textureHash.get("HQ1.png").getWidth()+bridgelen;
         int height = textureHash.get("HQ1.png").getHeight() + 2;
-        int wOffset = 6; //TODO: Find the optimal lengths
+        int wOffset = 6;
         int hOffset = (int) (height * 2.9);
         int row;
         int column;
@@ -503,14 +510,20 @@ public class renderHelper {
             column = i%2;
             row = i/2;
 
-//            if(bridges[i] == 1){imageSetup("Bridge1.png", stage, (int)(wOffset + hqWidth+(column)*width), hOffset - row*height);}
-//            if(bridges[i] == 2){imageSetup("Elevator1.png", stage, (int)(wOffset+hqWidth+(column)*width), hOffset - row*height);}
             if(bridges[i] == 1){new ChangingImage("Bridge1.png", "Elevator1.png", stage, ((wOffset + hqWidth+(column)*width)-3), hOffset - row*height);}
             if(bridges[i] == 2){new ChangingImage("Elevator1.png","Bridge1.png", stage, ((wOffset+hqWidth+(column)*width)-3), hOffset - row*height);}
         }
     }
 
+    public boolean rectangleCollided(float minX1, float maxX1, float minY1, float maxY1,
+                                     float minX2, float maxX2, float minY2, float maxY2){
+        if(maxX1>minX2 && maxX2>minX1 && maxY1>minY2 && maxY2>minY1){return true;}
+        return false;
+    }
+
+    // ******
     // Font and Text functions
+    // ******
 
     // getFont
     private BitmapFont getFont(GamifyColor color, GamifyTextSize size){
@@ -542,6 +555,9 @@ public class renderHelper {
             default: return medFont;
         }
     }
+    // textSet -- set text to a certain x,y point on the game screen (180 x 296). Can take size, or
+    // be based from the center of the screen (textSetCenter) with x and y offsets, or it can take
+    // color, x, y, size, alignment (left, right, center), and line width.
     public void textSet(String text, float x, float y){
         textSet(text,GamifyColor.WHITE,x,y,GamifyTextSize.MEDIUM,"left",0);
     }
