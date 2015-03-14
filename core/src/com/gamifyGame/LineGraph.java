@@ -55,8 +55,11 @@ public class LineGraph extends GamifyGraph {
         ShapeRenderer shapes1 = renderHelper.getRenderHelper().getShapeRenderer();
 
         float yRatio = (((float)graphHeight-25) / yMax);
-        int xPixelIncrement = (graphWidth/yPoints.size());
-
+        int xPixelIncrement =0;
+        try {
+            xPixelIncrement = (graphWidth / yPoints.size());
+        }catch(Exception e){
+        }
         int x = 0;
         int borderX = 48;
         int borderY = 54;

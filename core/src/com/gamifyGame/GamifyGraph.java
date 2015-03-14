@@ -46,6 +46,10 @@ public abstract class GamifyGraph {
 
     public void textRender(){
 
+        if(xPoints.size() == 0){
+            return;
+        }
+
         int xIncrement = (xPoints.size()/dataPointCount);
         int xPixelIncrement = (graphWidth/dataPointCount);
 

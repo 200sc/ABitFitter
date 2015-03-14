@@ -77,6 +77,10 @@ public class ActionResolverAndroid implements ActionResolver {
 
     }
 
+    public File getContextString(){
+        return  context.getApplicationContext().getFilesDir();
+    }
+
     public void setSleepState(final boolean isSleeping){
 
         System.out.println("ACTIONRESOLVER: GO TO SLEEP");
