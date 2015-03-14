@@ -374,6 +374,17 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             }
         }
 
+        if(((xAvgPeak < 5 && xAvgPeak > -2.5)) && ((yAvgPeak > -5 && yAvgPeak < 10)) && ((zAvgPeak < 7 && zAvgPeak > -5))){
+            if ((yAvgPTD > 0 && yAvgPTD < 200)){
+                //sendNotification(Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
+                Log.d("Salubrity","SITTING: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
+                Log.d("Salubrity","averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+                Log.d("Salubrity","PTD: " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
+                Log.d("Salubrity","rawr: " + Double.toString(rawr));
+                return 3;
+            }
+        }
+
         if((xAvg < 10 && xAvg > -10) && (yAvg < 20 && yAvg > -10) && (zAvg > -5 && zAvg < 10 )){
             if ((yAvgPTD > 300)){
                 //sendNotification(Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
