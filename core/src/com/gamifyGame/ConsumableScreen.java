@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class ConsumableScreen extends BuyScreen {
     private HashMap<Consumable, Integer> inventory;
     private HashMap<Consumable, Integer> capacity;
+    private Image featherStock, batteryStock, dollarStock;
 
     public ConsumableScreen(gamifyGame game) {
         super(game);
@@ -36,9 +37,9 @@ public class ConsumableScreen extends BuyScreen {
         super.show();
 
         // Setup real images
-        renderHelper.getRenderHelper().imageSetup("dollarBuyBox.png",renderHelper.getRenderHelper().getLayer(0),52,296);
-        renderHelper.getRenderHelper().imageSetup("batteryBuyBox.png",renderHelper.getRenderHelper().getLayer(0),94,296);
-        renderHelper.getRenderHelper().imageSetup("featherBuyBox.png",renderHelper.getRenderHelper().getLayer(0),138,296);
+        renderHelper.getRenderHelper().imageSetup("batteryBuyBox.png",renderHelper.getRenderHelper().getLayer(1),52,272);
+        renderHelper.getRenderHelper().imageSetup("dollarBuyBox.png",renderHelper.getRenderHelper().getLayer(1),94,272);
+        renderHelper.getRenderHelper().imageSetup("featherBuyBox.png",renderHelper.getRenderHelper().getLayer(1),138,272);
 
 
 
@@ -54,7 +55,7 @@ public class ConsumableScreen extends BuyScreen {
         }
 
         Collection<Consumable> possibleToBuy = Consumable.getAllConsumables().values();
-        this.drawPossibleToBuy(possibleToBuy, 50, 10, 260);
+        this.drawPossibleToBuy(possibleToBuy, 60, 30, 279);
         for (Consumable currentConsumable : possibleToBuy) {
             addBuyListener(currentConsumable);
             currentConsumable.addListener(this.textBoxControlListener());
@@ -67,7 +68,11 @@ public class ConsumableScreen extends BuyScreen {
             }
             current.addListener(getDefaultScrollBarListener(result));
         }
-        drawInventory(inventory, 10, 200, 10);
+        drawInventory(inventory, 10, 216, 6);
+
+        featherStock = renderHelper.getRenderHelper().imageSetup("featherStockBox.png",renderHelper.getRenderHelper().getLayer(2),7,248);
+        batteryStock = renderHelper.getRenderHelper().imageSetup("batteryStockBox.png",renderHelper.getRenderHelper().getLayer(2),7,232);
+        dollarStock = renderHelper.getRenderHelper().imageSetup("dollarStockBox.png",renderHelper.getRenderHelper().getLayer(2),7,216);
 
         retBox = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", renderHelper.getRenderHelper().getLayer(1), -37, 50);
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
@@ -78,12 +83,12 @@ public class ConsumableScreen extends BuyScreen {
     public void render(float delta) {
         super.render(delta);
         renderHelper.getRenderHelper().moveCorner(retBox, Corner.LOWER_RIGHT, 31);
-        for(Consumable currentConsumable : inventory.keySet())
-        {
-            renderHelper.getRenderHelper().batch.begin();
-            renderHelper.getRenderHelper().drawTextOnImageNicely("" + inventory.get(currentConsumable), currentConsumable, 10, 0, GamifyTextSize.MEDIUM, GamifyColor.BLACK, "left");
-            renderHelper.getRenderHelper().batch.end();
-        }
+        HashMap<String,Consumable> map = Consumable.getAllConsumables();
+        renderHelper.getRenderHelper().batch.begin();
+        renderHelper.getRenderHelper().drawTextOnImageNicely("" + inventory.get(map.get("Feather")), featherStock, 20, 0, GamifyTextSize.MEDIUM, GamifyColor.BLACK, "left");
+        renderHelper.getRenderHelper().drawTextOnImageNicely("" + inventory.get(map.get("Battery")), batteryStock, 20, 0, GamifyTextSize.MEDIUM, GamifyColor.BLACK, "left");
+        renderHelper.getRenderHelper().drawTextOnImageNicely("" + inventory.get(map.get("Dollar")), dollarStock, 20, 0, GamifyTextSize.MEDIUM, GamifyColor.BLACK, "left");
+        renderHelper.getRenderHelper().batch.end();
     }
 
 
@@ -123,9 +128,9 @@ public class ConsumableScreen extends BuyScreen {
     }
 
     private int convertConsumableToNumber(Consumable consumable) {
-        if (consumable.getBuyableName().equals("Battery")) {
+        if (consumable.getBuyableName().equals("Dollar")) {
             return 0;
-        } else if (consumable.getBuyableName().equals("Dollar")) {
+        } else if (consumable.getBuyableName().equals("Battery")) {
             return 1;
         } else
         {
@@ -135,9 +140,9 @@ public class ConsumableScreen extends BuyScreen {
     private String convertNumberToName(int num)
     {
         if(num==0)
-            return "Battery";
-        else if(num==1)
             return "Dollar";
+        else if(num==1)
+            return "Battery";
         else
             return "Feather";
     }
@@ -187,8 +192,8 @@ public class ConsumableScreen extends BuyScreen {
                 eventImage.setColor(startColor);
                 for (GamifyImage current : undergroundBuildings)
                     current.setColor(startColor);
-               buildCheck(undergroundBuildings, eventImage, game);
-               drawInventory(inventory, 10, 200, 10);
+                buildCheck(undergroundBuildings, eventImage, game);
+                drawInventory(inventory, 10, 226, 1);
             }
 
             public void touchDragged(InputEvent event, float x, float y, int pointer) {

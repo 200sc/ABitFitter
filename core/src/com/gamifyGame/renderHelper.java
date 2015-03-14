@@ -181,18 +181,18 @@ public class renderHelper {
         textureHash.put("Smuggler1.png",imageLoad("Smuggler1.png"));
         textureHash.put("popUpBoxBlue.png",imageLoad("popUpBoxBlue.png"));
         textureHash.put("smallPopUpBoxBlue.png",imageLoad("smallPopUpBoxBlue.png"));
-        //textureHash.put("detailBox.png", imageLoad("detailBox.png"));
+        textureHash.put("slideOutBox.png", imageLoad("slideOutBox.png"));
 
         textureHash.put("battery.png",imageLoad("battery.png"));
         textureHash.put("batteryBuyBox.png", imageLoad("batteryBuyBox.png"));
         textureHash.put("batteryStockBox.png", imageLoad("batteryStockBox.png"));
         textureHash.put("dollar.png",imageLoad("dollar.png"));
-        textureHash.put("dollarBuyBox.png", imageLoad("batteryBuyBox.png"));
-        textureHash.put("dollarStockBox.png", imageLoad("batteryStockBox.png"));
+        textureHash.put("dollarBuyBox.png", imageLoad("dollarBuyBox.png"));
+        textureHash.put("dollarStockBox.png", imageLoad("dollarStockBox.png"));
         textureHash.put("feather.png",imageLoad("feather.png"));
-        textureHash.put("featherBuyBox.png", imageLoad("batteryBuyBox.png"));
-        textureHash.put("featherStockBox.png", imageLoad("batteryStockBox.png"));
-        textureHash.put("consumableStockBox.png", imageLoad("consumableStockBox.png"));
+        textureHash.put("featherBuyBox.png", imageLoad("featherBuyBox.png"));
+        textureHash.put("featherStockBox.png", imageLoad("featherStockBox.png"));
+        textureHash.put("consumableStockBox.png", imageLoad("ConsumableStockBox.png"));
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lastStory.ttf"));

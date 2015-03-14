@@ -24,7 +24,7 @@ public abstract class BuyScreen extends GamifyScreen
 
     public void show()
     {
-        movingTextDisplayBox=new MovingTextDisplayBox("midBox.png");
+        movingTextDisplayBox=new MovingTextDisplayBox("slideOutBox.png");
         movingTextDisplayBox.addAt(renderHelper.getRenderHelper().getLayer(1), 180, 175);
     }
 
