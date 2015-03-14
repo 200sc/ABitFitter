@@ -349,7 +349,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             Log.d("Salubrity","averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
             Log.d("Salubrity","PTD: " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
             Log.d("Salubrity","rawr: " + Double.toString(rawr));
-            return 0;
+            return 8;
         }
 
         //is sleeeeping
@@ -358,7 +358,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         Log.d("Salubrity","PTD: " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
         Log.d("Salubrity","rawr: " + Double.toString(rawr));
         //Is sleeping!
-        return 5;
+        return 0;
     }
 
     protected int activityAnalysis(float yMag, double mag, long xAvgPeak, long yAvgPeak, long zAvgPeak, double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
@@ -483,6 +483,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
             case 5: return "walking";
             case 6: return "sitting";
             case 7: return "standing";
+            case 8: return "sleeping";
             default: return "nothing";
         }
     }
