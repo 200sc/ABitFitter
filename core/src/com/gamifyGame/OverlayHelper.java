@@ -56,6 +56,8 @@ public class OverlayHelper extends GamifyImage {
         toDraw = null;
         game.getPrefs().putString("isSleeping","false");
         game.getActionResolver().putSharedPrefs("isSleeping", "false");
+        game.getActionResolver().setSleepState(false);
+
 
         renderHelper.getRenderHelper().getLayer(3).clear();
         for(Actor actor: toBeRestored){

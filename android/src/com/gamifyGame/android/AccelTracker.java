@@ -15,7 +15,9 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
@@ -196,6 +198,34 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         yPeakAvg = avgPeakList.get(1);
         zPeakAvg = avgPeakList.get(2);
 
+        File toRead = new File(getApplicationContext().getFilesDir(), "sleepFile");
+        //sendNotification("Fail");
+        //sendNotification("ACCELTRACK:sleepFile" + toRead.getName());
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader(toRead));
+            boolean isSleeping = false;
+            //sendNotification("not read");
+            while ((line = reader.readLine()) != null) {
+                //sendNotification(line);
+                System.out.print(line);
+                if(Integer.parseInt(line)==1){
+                    isSleeping = true;
+                }
+                System.out.println(" END");
+                //sendNotification("all read");
+            }
+            //sendNotification("Correctly read stuff");
+            if(isSleeping){
+                return sleepAnalysis(yMag, magnitude, xPeakAvg, yPeakAvg, zPeakAvg, resultantAccel, xAverage, yAverage, zAverage, xAvgPeakTimeDiff, yAvgPeakTimeDiff, zAvgPeakTimeDiff);
+            }
+            reader.close();
+        }catch(Exception e){
+            //Nothing
+
+        }
+
+
+
         return activityAnalysis(yMag, magnitude, xPeakAvg, yPeakAvg, zPeakAvg, resultantAccel, xAverage, yAverage, zAverage, xAvgPeakTimeDiff, yAvgPeakTimeDiff, zAvgPeakTimeDiff);
     }
 
@@ -310,11 +340,32 @@ public class AccelTracker extends IntentService implements SensorEventListener {
         return sum/listSize;
     }
 
+    protected int sleepAnalysis(float yMag, double mag, long xAvgPeak, long yAvgPeak, long zAvgPeak, double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
+        sendNotification("Sleep is enabled");
+
+        //Check if actually asleep, currently checks that you arent walking
+        if((xAvg < 3 && xAvg > 0) && (yAvg < 1 && yAvg > 0) && (zAvg > 9 && zAvg < 10)){
+            Log.d("Salubrity","FalseSleep: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
+            Log.d("Salubrity","averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+            Log.d("Salubrity","PTD: " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
+            Log.d("Salubrity","rawr: " + Double.toString(rawr));
+            return 0;
+        }
+
+        //is sleeeeping
+        Log.d("Salubrity","TrueSleep: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
+        Log.d("Salubrity","averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
+        Log.d("Salubrity","PTD: " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
+        Log.d("Salubrity","rawr: " + Double.toString(rawr));
+        //Is sleeping!
+        return 5;
+    }
+
     protected int activityAnalysis(float yMag, double mag, long xAvgPeak, long yAvgPeak, long zAvgPeak, double rawr, float xAvg, float yAvg, float zAvg, float xAvgPTD, float yAvgPTD, float zAvgPTD){
         //sendNotification(xAvgPeak + " " + yAvgPeak + " " + zAvgPeak);
         if(((xAvgPeak < 10 && xAvgPeak > -5)) && ((yAvgPeak > -10 && yAvgPeak < 20)) && ((zAvgPeak < 15 && zAvgPeak > -10))){
             if ((yAvgPTD > 0 && yAvgPTD < 400)){
-                sendNotification(Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
+                //sendNotification(Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
                 Log.d("Salubrity","SITTING: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
                 Log.d("Salubrity","averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
                 Log.d("Salubrity","PTD: " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
@@ -325,7 +376,7 @@ public class AccelTracker extends IntentService implements SensorEventListener {
 
         if((xAvg < 10 && xAvg > -10) && (yAvg < 20 && yAvg > -10) && (zAvg > -5 && zAvg < 10 )){
             if ((yAvgPTD > 300)){
-                sendNotification(Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
+                //sendNotification(Double.toString(Math.round(rawr)) + " " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));
                 Log.d("Salubrity","WALKING: peaks: " + Float.toString(xAvgPeak) + " " + Float.toString(yAvgPeak) + " " + Float.toString(zAvgPeak));
                 Log.d("Salubrity","averages: " + Float.toString(xAvg) + " " + Float.toString(yAvg) + " " + Float.toString(zAvg));
                 Log.d("Salubrity","PTD: " + Float.toString(xAvgPTD) + " " + Float.toString(yAvgPTD) + " " + Float.toString(zAvgPTD));

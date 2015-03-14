@@ -10,6 +10,7 @@ import com.gamifyGame.ActionResolver;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 
 
 public class ActionResolverAndroid implements ActionResolver {
@@ -80,11 +81,12 @@ public class ActionResolverAndroid implements ActionResolver {
 
         System.out.println("ACTIONRESOLVER: GO TO SLEEP");
         File toWrite = new File(context.getApplicationContext().getFilesDir(), "sleepFile");
+        System.out.println("ACTIONRESOLVER:Z" + toWrite.getName());
         try{
-            FileOutputStream sleep = new FileOutputStream(toWrite);
+            FileWriter sleep = new FileWriter(toWrite, false);
 
-            if(isSleeping)sleep.write(1);
-            else sleep.write(0);
+            if(isSleeping)sleep.write("1");
+            else sleep.write("0");
             sleep.close();
         }catch (Exception e) {}
 

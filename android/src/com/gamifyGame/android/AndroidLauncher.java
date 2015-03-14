@@ -55,7 +55,7 @@ public class AndroidLauncher extends AndroidApplication {
 
 
         // For testing clear prefs here
-        pref.clear();
+        //pref.clear();
 
         // Set screen size of this device in pixels
         Display display = getWindowManager().getDefaultDisplay();
