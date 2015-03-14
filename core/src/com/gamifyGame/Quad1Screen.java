@@ -14,6 +14,11 @@ import com.gamifyGame.GamifyScreen;
 import com.gamifyGame.gamifyGame;
 import com.gamifyGame.renderHelper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -77,7 +82,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         File context = game.getActionResolver().getContextString();
 
         String todayString = String.valueOf(today);
-        for(int i=0; i < 7 ;i++){
+        for(int i=1; i < 7 ;i++){
             long day = today -i;
             if(day < 0){
                 day += 365;
