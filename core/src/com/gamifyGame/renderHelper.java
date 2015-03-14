@@ -192,7 +192,7 @@ public class renderHelper {
         textureHash.put("feather.png",imageLoad("feather.png"));
         textureHash.put("featherBuyBox.png", imageLoad("featherBuyBox.png"));
         textureHash.put("featherStockBox.png", imageLoad("featherStockBox.png"));
-        textureHash.put("consumableStockBox.png", imageLoad("ConsumableStockBox.png"));
+        //textureHash.put("consumableStockBox.png", imageLoad("ConsumableStockBox.png"));
 
         //font3=new BitmapFont(("subway.fnt"), Gdx.files.internal("subway.png"), false);
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lastStory.ttf"));

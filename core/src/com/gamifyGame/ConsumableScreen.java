@@ -1,5 +1,6 @@
 package com.gamifyGame;
 
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -61,6 +62,9 @@ public class ConsumableScreen extends BuyScreen {
             currentConsumable.addListener(this.textBoxControlListener());
         }
         ArrayList<GamifyImage> result = renderHelper.getRenderHelper().makeUnderground(1, game);
+        Preferences pref = game.getPrefs();
+        Integer[] bridges = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
+        renderHelper.getRenderHelper().makeBridges(renderHelper.getRenderHelper().getLayer(1), bridges);
         for (Consumable current : inventory.keySet())
         {
             if (inventory.get(current) > 0) {
