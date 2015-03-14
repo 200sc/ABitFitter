@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Json;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
@@ -83,11 +84,18 @@ public class gamifyGame extends Game {
         setScreen(mainS);
     }
 
-    public void updateVitality(float delta) {
+    public void updateVitality(float delta)
+    {
+
         secondsSinceLastCall += delta;
-        if (secondsSinceLastCall > 30) {
+        if (secondsSinceLastCall > 30)
+        {
+
             Json json = new Json();
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
+
+
+            this.getPrefs().putLong("LastVitalityUpdate", Calendar.getInstance().getTime().getTime());
             secondsSinceLastCall -= 30;
 
             //ArrayList<Consumable> activeConsumables = consumableScreen.getActiveConsumables();
@@ -177,6 +185,7 @@ public class gamifyGame extends Game {
         }
         updatePref.flush();
     }
+
 
     public void setLoadingFlag(boolean value) {
         isLoadingSomething = value;
