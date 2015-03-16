@@ -45,11 +45,6 @@ public abstract class GamifyGraph {
     }
 
     public void textRender(){
-
-        if(xPoints.size() == 0){
-            return;
-        }
-
         int xIncrement = (xPoints.size()/dataPointCount);
         int xPixelIncrement = (graphWidth/dataPointCount);
 
@@ -60,6 +55,11 @@ public abstract class GamifyGraph {
         renderHelper renderer = renderHelper.getRenderHelper();
 
         renderer.textSet(type,borderX+1,borderY+graphHeight-2,GamifyTextSize.XTRABIG);
+
+        if(xPoints.size() == 0){
+            renderer.textSet("No data recorded yet",borderX+30,borderY+60);
+            return;
+        }
 
         for (int i = 0; i < botLabelCount; i++) {
             Date date = new Date(xPoints.get(x));

@@ -8,6 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Json;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.Calendar;
 
 /**
@@ -15,7 +18,8 @@ import java.util.Calendar;
  */
 public class MainScreen extends GamifyScreen implements Screen
 {
-    private Image quad3, theSky;
+    private Image theSky;
+    private TextDisplayBox quad3;
     private float deltaCount;
     private double deltaSum;
     private LoadingImage loadingBox;
@@ -89,9 +93,6 @@ public class MainScreen extends GamifyScreen implements Screen
             String[] underground = json.fromJson(String[].class, pref.getString("undergroundBuildings"));
             Integer[] bridges = json.fromJson(Integer[].class, pref.getString("undergroundBridges"));
 
-            //for(int i =0; i< underground.length; i++)
-            //game.getActionResolver().showToast(underground[i]);
-
             renderHelper.getRenderHelper().makeUnderground(0, game);
             renderHelper.getRenderHelper().makeBridges(layer0, bridges);
 
@@ -100,20 +101,38 @@ public class MainScreen extends GamifyScreen implements Screen
             renderHelper.getRenderHelper().imageSetupCenter("stepBox.png", layer1, 37, 50);
             quad1.addAtCenter(layer1,37,50);
 
-            quad1.addText(new Point(22,18),String.valueOf(game.getPrefs().getInteger("stepsTakenToday",87)),GamifyTextSize.BIG,GamifyColor.WHITE, "right");
-            //Image quad2 = renderHelper.getRenderHelper().imageSetupCenter("streakBox.png", layer1, -37, 50);
+            quad1.addText(new Point(22,18),String.valueOf(game.getPrefs().getInteger("stepsTakenToday",0)),GamifyTextSize.BIG,GamifyColor.WHITE, "right");
+
             TextDisplayBox quad2 = new TextDisplayBox("streakBox.png");
             quad2.addAtCenter(layer1,-37,50);
-            quad2.addText(new Point(-12,-14),String.valueOf(game.getPrefs().getInteger("challengeStreak",1)),GamifyTextSize.BIG,GamifyColor.BLACK, "left");
+            quad2.addText(new Point(-12,-14),String.valueOf(game.getPrefs().getInteger("challengeStreak",0)),GamifyTextSize.BIG,GamifyColor.BLACK, "left");
 
+            quad3 = new TextDisplayBox("trophyBox.png");
+            quad3.addAtCenter(layer1,-37,-25);
 
+            String challengeVariety = "No Challenge";
 
-            quad3 = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
+            File context = game.getActionResolver().getContextString();
+            File challengeFile = new File(context ,"outChallenge");
+            try{
+                BufferedReader reader = new BufferedReader( new FileReader(challengeFile));
+                String line;
+                String[] lineParts;
+                while ((line = reader.readLine()) != null) {
+                    lineParts = line.split(",");
+                    if (lineParts[0].equals("challengeVariety")){
+                        challengeVariety = lineParts[1];
+                    }
+                }
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+
+            quad3.addText(new Point(-4,-3),String.valueOf(challengeVariety),GamifyTextSize.MEDIUM,GamifyColor.YELLOW,"left");
+            //quad3 = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
             Image quad4 = renderHelper.getRenderHelper().imageSetupCenter("strawberryBox.png", layer1, 37, -25);
             Image midbox = renderHelper.getRenderHelper().imageSetupCenter("midBox.png", layer1, 0, 12);
             renderHelper.getRenderHelper().imageSetupCenter("leagueSilver.png", layer1, 0, -3);
-
-
 
             loadingBox = new LoadingImage(layer1,3,2,game,"loaded.png");
 

@@ -36,7 +36,7 @@ public class Building extends Buyable
         defList.put("Forging Office", new Building("Forging Office", "An office filled with stacks of official seals, brief cases of fake documents and intricate utensils", 4, 16, 1, TriggerCondition.RUNNING, "Forgery1.png", true));
         defList.put("Garage", new Building("Garage", "The place the vehicles are", 900, 4, 3, TriggerCondition.CYCLING, "Garage1.png", true));
         defList.put("Generator", new Building("Generator", "It makes power", 600, 0, 5, TriggerCondition.ACTIVE, "Generator1.png", true));
-        defList.put("HQ", new Building("HQ", "You live here", 1000000000, 100, 3, TriggerCondition.ALL, "HQ1.png", false));
+        defList.put("HQ", new Building("HQ", "You live here", 1000000000, 100, 3, TriggerCondition.ACTIVE, "HQ1.png", false));
         defList.put("Lab", new Building("Lab","The place where you develop new technologies and conduct experiments", 600, 5, 3, TriggerCondition.CYCLING, "Lab1.png", true));
         defList.put("Smuggler's Cove", new Building("Smuggler's Cove", "Your contacts meet you here for suspicious dealings", 600, 6, 3, TriggerCondition.NONE, "Smuggler1.png", true));
         return defList;

@@ -56,7 +56,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
 
 
         if (!showChallengeHours && retBox.getX() > 130) {
-            testGraphs[0].shapeRender();
+            //testGraphs[0].shapeRender();
         }
 
         renderHelper.getRenderHelper().moveCorner(retBox, Corner.UPPER_RIGHT, 30);
@@ -66,7 +66,7 @@ public class Quad3Screen extends GamifyScreen implements Screen {
         }
         batch.begin();
         if (!showChallengeHours  && retBox.getX() > 130) {
-            testGraphs[0].textRender();
+            //testGraphs[0].textRender();
         }
         renderHelper.getRenderHelper().textSet(showText, 2, 16, GamifyTextSize.BIG);
         for (int i = 0; i < 7; i++) {
@@ -131,25 +131,28 @@ public class Quad3Screen extends GamifyScreen implements Screen {
 
         testGraphs  = new GamifyGraph[2];
 
-        renderer.imageSetup("largeScreenBox.png", renderer.getLayer(1), 19, 20);
+        //renderer.imageSetup("largeScreenBox.png", renderer.getLayer(1), 19, 20);
 
 
         long aDay = 86400000;
 
-        HashMap<Integer,Integer> testData3 = new HashMap<Integer,Integer>();
-        testData3.put(0,63);
-        testData3.put(1,20);
-        testData3.put(2,70);
-        testData3.put(3,45);
-        testData3.put(4,0);
-        testData3.put(5,50);
-        String[] labels = {"Activity","Biking","Food","Running","Dancing","Sleep"};
-        testGraphs[0] = new SpiderGraph(testData3,labels,"Types of Challenges",GamifyColor.GREEN, 19,20);
+        //HashMap<Integer,Integer> testData3 = new HashMap<Integer,Integer>();
+        //testData3.put(0,63);
+        //testData3.put(1,20);
+        //testData3.put(2,70);
+        //testData3.put(3,45);
+        //testData3.put(4,0);
+        //testData3.put(5,50);
+        //String[] labels = {"Activity","Biking","Food","Running","Dancing","Sleep"};
+        //testGraphs[0] = new SpiderGraph(testData3,labels,"Types of Challenges",GamifyColor.GREEN, 19,20);
 
         int borderX = 19;
         int borderY = 20;
         int day = 0;
         int hour = 0;
+
+        retBox = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
+        Image showBox = renderHelper.getRenderHelper().imageSetup("48Box.png", layer1, 0, 0);
 
         border = renderHelper.getRenderHelper().imageSetup("largeScreenBox.png", layer1, borderX + 300, borderY);
         Week = new ChangingImage[7][24];
@@ -169,8 +172,6 @@ public class Quad3Screen extends GamifyScreen implements Screen {
             }
             day++;
         }
-        retBox = renderHelper.getRenderHelper().imageSetupCenter("trophyBox.png", layer1, -37, -25);
-        Image showBox = renderHelper.getRenderHelper().imageSetup("48Box.png", layer1, 0, 0);
 
         retBox.addListener(new GoScreenClickListener(game.mainS, game));
         showBox.addListener(game.getListenerHelper().setBoolean("showChallengeHours", 'a'));

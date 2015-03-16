@@ -109,7 +109,7 @@ public class AndroidLauncher extends AndroidApplication {
         outChallengeWatch.startWatching();
 
         //For presentation scans in progresso // TODO: Remove after presentation
-        new checkFood("http://www.opennutritiondatabase.com/foods/", "041196010121.json").execute();
+        //new checkFood("http://www.opennutritiondatabase.com/foods/", "041196010121.json").execute();
 
 
         setContentView(R.layout.loginscreenres);

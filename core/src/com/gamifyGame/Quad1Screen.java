@@ -36,8 +36,8 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         super.render(delta);
         renderHelper.getRenderHelper().moveCorner(this.retBox, Corner.LOWER_LEFT, 30);
 
-        int i = game.getPrefs().getInteger("currentScreen1Graph",0) % 7;
-        if (i == -1){i = 6; game.getPrefs().putInteger("currentScreen1Graph",1);}
+        int i = game.getPrefs().getInteger("currentScreen1Graph",0) % 6;
+        if (i == -1){i = 5; game.getPrefs().putInteger("currentScreen1Graph",1);}
 
         renderHelper.getRenderHelper().getLayer(1).draw();
         if (retBox.getX() < 2) {
@@ -62,7 +62,7 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         leftBox.addListener(game.getListenerHelper().setInt("currentScreen1Graph","--"));
         rightBox.addListener(game.getListenerHelper().setInt("currentScreen1Graph","++"));
 
-        testGraphs = new GamifyGraph[7];
+        testGraphs = new GamifyGraph[6];
         renderer.imageSetup("largeScreenBox.png", renderer.getLayer(1), 36, 42);
 
 
@@ -121,15 +121,15 @@ public class Quad1Screen extends GamifyScreen implements Screen {
         testGraphs[4] = new LineGraph(graphData.get(4),"Minutes Biked",GamifyColor.GREEN,36,42);
         testGraphs[5] = new LineGraph(graphData.get(5),"Minutes Danced",GamifyColor.GREEN,36,42);
 
-        HashMap<Integer,Integer> spiderData = new HashMap<Integer,Integer>();
-        spiderData.put(0,50);
-        spiderData.put(1,22);
-        spiderData.put(2,0);
-        spiderData.put(3,33);
-        spiderData.put(4,46);
-        spiderData.put(5,64);
-        String[] labels = {"Percent Time Active", "Percent Time Excercising", "Vitamin Intake", "Percent Daily Values Reached", " Percent Days Well-Slept", "Percent Challenges Completed"};
-        testGraphs[6] = new SpiderGraph(spiderData,labels,"Activity Distribution (this week)",GamifyColor.YELLOW, 38, 54);
+        //HashMap<Integer,Integer> spiderData = new HashMap<Integer,Integer>();
+        //spiderData.put(0,50);
+        //spiderData.put(1,22);
+        //spiderData.put(2,0);
+        //spiderData.put(3,33);
+        //spiderData.put(4,46);
+        //spiderData.put(5,64);
+        //String[] labels = {"Percent Time Active", "Percent Time Excercising", "Vitamin Intake", "Percent Daily Values Reached", " Percent Days Well-Slept", "Percent Challenges Completed"};
+        //testGraphs[6] = new SpiderGraph(spiderData,labels,"Activity Distribution (this week)",GamifyColor.YELLOW, 38, 54);
     }
 
 

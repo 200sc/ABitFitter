@@ -151,7 +151,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
             boolean availableThisHour = Boolean.valueOf(input.get(challengeTime()));
             float challengeChancesToday = getChallengeChances(input);
 
-            //if (availableThisHour && Math.random() < 1f / challengeChancesToday && !getBoolean(daily,"challengedToday")) {
+            if (availableThisHour && Math.random() < 1f / challengeChancesToday && !getBoolean(daily,"challengedToday")) {
                 hourWriter.write(("challengeHour,true").getBytes());
                 hourWriter.write(("challengedToday,true").getBytes());
 
@@ -160,7 +160,7 @@ public class challengeAlarm extends WakefulBroadcastReceiver {
 
 
                 sendChallengeNotification(context.getApplicationContext(), challengePrompt);
-            //}
+            }
 
             hourWriter.close();
             dailyWriter.close();
